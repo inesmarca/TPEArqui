@@ -2,12 +2,6 @@
 #include <video_driver.h>
 #include <font8x8_basic.h>
 
-#define WIDTH 1024
-#define HEIGHT 768
-#define LINE_WIDTH 3
-#define LETTER_WIDTH 8
-#define LETTER_HEIGHT 16
-
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
 	uint8_t window_a;			// deprecated
@@ -57,8 +51,44 @@ unsigned int pos2Y = HEIGHT - LETTER_HEIGHT;
 
 struct vbe_mode_info_structure * screen_info = 0x5C00;
 
+void setXPosition(int screen, int value) {
+	if (screen == 1) {
+		pos1X = value;
+	} else {
+		pos2X = value;
+	}
+}
+
+void setYPosition(int screen, int value) {
+	if (screen == 1) {
+		pos1Y = value;
+	} else {
+		pos2Y = value;
+	}
+}
+
 char * getDataPosition(int x, int y) {
 	return screen_info->framebuffer + (x + WIDTH * y) * 3;
+}
+
+char positionEmpty(int x, int y) {
+	char * pos = getDataPosition(x, y);
+	return pos[0] == 0 && pos[1] == 0 && pos[2] == 0;
+}
+
+char getPositionRed(int x, int y) {
+	char * pos = getDataPosition(x, y);
+	return pos[2];
+}
+
+char getPositionGreen(int x, int y) {
+	char * pos = getDataPosition(x, y);
+	return pos[1];
+}
+
+char getPositionBlue(int x, int y) {
+	char * pos = getDataPosition(x, y);
+	return pos[0];
 }
 
 void writePixel(int x, int y,  int red, int green, int blue) {
@@ -163,6 +193,14 @@ void removeBlock() {
 		}
 	}
 }
+
+void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final) {
+	for (int i = y_initial; i <= y_final; i++) {
+        for (int j = x_initial; j < x_final; j++) {
+            writePixel(j, i, 0, 0, 0);
+        }
+    }
+} 
 
 void writeLetter(char key) {
 	int posX, posY;

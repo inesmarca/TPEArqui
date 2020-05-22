@@ -1,6 +1,7 @@
 #include <keyboard.h>
 #include <video_driver.h>
 #include <stdint.h>
+#include <screenManager.h>
 
 extern uint8_t getKey();
 
@@ -53,7 +54,7 @@ void keyboard_handler() {
             specialChars[2] = 1;
             break;
         case ENTER:
-            //runInput();
+            updateScreen();
             break;
         case B_SPACE:
             delete();
