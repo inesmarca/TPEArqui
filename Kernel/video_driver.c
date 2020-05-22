@@ -47,10 +47,10 @@ struct vbe_mode_info_structure {
 static int currentScreen = 1;
 
 unsigned int pos1X = 0;
-unsigned int pos1Y = HEIGHT / 2 - 2 - 8;
+unsigned int pos1Y = HEIGHT / 2 - 2 - 16;
 
 unsigned int pos2X = 0;
-unsigned int pos2Y = HEIGHT - 8;
+unsigned int pos2Y = HEIGHT - 16;
 
 struct vbe_mode_info_structure * screen_info = 0x5C00;
 
@@ -93,35 +93,23 @@ void changeScreen(int screen) {
 	if (screen == 1) {
 		for (int i = 0; i < 8; i++) {
 			for (int j = HEIGHT/2 - 16; j < HEIGHT/2; j++) {
-				char * pos = getDataPosition(pos1X + i,j);
-				pos[0] = 184;
-				pos[1] = 184;
-				pos[2] = 186;
+				writePixel(pos1X + i, j, 184, 184, 186);
 			}
 		}
 		for (int i = 0; i < 8; i++) {
 			for (int j = HEIGHT - 16; j < HEIGHT; j++) {
-				char * pos = getDataPosition(pos2X + i,j);
-				pos[0] = 0;
-				pos[1] = 0;
-				pos[2] = 0;
+				writePixel(pos2X + i, j, 0, 0, 0);
 			}
 		}
 	} else {
 		for (int i = 0; i < 8; i++) {
 			for (int j = HEIGHT - 16; j < HEIGHT; j++) {
-				char * pos = getDataPosition(pos2X + i,j);
-				pos[0] = 184;
-				pos[1] = 184;
-				pos[2] = 186;
+				writePixel(pos2X + i, j, 184, 184, 186);
 			}
 		}
 		for (int i = 0; i < 8; i++) {
 			for (int j = HEIGHT/2 - 16; j < HEIGHT/2; j++) {
-				char * pos = getDataPosition(pos1X + i,j);
-				pos[0] = 0;
-				pos[1] = 0;
-				pos[2] = 0;
+				writePixel(pos1X + i, j, 0, 0, 0);
 			}
 		}
 	}
@@ -136,13 +124,17 @@ void delete() {
 	int posX, posY;
 	removeBlock();
 	if (currentScreen == 1) {
-		pos1X -= 8;
-		posX = pos1X;
-		posY = pos1Y;
+		if (pos1X != 0) {
+			pos1X -= 8;
+			posX = pos1X;
+			posY = pos1Y;
+		}
 	} else {
-		pos2X -= 8;
-		posX = pos2X;
-		posY = pos2Y;
+		if (pos2X != 0) {
+			pos2X -= 8;
+			posX = pos2X;
+			posY = pos2Y;
+		}
 	}
 	int x,y;
     for (y=0; y < 8; y++) {
@@ -157,19 +149,13 @@ void removeBlock() {
 	if (currentScreen == 1) {
 		for (int i = 0; i < 8; i++) {
 			for (int j = HEIGHT/2 - 16; j < HEIGHT/2; j++) {
-				char * pos = getDataPosition(pos1X + i,j);
-				pos[0] = 0;
-				pos[1] = 0;
-				pos[2] = 0;
+				writePixel(pos1X + i, j, 0, 0, 0);
 			}
 		}
 	} else {
 		for (int i = 0; i < 8; i++) {
 			for (int j = HEIGHT - 16; j < HEIGHT; j++) {
-				char * pos = getDataPosition(pos2X + i,j);
-				pos[0] = 0;
-				pos[1] = 0;
-				pos[2] = 0;
+				writePixel(pos2X + i, j, 0, 0, 0);
 			}
 		}
 	}
@@ -184,18 +170,26 @@ void writeLetter(char key) {
 		posX = pos2X;
 		posY = pos2Y;
 	}
-	char * bitmap = font8x8_basic[key];
+	char * bitmap = E_font[key];
 	int x,y;
     int set;
 	removeBlock();
     for (y=0; y < 8; y++) {
         for (x=0; x < 8; x++) {
-            set = bitmap[y] & 1 << x;
+            set = bitmap[x] & 1 << y;
 			if (set) {
 				writePixel(posX + x, posY + y, 255, 255, 255);
 			}
         }
     }
+	for (y = 0; y < 8; y++) {
+		for (x = 8; x < 16; x++) {
+			set = bitmap[x] & 1 << y;
+			if (set) {
+				writePixel(posX + x - 8, posY + y + 8, 255, 255, 255);
+			}
+		}
+	}
 
 	if (currentScreen == 1) {
 		pos1X += 8;
