@@ -93,7 +93,7 @@ void changeScreen(int screen) {
 	if (screen == 1) {
 		for (int i = 0; i < 8; i++) {
 			for (int j = HEIGHT/2 - 16; j < HEIGHT/2; j++) {
-				char * pos = getDataPosition(i,j);
+				char * pos = getDataPosition(pos1X + i,j);
 				pos[0] = 184;
 				pos[1] = 184;
 				pos[2] = 186;
@@ -101,7 +101,7 @@ void changeScreen(int screen) {
 		}
 		for (int i = 0; i < 8; i++) {
 			for (int j = HEIGHT - 16; j < HEIGHT; j++) {
-				char * pos = getDataPosition(i,j);
+				char * pos = getDataPosition(pos2X + i,j);
 				pos[0] = 0;
 				pos[1] = 0;
 				pos[2] = 0;
@@ -110,7 +110,7 @@ void changeScreen(int screen) {
 	} else {
 		for (int i = 0; i < 8; i++) {
 			for (int j = HEIGHT - 16; j < HEIGHT; j++) {
-				char * pos = getDataPosition(i,j);
+				char * pos = getDataPosition(pos2X + i,j);
 				pos[0] = 184;
 				pos[1] = 184;
 				pos[2] = 186;
@@ -118,7 +118,7 @@ void changeScreen(int screen) {
 		}
 		for (int i = 0; i < 8; i++) {
 			for (int j = HEIGHT/2 - 16; j < HEIGHT/2; j++) {
-				char * pos = getDataPosition(i,j);
+				char * pos = getDataPosition(pos1X + i,j);
 				pos[0] = 0;
 				pos[1] = 0;
 				pos[2] = 0;
@@ -134,6 +134,7 @@ int getCurrentScreen() {
 
 void delete() {
 	int posX, posY;
+	removeBlock();
 	if (currentScreen == 1) {
 		pos1X -= 8;
 		posX = pos1X;
@@ -149,6 +150,29 @@ void delete() {
            writePixel(posX + x, posY + y, 0, 0, 0);
         }
     }
+	changeScreen(currentScreen);
+}
+
+void removeBlock() {
+	if (currentScreen == 1) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = HEIGHT/2 - 16; j < HEIGHT/2; j++) {
+				char * pos = getDataPosition(pos1X + i,j);
+				pos[0] = 0;
+				pos[1] = 0;
+				pos[2] = 0;
+			}
+		}
+	} else {
+		for (int i = 0; i < 8; i++) {
+			for (int j = HEIGHT - 16; j < HEIGHT; j++) {
+				char * pos = getDataPosition(pos2X + i,j);
+				pos[0] = 0;
+				pos[1] = 0;
+				pos[2] = 0;
+			}
+		}
+	}
 }
 
 void writeLetter(char key) {
@@ -163,6 +187,7 @@ void writeLetter(char key) {
 	char * bitmap = font8x8_basic[key];
 	int x,y;
     int set;
+	removeBlock();
     for (y=0; y < 8; y++) {
         for (x=0; x < 8; x++) {
             set = bitmap[y] & 1 << x;
@@ -185,4 +210,5 @@ void writeLetter(char key) {
 			posX += 0;
 		}
 	}
+	changeScreen(currentScreen);
 }
