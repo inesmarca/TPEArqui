@@ -60,22 +60,13 @@ void writePixel(x, y) {
 
 void middleLine() {
 	for (int i = 0; i < WIDTH; i++) {
-		char * pos = getDataPosition(i,HEIGHT/2);
-		pos[0] = 255;
-		pos[1] = 255;
-		pos[2] = 255;
+		writePixel(i, HEIGHT/2);
 	}
 	for (int i = 0; i < WIDTH; i++) {
-		char * pos = getDataPosition(i,HEIGHT/2 + 1);
-		pos[0] = 255;
-		pos[1] = 255;
-		pos[2] = 255;
+		writePixel(i,HEIGHT/2 + 1);
 	}
 	for (int i = 0; i < WIDTH; i++) {
-		char * pos = getDataPosition(i,HEIGHT/2 - 1);
-		pos[0] = 255;
-		pos[1] = 255;
-		pos[2] = 255;
+		writePixel(i,HEIGHT/2 - 1);
 	}
 }
 
