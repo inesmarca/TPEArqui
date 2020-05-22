@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <video_driver.h>
+#include <font8x8_basic.h>
 
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -72,22 +73,13 @@ void middleLine() {
 
 void drawLine(int line) {
 	for (int i = 0; i < WIDTH; i++) {
-		char * pos = getDataPosition(i,line);
-		pos[0] = 255;
-		pos[1] = 255;
-		pos[2] = 255;
+		writePixel(i,line);
 	}
 	for (int i = 0; i < WIDTH; i++) {
-		char * pos = getDataPosition(i,line + 1);
-		pos[0] = 255;
-		pos[1] = 255;
-		pos[2] = 255;
+		writePixel(i,line + 1);
 	}
 	for (int i = 0; i < WIDTH; i++) {
-		char * pos = getDataPosition(i,line - 1);
-		pos[0] = 255;
-		pos[1] = 255;
-		pos[2] = 255;
+		writePixel(i,line - 1);
 	}
 }
 
@@ -111,4 +103,18 @@ void pendingWrite(int screen) {  // usando el timer tick se puede hacer que titi
 			}
 		}
 	}
+}
+
+void writeLetter() {
+	char * bitmap = font8x16[11];
+	int x,y;
+    int set;
+    for (y=15; y >= 0; y--) {
+        for (x=7; x >= 0; x--) {
+            set = bitmap[y] & 1 << x;
+			if (set) {
+				writePixel(y, x);
+			}
+        }
+    }
 }

@@ -1,10 +1,10 @@
 #include <stdint.h>
-#include <string.h>
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
 #include <idtLoader.h>
 #include <video_driver.h>
+#include <libC.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -106,5 +106,6 @@ int main()
 
 	middleLine();
 	pendingWrite(1);
+	while (1) {}
 	return 0;
 }

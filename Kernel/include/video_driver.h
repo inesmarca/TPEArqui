@@ -5,3 +5,5 @@ void middleLine();
 void pendingWrite(int screen);
 
 void drawLine(int pos);
+
+void writeLetter();

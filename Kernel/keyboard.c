@@ -8,4 +8,5 @@ static unsigned long pos = 0;
 
 void keyboard_handler() {
     int key = getKey();
+    writeLetter();
 }
