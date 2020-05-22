@@ -63,9 +63,9 @@ void keyboard_handler() {
             break;
         
         default:
-            if (specialChars[2] == 1 && key == 0x03) {
+            if (specialChars[2] == 1 && key == 0x03) { // Control 2
                 changeScreen(2);
-            } else if (specialChars[2] == 1 && key == 0x04) { // uso el 3 porque necesito testear y no me lee el 1 de la compu
+            } else if (specialChars[2] == 1 && key == 0x04) { // uso el 3 porque necesito testear y no me lee el 1 de la compu Control 3
                 changeScreen(1);
             } else {
                 if (specialChars[0] == 1 || specialChars[0] == 1) {

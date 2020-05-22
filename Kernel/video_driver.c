@@ -4,6 +4,9 @@
 
 #define WIDTH 1024
 #define HEIGHT 768
+#define LINE_WIDTH 3
+#define LETTER_WIDTH 8
+#define LETTER_HEIGHT 16
 
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -23,7 +26,7 @@ struct vbe_mode_info_structure {
 	uint8_t bpp;			// bits per pixel in this mode
 	uint8_t banks;			// deprecated; total number of banks in this mode
 	uint8_t memory_model;
-	uint8_t bank_size;		// deprecated; size of a bank, almost always 64 KB but may be 16 KB...
+	uint8_t bank_size;		// deprecated; size of a bank, almost always 64 KB but may be LETTER_HEIGHT KB...
 	uint8_t image_pages;
 	uint8_t reserved0;
 
@@ -47,10 +50,10 @@ struct vbe_mode_info_structure {
 static int currentScreen = 1;
 
 unsigned int pos1X = 0;
-unsigned int pos1Y = HEIGHT / 2 - 2 - 16;
+unsigned int pos1Y = (HEIGHT / 2) - LINE_WIDTH - LETTER_HEIGHT;
 
 unsigned int pos2X = 0;
-unsigned int pos2Y = HEIGHT - 16;
+unsigned int pos2Y = HEIGHT - LETTER_HEIGHT;
 
 struct vbe_mode_info_structure * screen_info = 0x5C00;
 
@@ -65,15 +68,15 @@ void writePixel(int x, int y,  int red, int green, int blue) {
 	pos[2] = blue;
 }
 
-void middleLine() {
+void middleLine() {  // Arreglar, el codigo se come la linea
 	for (int i = 0; i < WIDTH; i++) {
 		writePixel(i, HEIGHT/2, 255, 255, 255);
 	}
 	for (int i = 0; i < WIDTH; i++) {
-		writePixel(i,HEIGHT/2 + 1, 255, 255, 255);
+		writePixel(i, HEIGHT/2 + 1, 255, 255, 255);
 	}
 	for (int i = 0; i < WIDTH; i++) {
-		writePixel(i,HEIGHT/2 - 1, 255, 255, 255);
+		writePixel(i, HEIGHT/2 - 1, 255, 255, 255);
 	}
 }
 
@@ -91,24 +94,24 @@ void drawLine(int line) {
 
 void changeScreen(int screen) {  
 	if (screen == 1) {
-		for (int i = 0; i < 8; i++) {
-			for (int j = HEIGHT/2 - 16; j < HEIGHT/2; j++) {
+		for (int i = 0; i < LETTER_WIDTH; i++) { // Setea el bloque del screen 1
+			for (int j = HEIGHT/2 - LETTER_HEIGHT - LINE_WIDTH; j < HEIGHT/2 - LINE_WIDTH; j++) {
 				writePixel(pos1X + i, j, 184, 184, 186);
 			}
 		}
-		for (int i = 0; i < 8; i++) {
-			for (int j = HEIGHT - 16; j < HEIGHT; j++) {
+		for (int i = 0; i < LETTER_WIDTH; i++) { // Borra el bloque del screen 2
+			for (int j = HEIGHT - LETTER_HEIGHT; j < HEIGHT; j++) {
 				writePixel(pos2X + i, j, 0, 0, 0);
 			}
 		}
 	} else {
-		for (int i = 0; i < 8; i++) {
-			for (int j = HEIGHT - 16; j < HEIGHT; j++) {
+		for (int i = 0; i < LETTER_WIDTH; i++) { // Setea el bloque del screen 2
+			for (int j = HEIGHT - LETTER_HEIGHT; j < HEIGHT; j++) {
 				writePixel(pos2X + i, j, 184, 184, 186);
 			}
 		}
-		for (int i = 0; i < 8; i++) {
-			for (int j = HEIGHT/2 - 16; j < HEIGHT/2; j++) {
+		for (int i = 0; i < LETTER_WIDTH; i++) {  // Borra el bloque del screen 1
+			for (int j = HEIGHT/2 - LETTER_HEIGHT - LINE_WIDTH; j < HEIGHT/2 - LINE_WIDTH; j++) {
 				writePixel(pos1X + i, j, 0, 0, 0);
 			}
 		}
@@ -123,21 +126,21 @@ int getCurrentScreen() {
 void delete() {
 	int posX, posY;
 	removeBlock();
-	if (currentScreen == 1) {
+	if (currentScreen == 1) { // Borrado en screen 1
 		if (pos1X != 0) {
 			pos1X -= 8;
 			posX = pos1X;
 			posY = pos1Y;
 		}
-	} else {
-		if (pos2X != 0) {
+	} else { // Borrado en screen 2
+		if (pos2X != 0) { 
 			pos2X -= 8;
 			posX = pos2X;
 			posY = pos2Y;
 		}
 	}
 	int x,y;
-    for (y=0; y < 8; y++) {
+    for (y=0; y < 8; y++) {  // Borra los bloques
         for (x=0; x < 8; x++) {
            writePixel(posX + x, posY + y, 0, 0, 0);
         }
@@ -147,14 +150,14 @@ void delete() {
 
 void removeBlock() {
 	if (currentScreen == 1) {
-		for (int i = 0; i < 8; i++) {
-			for (int j = HEIGHT/2 - 16; j < HEIGHT/2; j++) {
+		for (int i = 0; i < LETTER_WIDTH; i++) {
+			for (int j = HEIGHT/2 - LETTER_HEIGHT - LINE_WIDTH; j < HEIGHT/2 - LINE_WIDTH; j++) {
 				writePixel(pos1X + i, j, 0, 0, 0);
 			}
 		}
 	} else {
-		for (int i = 0; i < 8; i++) {
-			for (int j = HEIGHT - 16; j < HEIGHT; j++) {
+		for (int i = 0; i < LETTER_WIDTH; i++) {
+			for (int j = HEIGHT - LETTER_HEIGHT; j < HEIGHT; j++) {
 				writePixel(pos2X + i, j, 0, 0, 0);
 			}
 		}
@@ -163,6 +166,7 @@ void removeBlock() {
 
 void writeLetter(char key) {
 	int posX, posY;
+
 	if (currentScreen == 1) {
 		posX = pos1X;
 		posY = pos1Y;
@@ -170,37 +174,34 @@ void writeLetter(char key) {
 		posX = pos2X;
 		posY = pos2Y;
 	}
+
 	char * bitmap = E_font[key];
 	int x,y;
-    int set;
+    int set1, set2;
 	removeBlock();
-    for (y=0; y < 8; y++) {
-        for (x=0; x < 8; x++) {
-            set = bitmap[x] & 1 << y;
-			if (set) {
+    for (y=0; y < LETTER_WIDTH; y++) {
+        for (x=0; x < LETTER_WIDTH; x++) {
+            set1 = bitmap[x] & 1 << y;
+			set2 = bitmap[x + LETTER_WIDTH] & 1 << y;
+			if (set1) {
 				writePixel(posX + x, posY + y, 255, 255, 255);
+			}
+			if (set2) {
+				writePixel(posX + x, posY + y + LETTER_WIDTH, 255, 255, 255);
 			}
         }
     }
-	for (y = 0; y < 8; y++) {
-		for (x = 8; x < 16; x++) {
-			set = bitmap[x] & 1 << y;
-			if (set) {
-				writePixel(posX + x - 8, posY + y + 8, 255, 255, 255);
-			}
-		}
-	}
 
 	if (currentScreen == 1) {
-		pos1X += 8;
-		if (pos1X == 1024) {
-			pos1Y -= 8;
+		pos1X += LETTER_WIDTH;
+		if (pos1X == WIDTH) {
+			pos1Y -= LETTER_HEIGHT;
 			pos1X += 0;
 		}
 	} else {
-		pos2X += 8;
-		if (pos2X == 1024) {
-			posY += 8;
+		pos2X += LETTER_WIDTH;
+		if (pos2X == WIDTH) {
+			posY += LETTER_HEIGHT;
 			posX += 0;
 		}
 	}
