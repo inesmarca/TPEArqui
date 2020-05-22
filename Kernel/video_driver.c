@@ -43,8 +43,9 @@ struct vbe_mode_info_structure {
 int WIDTH = 1024;
 int HEIGHT = 768;
 
-char posX = 0;
-char posY = 2;
+static unsigned long posX = 0;
+static unsigned long posY = 10;
+static int currentScreen = 1;
 
 struct vbe_mode_info_structure * screen_info = 0x5C00;
 
@@ -83,7 +84,7 @@ void drawLine(int line) {
 	}
 }
 
-void pendingWrite(int screen) {  // usando el timer tick se puede hacer que titile
+void changeScreen(int screen) {  // usando el timer tick se puede hacer que titile
 	if (screen == 1) {
 		for (int i = 0; i < 8; i++) {
 			for (int j = HEIGHT/2 - 16; j < HEIGHT/2; j++) {
@@ -91,6 +92,14 @@ void pendingWrite(int screen) {  // usando el timer tick se puede hacer que titi
 				pos[0] = 184;
 				pos[1] = 184;
 				pos[2] = 186;
+			}
+		}
+		for (int i = 0; i < 8; i++) {
+			for (int j = HEIGHT - 16; j < HEIGHT; j++) {
+				char * pos = getDataPosition(i,j);
+				pos[0] = 0;
+				pos[1] = 0;
+				pos[2] = 0;
 			}
 		}
 	} else {
@@ -102,19 +111,33 @@ void pendingWrite(int screen) {  // usando el timer tick se puede hacer que titi
 				pos[2] = 186;
 			}
 		}
+		for (int i = 0; i < 8; i++) {
+			for (int j = HEIGHT/2 - 16; j < HEIGHT/2; j++) {
+				char * pos = getDataPosition(i,j);
+				pos[0] = 0;
+				pos[1] = 0;
+				pos[2] = 0;
+			}
+		}
 	}
+	currentScreen = screen;
 }
 
 void writeLetter() {
-	char * bitmap = font8x16[11];
+	char * bitmap = font8x8_basic[65];
 	int x,y;
     int set;
-    for (y=15; y >= 0; y--) {
-        for (x=7; x >= 0; x--) {
+    for (y=0; y < 8; y++) {
+        for (x=0; x < 8; x++) {
             set = bitmap[y] & 1 << x;
 			if (set) {
-				writePixel(y, x);
+				writePixel(posX + x, posY + y);
 			}
         }
     }
+	posX += 8;
+	if (posX == 1024) {
+		posY += 8;
+		posX += 0;
+	}
 }

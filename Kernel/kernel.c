@@ -105,7 +105,7 @@ int main()
 	ncPrint("[Finished]");
 
 	middleLine();
-	pendingWrite(1);
+	changeScreen(1);
 	while (1) {}
 	return 0;
 }
