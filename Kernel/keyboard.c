@@ -56,22 +56,40 @@ void keyboard_handler() {
             //runInput();
             break;
         case B_SPACE:
-            //deleteChar();
+            delete();
             break;
         case SPACE:
-            //writeLetter(' ');
+            writeLetter(0);
             break;
         
         default:
             if (specialChars[2] == 1 && key == 0x03) {
                 changeScreen(2);
-            } else if (specialChars[2] == 1 && key == 0x02) {
+            } else if (specialChars[2] == 1 && key == 0x04) { // uso el 3 porque necesito testear y no me lee el 1 de la compu
                 changeScreen(1);
+            } else {
+                if (specialChars[0] == 1 || specialChars[0] == 1) {
+                    writeLetter(pressCodes[key][1]);
+                } else {
+                    writeLetter(pressCodes[key][0]);
+                }
             }
             break;
         }
     } else if (action(key) == RELEASED) {
-        specialChars[0] = specialChars[1] = specialChars[2] = 0;
+        switch (key) {
+            case L_SHFT | 0x80:
+                specialChars[0] = 0;
+                break;
+            case R_SHFT | 0x80:
+                specialChars[1] = 0;
+                break;
+            case CONTROL | 0x80:
+                specialChars[2] = 0;
+                break;
+            default:
+                break;
+        }
     }
 }
 
