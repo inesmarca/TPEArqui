@@ -4,4 +4,4 @@ void getInput(char key);
 
 void enterInput();
 
-void runInupt(char * str);
+void runInupt(char * str, int dim);

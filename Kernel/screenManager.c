@@ -14,11 +14,11 @@ void enterInput() {
     int screen = getCurrentScreen();
     updateScreen();
     if (screen == 1) {
-        runCalc(input1, pos1); // Funcion que corre la screen1
+        // runCalc(input1, pos1); // Funcion que corre la screen1
         input1[0] = '\0';
         pos1 = 0;
     } else {
-        runInput(input2, pos2); // Funcion que corre la screen2 (yo lo programaria todo en otro archivo)
+        // runInput(input2, pos2); // Funcion que corre la screen2 (yo lo programaria todo en otro archivo)
         input2[0] = '\0';
         pos2 = 0;
     }

@@ -12,11 +12,14 @@ GLOBAL _irq02Handler
 GLOBAL _irq03Handler
 GLOBAL _irq04Handler
 GLOBAL _irq05Handler
+GLOBAL _irq80Handler
 
 GLOBAL _exception0Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
+EXTERN read
+EXTERN write
 
 SECTION .text
 
@@ -70,7 +73,30 @@ SECTION .text
 	iretq
 %endmacro
 
+%macro syscallHandler 0
+	pushState
 
+	cmp rax, 0
+	je .runRead
+	cmp rax, 1
+	je .runWrite
+
+.runRead:
+	; call read
+	jmp .fin
+
+.runWrite:
+	call write
+
+.fin:
+	; signal pic EOI (End of Interrupt)
+	mov al, 21h
+	out 20h, al
+
+	popState
+	iretq
+
+%endmacro
 
 %macro exceptionHandler 1
 	pushState
@@ -137,6 +163,11 @@ _irq04Handler:
 ;USB
 _irq05Handler:
 	irqHandlerMaster 5
+
+; INT 80h
+_irq80Handler:
+	syscallHandler
+
 
 
 ;Zero Division Exception
