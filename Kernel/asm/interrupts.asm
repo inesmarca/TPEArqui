@@ -82,7 +82,7 @@ SECTION .text
 	je .runWrite
 
 .runRead:
-	; call read
+	call read
 	jmp .fin
 
 .runWrite:
