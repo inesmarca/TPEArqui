@@ -33,3 +33,5 @@ char getPositionBlue(int x, int y);
 char getPositionGreen(int x, int y);
 
 void removeBlock();
+
+void print(char * str);

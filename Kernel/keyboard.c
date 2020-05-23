@@ -24,6 +24,7 @@ extern uint8_t getKey();
 
 static uint8_t action(uint8_t scanCode);
 
+// https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html pagina con los scancodes
 static const char pressCodes[KEYS][2] =
     {{0, 0}, {0, 0}, {'1', '!'}, {'2', '@'}, {'3', '#'}, {'4', '$'},
     {'5', '%'}, {'6', '^'}, {'7', '&'}, {'8', '*'}, {'9', '('},
@@ -40,10 +41,10 @@ static const char pressCodes[KEYS][2] =
 static uint8_t scanCode, currentAction, specialChars[] = {0, 0, 0}, capsLock = 0;
 
 void keyboard_handler() {
-    int key = getKey();
+    uint8_t key = getKey();
+    currentAction = action(key);
     if (action(key) == PRESSED) {
-        switch (key)
-        {
+        switch (key) {
         case L_SHFT:
             specialChars[0] = 1;
             break;
@@ -54,38 +55,38 @@ void keyboard_handler() {
             specialChars[2] = 1;
             break;
         case ENTER:
-            updateScreen();
+            enterInput();
             break;
         case B_SPACE:
             delete();
             break;
         case SPACE:
-            writeLetter(0);
+            writeLetter(' ');
             break;
         
-        default:
+        default: // agregar un delete de toda la linea
             if (specialChars[2] == 1 && key == 0x03) { // Control 2
                 changeScreen(2);
             } else if (specialChars[2] == 1 && key == 0x04) { // uso el 3 porque necesito testear y no me lee el 1 de la compu Control 3
                 changeScreen(1);
             } else {
                 if (specialChars[0] == 1 || specialChars[0] == 1) {
-                    writeLetter(pressCodes[key][1]);
+                    getInput(pressCodes[key][1]);
                 } else {
-                    writeLetter(pressCodes[key][0]);
+                    getInput(pressCodes[key][0]);
                 }
             }
             break;
         }
     } else if (action(key) == RELEASED) {
-        switch (key) {
-            case L_SHFT | 0x80:
+        switch (key) { // el scancode de una tecla released es el scancode la tecla mas 0x80
+            case L_SHFT + 0x80:
                 specialChars[0] = 0;
                 break;
-            case R_SHFT | 0x80:
+            case R_SHFT + 0x80:
                 specialChars[1] = 0;
                 break;
-            case CONTROL | 0x80:
+            case CONTROL + 0x80:
                 specialChars[2] = 0;
                 break;
             default:

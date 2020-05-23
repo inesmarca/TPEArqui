@@ -202,6 +202,12 @@ void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final) {
     }
 } 
 
+void print(char * str) {
+	for (int i = 0; str[i] != '\0'; i++) {
+		writeLetter(str[i]);
+	}
+}
+
 void writeLetter(char key) {
 	int posX, posY;
 

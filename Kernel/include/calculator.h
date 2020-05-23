@@ -1,0 +1,1 @@
+void runCalc(char * str, int dim);
