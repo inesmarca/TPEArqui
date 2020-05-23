@@ -11,9 +11,8 @@ test:
     mov rdx, len
     int 80h
 
-	pop rbp
 	mov rsp,rbp
-	popState
+    pop rbp
 	ret
 
 section .data
