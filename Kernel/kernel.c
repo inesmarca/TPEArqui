@@ -107,7 +107,8 @@ int main()
 
 	middleLine();
 	changeScreen(1);
-	test();
+	
+	
 	while (1) {}
 	return 0;
 }
