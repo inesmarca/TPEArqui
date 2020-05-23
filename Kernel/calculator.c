@@ -37,7 +37,6 @@ int precedence(char token1, char token2) {
 }
 
 void runCalc(char * str, int dim) {
-    print(str);
     // char vec[dim];
     // infijaToPosfija(str, vec, dim);
 }

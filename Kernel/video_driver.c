@@ -40,7 +40,6 @@ struct vbe_mode_info_structure {
 	uint8_t reserved1[206];
 } __attribute__ ((packed));
 
-
 static int currentScreen = 1;
 
 unsigned int pos1X = 0;

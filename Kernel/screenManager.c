@@ -12,17 +12,12 @@ int pos2 = 0;
 
 void enterInput() {
     int screen = getCurrentScreen();
+    updateScreen();
     if (screen == 1) {
-        if (input1[0] != '\0') {
-            updateScreen();
-        }
         runCalc(input1, pos1); // Funcion que corre la screen1
         input1[0] = '\0';
         pos1 = 0;
     } else {
-        if (input2[0] != '\0') {
-            updateScreen();
-        }
         runInput(input2, pos2); // Funcion que corre la screen2 (yo lo programaria todo en otro archivo)
         input2[0] = '\0';
         pos2 = 0;
@@ -44,8 +39,12 @@ void updateScreen() {  // Corregir que si input esta empty que no haga nada y es
     for (int i = 0 + max_pos; i < SCREEN_HEIGHT - LETTER_HEIGHT + max_pos; i++) {
         for (int j = 0; j < WIDTH; j++) {
             if (!positionEmpty(j,i+LETTER_HEIGHT)) {
+                int redAux = getPositionRed(j,i);
+                int greenAux = getPositionGreen(j,i);
+                int blueAux = getPositionBlue(j,i);
                 setSegmentBlank(j, WIDTH, i, i);
                 writePixel(j, i, getPositionRed(j, i+LETTER_HEIGHT), getPositionGreen(j, i + LETTER_HEIGHT), getPositionBlue(j, i+LETTER_HEIGHT));
+                writePixel(j, i + 16, redAux, greenAux, blueAux);
             }
         }
     }
