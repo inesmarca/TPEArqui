@@ -1,6 +1,8 @@
 #include <video_driver.h>
 #include <screenManager.h>
 #include <calculator.h>
+#include <libC.h>
+#include <func.h>
 
 char buffer1[1024];
 int pos1 = 0;
@@ -14,6 +16,9 @@ int checkInput() {
 
 void receiveEnter() {
     pressEnter = 1;
+    if (strcmp(buffer2, "printTime")) {
+        printTime();
+    }
     // faltaria agregar un analizador de funcion para correrlas
 }
 

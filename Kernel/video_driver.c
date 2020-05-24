@@ -234,45 +234,49 @@ void newLine() {
 }
 
 void writeLetter(char key) {
-	int posX, posY;
-
-	if (currentScreen == 1) {
-		posX = pos1X;
-		posY = pos1Y;
+	if (key == '\n') {
+		newLine();
 	} else {
-		posX = pos2X;
-		posY = pos2Y;
-	}
+		int posX, posY;
 
-	char * bitmap = E_font[key];
-	int x,y;
-    int set1, set2;
-	removeBlock();
-    for (y=0; y < LETTER_WIDTH; y++) {
-        for (x=0; x < LETTER_WIDTH; x++) {
-            set1 = bitmap[x] & 1 << y;
-			set2 = bitmap[x + LETTER_WIDTH] & 1 << y;
-			if (set1) {
-				writePixel(posX + x, posY + y, 255, 255, 255);
-			}
-			if (set2) {
-				writePixel(posX + x, posY + y + LETTER_WIDTH, 255, 255, 255);
-			}
-        }
-    }
+		if (currentScreen == 1) {
+			posX = pos1X;
+			posY = pos1Y;
+		} else {
+			posX = pos2X;
+			posY = pos2Y;
+		}
 
-	if (currentScreen == 1) {
-		pos1X += LETTER_WIDTH;
-		if (pos1X == WIDTH) {
-			pos1Y -= LETTER_HEIGHT;
-			pos1X += 0;
+		char * bitmap = E_font[key];
+		int x,y;
+		int set1, set2;
+		removeBlock();
+		for (y=0; y < LETTER_WIDTH; y++) {
+			for (x=0; x < LETTER_WIDTH; x++) {
+				set1 = bitmap[x] & 1 << y;
+				set2 = bitmap[x + LETTER_WIDTH] & 1 << y;
+				if (set1) {
+					writePixel(posX + x, posY + y, 255, 255, 255);
+				}
+				if (set2) {
+					writePixel(posX + x, posY + y + LETTER_WIDTH, 255, 255, 255);
+				}
+			}
 		}
-	} else {
-		pos2X += LETTER_WIDTH;
-		if (pos2X == WIDTH) {
-			posY += LETTER_HEIGHT;
-			posX += 0;
+
+		if (currentScreen == 1) {
+			pos1X += LETTER_WIDTH;
+			if (pos1X == WIDTH) {
+				pos1Y -= LETTER_HEIGHT;
+				pos1X += 0;
+			}
+		} else {
+			pos2X += LETTER_WIDTH;
+			if (pos2X == WIDTH) {
+				posY += LETTER_HEIGHT;
+				posX += 0;
+			}
 		}
+		changeScreen(currentScreen);
 	}
-	changeScreen(currentScreen);
 }
