@@ -1,6 +1,8 @@
 #include <libC.h>
 #include <stdarg.h>
 #include <math.h>
+#include <screenManager.h>
+#include <sysCall.h>
 
 #define MAX_DIGITOS_EN_UN_NUMERO 20
 #define DECIMALPLACES 4
@@ -21,6 +23,18 @@ int strcmp(char * s1, char * s2) {
     }
     return cmp;
 }
+
+void putChar(char str) {
+	write(1, &str, 1);
+}
+
+char getChar() {
+	char res;
+	while (!checkInput()) {}
+	read(1, &res, 1);
+	return res;
+}
+
 void printf(const char * format,...){
 	//tiene que tener el formato correcto para funcionar bien. si hay % faltantes o sobrantes no va afuncionar.
 	//tiene soporte para %c %d %s

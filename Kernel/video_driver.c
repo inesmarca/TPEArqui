@@ -44,7 +44,6 @@ static int currentScreen = 1;
 
 unsigned int pos1X = 0;
 unsigned int pos1Y = (HEIGHT / 2) - LINE_WIDTH - LETTER_HEIGHT;
-
 unsigned int pos2X = 0;
 unsigned int pos2Y = HEIGHT - LETTER_HEIGHT;
 
@@ -97,7 +96,7 @@ void writePixel(int x, int y,  int red, int green, int blue) {
 	pos[2] = blue;
 }
 
-void middleLine() {  // Arreglar, el codigo se come la linea
+void middleLine() {
 	for (int i = 0; i < WIDTH; i++) {
 		writePixel(i, HEIGHT/2, 255, 255, 255);
 	}
@@ -207,46 +206,77 @@ void print(char * str) {
 	}
 }
 
-void writeLetter(char key) {
-	int posX, posY;
-
-	if (currentScreen == 1) {
-		posX = pos1X;
-		posY = pos1Y;
-	} else {
-		posX = pos2X;
-		posY = pos2Y;
-	}
-
-	char * bitmap = E_font[key];
-	int x,y;
-    int set1, set2;
+void newLine() {
 	removeBlock();
-    for (y=0; y < LETTER_WIDTH; y++) {
-        for (x=0; x < LETTER_WIDTH; x++) {
-            set1 = bitmap[x] & 1 << y;
-			set2 = bitmap[x + LETTER_WIDTH] & 1 << y;
-			if (set1) {
-				writePixel(posX + x, posY + y, 255, 255, 255);
-			}
-			if (set2) {
-				writePixel(posX + x, posY + y + LETTER_WIDTH, 255, 255, 255);
-			}
+    int max_pos = 0;
+    if (getCurrentScreen() == 2) {
+        max_pos = SCREEN_HEIGHT + LINE_WIDTH;
+        setXPosition(2, 0);
+    } else {
+        setXPosition(1, 0);
+    }
+
+    for (int i = 0 + max_pos; i < SCREEN_HEIGHT - LETTER_HEIGHT + max_pos; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            if (!positionEmpty(j,i+LETTER_HEIGHT)) {
+                int redAux = getPositionRed(j,i);
+                int greenAux = getPositionGreen(j,i);
+                int blueAux = getPositionBlue(j,i);
+                setSegmentBlank(j, WIDTH, i, i);
+                writePixel(j, i, getPositionRed(j, i+LETTER_HEIGHT), getPositionGreen(j, i + LETTER_HEIGHT), getPositionBlue(j, i+LETTER_HEIGHT));
+                writePixel(j, i + 16, redAux, greenAux, blueAux);
+            }
         }
     }
 
-	if (currentScreen == 1) {
-		pos1X += LETTER_WIDTH;
-		if (pos1X == WIDTH) {
-			pos1Y -= LETTER_HEIGHT;
-			pos1X += 0;
-		}
+    setSegmentBlank(0, WIDTH, SCREEN_HEIGHT + max_pos - LETTER_HEIGHT, SCREEN_HEIGHT + max_pos);
+    changeScreen(getCurrentScreen());
+}
+
+void writeLetter(char key) {
+	if (key == '\n') {
+		newLine();
 	} else {
-		pos2X += LETTER_WIDTH;
-		if (pos2X == WIDTH) {
-			posY += LETTER_HEIGHT;
-			posX += 0;
+		int posX, posY;
+
+		if (currentScreen == 1) {
+			posX = pos1X;
+			posY = pos1Y;
+		} else {
+			posX = pos2X;
+			posY = pos2Y;
 		}
+
+		char * bitmap = E_font[key];
+		int x,y;
+		int set1, set2;
+		removeBlock();
+		for (y=0; y < LETTER_WIDTH; y++) {
+			for (x=0; x < LETTER_WIDTH; x++) {
+				set1 = bitmap[x] & 1 << y;
+				set2 = bitmap[x + LETTER_WIDTH] & 1 << y;
+				if (set1) {
+					writePixel(posX + x, posY + y, 255, 255, 255);
+				}
+				if (set2) {
+					writePixel(posX + x, posY + y + LETTER_WIDTH, 255, 255, 255);
+				}
+			}
+		}
+
+		if (currentScreen == 1) {
+			pos1X += LETTER_WIDTH;
+			if (pos1X == WIDTH) {
+				pos1Y -= LETTER_HEIGHT;
+				pos1X += 0;
+			}
+		} else {
+			pos2X += LETTER_WIDTH;
+			if (pos2X == WIDTH) {
+				posY += LETTER_HEIGHT;
+				posX += 0;
+			}
+		}
+		changeScreen(currentScreen);
 	}
-	changeScreen(currentScreen);
 }

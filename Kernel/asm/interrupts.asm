@@ -18,6 +18,7 @@ GLOBAL _exception0Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
+EXTERN checkInput
 EXTERN read
 EXTERN write
 
@@ -26,6 +27,23 @@ SECTION .text
 %macro pushState 0
 	push rax
 	push rbx
+	push rcx
+	push rdx
+	push rbp
+	push rdi
+	push rsi
+	push r8
+	push r9
+	push r10
+	push r11
+	push r12
+	push r13
+	push r14
+	push r15
+%endmacro
+
+%macro pushReg 0
+	push rax
 	push rcx
 	push rdx
 	push rbp
@@ -59,6 +77,23 @@ SECTION .text
 	pop rax
 %endmacro
 
+%macro popReg 0
+	pop r15
+	pop r14
+	pop r13
+	pop r12
+	pop r11
+	pop r10
+	pop r9
+	pop r8
+	pop rsi
+	pop rdi
+	pop rbp
+	pop rdx
+	pop rcx
+	pop rax
+%endmacro
+
 %macro irqHandlerMaster 1
 	pushState
 
@@ -74,15 +109,22 @@ SECTION .text
 %endmacro
 
 %macro syscallHandler 0
-	pushState
+	pushReg
 
 	cmp rax, 0
 	je .runRead
 	cmp rax, 1
 	je .runWrite
+	cmp rax, 2
+	je .getEntered
 
 .runRead:
-	; call read
+	call read
+	jmp .fin
+
+.getEntered:
+	call checkInput
+	mov rbx, rax
 	jmp .fin
 
 .runWrite:
@@ -93,7 +135,7 @@ SECTION .text
 	mov al, 21h
 	out 20h, al
 
-	popState
+	popReg
 	iretq
 
 %endmacro

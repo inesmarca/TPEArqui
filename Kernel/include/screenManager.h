@@ -1,7 +1,13 @@
 void updateScreen();
 
-void getInput(char key);
+void updateBuffer(char key);
 
-void enterInput();
+void receiveEnter();
+
+char * getInput();
+
+int checkInput();
+
+void buffDelete();
 
 void runInupt(char * str, int dim);

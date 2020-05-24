@@ -4,7 +4,6 @@
 #include <naiveConsole.h>
 #include <idtLoader.h>
 #include <video_driver.h>
-#include <libC.h>
 
 
 extern uint8_t text;
@@ -15,7 +14,6 @@ extern uint8_t endOfKernelBinary;
 extern uint8_t endOfKernel;
 
 static const uint64_t PageSize = 0x1000;
-extern void test();
 
 static void * const sampleCodeModuleAddress = (void*)0x400000;
 static void * const sampleDataModuleAddress = (void*)0x500000;
@@ -84,8 +82,7 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
-int main()
-{	
+int main() {	
 	load_idt();
 	ncPrint("[Kernel Main]");
 	ncNewline();
@@ -108,8 +105,7 @@ int main()
 
 	middleLine();
 	changeScreen(1);
-
-
+	
 	while (1) {}
 	return 0;
 }

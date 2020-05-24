@@ -55,13 +55,16 @@ void keyboard_handler() {
             specialChars[2] = 1;
             break;
         case ENTER:
-            enterInput();
+            // enterInput();
+            newLine();
+            receiveEnter();
             break;
         case B_SPACE:
             delete();
+            buffDelete();
             break;
         case SPACE:
-            writeLetter(' ');
+            updateBuffer(' ');
             break;
         
         default: // agregar un delete de toda la linea
@@ -71,9 +74,9 @@ void keyboard_handler() {
                 changeScreen(1);
             } else {
                 if (specialChars[0] == 1 || specialChars[0] == 1) {
-                    getInput(pressCodes[key][1]);
+                    updateBuffer(pressCodes[key][1]);
                 } else {
-                    getInput(pressCodes[key][0]);
+                    updateBuffer(pressCodes[key][0]);
                 }
             }
             break;

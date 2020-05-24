@@ -3,6 +3,7 @@
 #define LINE_WIDTH 3
 #define LETTER_WIDTH 8
 #define LETTER_HEIGHT 16
+#define SCREEN_HEIGHT (HEIGHT - LINE_WIDTH) / 2
 
 void writePixel(int x, int y, int red, int green, int blue);
 
@@ -13,6 +14,8 @@ void setXPosition(int screen, int value);
 void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final);
 
 void middleLine();
+
+void newLine();
 
 void changeScreen(int screen);
 
