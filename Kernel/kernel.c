@@ -107,9 +107,6 @@ int main() {
 
 	middleLine();
 	changeScreen(1);
-	test2();
-	printf("%s %d","788883729",stringtoLong("788883729"));
-
 	
 	while (1) {}
 	return 0;
