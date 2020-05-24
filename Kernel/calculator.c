@@ -2,6 +2,8 @@
 #include <libC.h>
 
 
+
+
 void runCalc(char * str, int dim) {
     // char vec[dim];
     // infijaToPosfija(str, vec, dim);
@@ -88,7 +90,7 @@ int precedence(char token1, char token2) {
 }
 
 int isToken(char token) {
-    return (token == '+' || token == '-' || token == '*' || token == '/' || token == '^'|| token == ')'|| token == '(');
+    return (token == '+' || token == '-' || token == '*' || token == '/' || token == '^');
 }
 
 
@@ -102,8 +104,24 @@ void infijaToPosfija(char * input, char * output, int dim){
     {   
 
         char current=input[pos_input++];
+        if (current=='(')
+        {
+             stack[stack_pos++]=current;
+        }
+        else if(current==')')
+        {
+            current=stack[--stack_pos];// tiro el ) y pusheo hasta encontrar el bracket correspondiente
+            while (current!='(')
+            {
+                output[pos_output++]=current;
+                output[pos_output++]=' ';
+                current=stack[--stack_pos];
+            }
+            
+        }
         
-        if (isToken(current)&&input[pos_input]==' ')//es un signo y no un numero negativo
+        
+        else if (isToken(current)&&input[pos_input]==' ')//es un signo y no un numero negativo
         {
             while (stack_pos!=0&&precedence(stack[stack_pos-1],current))
             {
@@ -132,13 +150,7 @@ void infijaToPosfija(char * input, char * output, int dim){
             }
             output[pos_output++]=' '; //insertar el espacio para poder marcar por terminado
             
-            }
-        else if ( current== ' ')
-        {
-            pos_input;
-            //printf("done4");
-        }
-        //throw exception no es ni numero ni operando valido       
+            }    
     }
     while (stack_pos!=0) //popear el resto del stack
     {
@@ -151,5 +163,4 @@ void infijaToPosfija(char * input, char * output, int dim){
         
     }
     output[pos_output-1]=0;
-    printf("%s",output);
 }

@@ -83,7 +83,7 @@ void * initializeKernelBinary()
 	ncNewline();
 	return getStackBase();
 }
-
+#include <calculator.h>
 int main() {	
 	load_idt();
 	ncPrint("[Kernel Main]");
@@ -107,7 +107,6 @@ int main() {
 
 	middleLine();
 	changeScreen(1);
-	test2();
 	
 	while (1) {}
 	return 0;
