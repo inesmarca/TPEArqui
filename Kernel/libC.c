@@ -1,7 +1,11 @@
 #include <libC.h>
 #include <stdarg.h>
+#include <math.h>
 
+#define MAX_DIGITOS_EN_UN_NUMERO 20
+#define DECIMALPLACES 4
 #define MAX_PRINTABLE_CHARACTERS 1024
+#define MAX_READABLE_CHARACTERS 1024
 
 int strcmp(char * s1, char * s2) {
     int cmp = 1;
@@ -37,14 +41,30 @@ void printf(const char * format,...){
 				output[output_pos++]=(va_arg( valist, char ));
 				break;
 			
+			// case 'f':
+			// 	;
+			// 	char auxdouble[MAX_DIGITOS_EN_UN_NUMERO];
+			// 	int counterdouble=doubleToString(va_arg(valist,double),auxdouble);
+			// 	output[output_pos++]=(va_arg( valist, char ));
+			// 	if (counterdouble>MAX_DIGITOS_EN_UN_NUMERO)
+			// 	{
+			// 		/* should throw exception*/
+			// 		//no acepta doubles con mas de MAX_DIGITOS_EN_UN_NUMERO digitos.
+			// 	}
+			// 	for (int j = 0; j < counterdouble; j++)
+			// 	{
+			// 		output[output_pos++]=auxdouble[j];//copio el double hecho string a mi output
+			// 	}
+			// 	break;
+
 			case 'd':
                 ;//algo que ver con c y switch que son raros
-				char aux [20];
+				char aux [MAX_DIGITOS_EN_UN_NUMERO];
 				int counter=intToString(va_arg( valist, int ),aux);//me transforma el int a un string
-				if (counter>20)
+				if (counter>MAX_DIGITOS_EN_UN_NUMERO)
 				{
 					/* should throw exception*/
-					//no acepta int's con mas de 20 digitos.
+					//no acepta int's con mas de MAX_DIGITOS_EN_UN_NUMERO digitos.
 				}
 				for (int j = 0; j < counter; j++)
 				{
@@ -89,6 +109,44 @@ void printf(const char * format,...){
     
     
 }
+int scanf(const char *format, ...){
+    //tiene que tener el formato correcto para funcionar bien. si hay % faltantes o sobrantes no va afuncionar.
+	//tiene soporte para %c %d %s
+	//lee como maximo MAX_READABLE_CHARACTERS (1024 characters)
+	char output [MAX_READABLE_CHARACTERS];
+  
+	va_list valist;
+    va_start( valist, format );
+    int output_pos=0;
+    int number_of_vars=0;
+	for (int i = 0; format[i] != 0; i++)
+	{
+		if (format[i]=='%')
+		{
+			i++;
+            number_of_vars++;
+			switch (format[i])
+			{
+			case 'c':
+				break;
+			
+			case 'd':
+                ;//algo que ver con c y switch que son raros
+				break;
+			case 's': 
+            ;//algo que ver con c y switch que son raros
+				break;
+			
+			default:
+			/* should throw exception*/
+			//expression not suported
+				break;
+			}
+		}
+	}
+	va_end(valist);
+    return number_of_vars;
+}
 
 int intToString(int value, char * buffer)
 {
@@ -122,3 +180,40 @@ int intToString(int value, char * buffer)
 
 	return digits;
 }
+
+// int doubleToString(double value, char * buffer){
+	
+// 	int trunkated=(int)(value*1000);
+	
+	// int buf_pos=0;
+	// int j=positivedigits(value);
+	// double aux=1;
+	// for (int i = 0; i <= j; i++)
+	// {
+	// 	aux*=10;
+	// }
+	// //tiene restricciones con SSE y no le gusta las potencias, asi que lo hago internamente.
+	
+	// for(;j>-DECIMALPLACES;j--)
+	// {
+		
+	// 	buffer[buf_pos++]=(int)(value/aux)+'0';
+	// 	aux/=10;
+	// }
+	// return buf_pos;
+	
+
+//}
+// int positivedigits(double value){
+// 	//devuelve la cantidad de digitos positivos en un numero.
+// 	//34.7 retorna 2,2 retorna 1 y 0.04 retorna 0.
+// 	int i = 0;
+// 	double aux=1;
+// 	while ( aux >= value )
+// 	{
+// 		i++;
+// 		aux*=10;
+// 	}
+// 	return i-1;
+	
+// }

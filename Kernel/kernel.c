@@ -6,6 +6,7 @@
 #include <video_driver.h>
 #include <libC.h>
 
+
 extern uint8_t text;
 extern uint8_t rodata;
 extern uint8_t data;
@@ -107,8 +108,8 @@ int main()
 
 	middleLine();
 	changeScreen(1);
-	
-	
+
+
 	while (1) {}
 	return 0;
 }
