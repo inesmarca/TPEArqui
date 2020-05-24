@@ -4,6 +4,13 @@ section .text
 test:
     push rbp
 	mov rbp,rsp
+    mov rax, 0
+
+.loop:
+    mov rax, 2
+    int 80h
+    cmp rbx, 1
+    jne .loop
 
     mov rax, 0
     mov rdi, 1
