@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <video_driver.h>
-#include <font8x8_basic.h>
+#include <font8x16.h>
 
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -40,30 +40,7 @@ struct vbe_mode_info_structure {
 	uint8_t reserved1[206];
 } __attribute__ ((packed));
 
-static int currentScreen = 1;
-
-unsigned int pos1X = 0;
-unsigned int pos1Y = (HEIGHT / 2) - LINE_WIDTH - LETTER_HEIGHT;
-unsigned int pos2X = 0;
-unsigned int pos2Y = HEIGHT - LETTER_HEIGHT;
-
 struct vbe_mode_info_structure * screen_info = 0x5C00;
-
-void setXPosition(int screen, int value) {
-	if (screen == 1) {
-		pos1X = value;
-	} else {
-		pos2X = value;
-	}
-}
-
-void setYPosition(int screen, int value) {
-	if (screen == 1) {
-		pos1Y = value;
-	} else {
-		pos2Y = value;
-	}
-}
 
 char * getDataPosition(int x, int y) {
 	return screen_info->framebuffer + (x + WIDTH * y) * 3;
@@ -96,7 +73,67 @@ void writePixel(int x, int y,  int red, int green, int blue) {
 	pos[2] = blue;
 }
 
-void middleLine() {
+void drawLine(int y) {
+	for (int i = 0; i < WIDTH; i++) {
+		writePixel(i,y, 255, 255, 255);
+	}
+}
+
+void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final) {
+	for (int i = y_initial; i <= y_final; i++) {
+        for (int j = x_initial; j < x_final; j++) {
+            writePixel(j, i, 0, 0, 0);
+        }
+    }
+} 
+
+void writeLetter(char key, int posX, int posY) {
+	if (key == '\n') {
+		setSegmentBlank(0, WIDTH, posY, posY + LETTER_HEIGHT);
+	} else {
+		char * bitmap = font8x16[key];
+		int x,y;
+		int set1, set2;
+		for (y=0; y < LETTER_WIDTH; y++) {
+			for (x=0; x < LETTER_WIDTH; x++) {
+				set1 = bitmap[x] & 1 << y;
+				set2 = bitmap[x + LETTER_WIDTH] & 1 << y;
+				if (set1) {
+					writePixel(posX + x, posY + y, 255, 255, 255);
+				}
+				if (set2) {
+					writePixel(posX + x, posY + y + LETTER_WIDTH, 255, 255, 255);
+				}
+			}
+		}
+	}
+}
+
+// static int currentScreen = 1;
+
+// unsigned int pos1X = 0;
+// unsigned int pos1Y = (HEIGHT / 2) - LINE_WIDTH - LETTER_HEIGHT;
+// unsigned int pos2X = 0;
+// unsigned int pos2Y = HEIGHT - LETTER_HEIGHT;
+
+
+/* void setXPosition(int screen, int value) {
+	if (screen == 1) {
+		pos1X = value;
+	} else {
+		pos2X = value;
+	}
+} */
+
+/* void setYPosition(int screen, int value) {
+	if (screen == 1) {
+		pos1Y = value;
+	} else {
+		pos2Y = value;
+	}
+} */
+
+/* void middleLine() {
 	for (int i = 0; i < WIDTH; i++) {
 		writePixel(i, HEIGHT/2, 255, 255, 255);
 	}
@@ -106,21 +143,9 @@ void middleLine() {
 	for (int i = 0; i < WIDTH; i++) {
 		writePixel(i, HEIGHT/2 - 1, 255, 255, 255);
 	}
-}
+} */
 
-void drawLine(int line) {
-	for (int i = 0; i < WIDTH; i++) {
-		writePixel(i,line, 255, 255, 255);
-	}
-	for (int i = 0; i < WIDTH; i++) {
-		writePixel(i,line + 1, 255, 255, 255);
-	}
-	for (int i = 0; i < WIDTH; i++) {
-		writePixel(i,line - 1, 255, 255, 255);
-	}
-}
-
-void changeScreen(int screen) {  
+/* void changeScreen(int screen) {  
 	if (screen == 1) {
 		for (int i = 0; i < LETTER_WIDTH; i++) { // Setea el bloque del screen 1
 			for (int j = HEIGHT/2 - LETTER_HEIGHT - LINE_WIDTH; j < HEIGHT/2 - LINE_WIDTH; j++) {
@@ -145,13 +170,13 @@ void changeScreen(int screen) {
 		}
 	}
 	currentScreen = screen;
-}
+} */
 
-int getCurrentScreen() {
+/* int getCurrentScreen() {
 	return currentScreen;
-}
+} */
 
-void delete() {
+/* void delete() {
 	int posX, posY;
 	removeBlock();
 	if (currentScreen == 1) { // Borrado en screen 1
@@ -174,9 +199,9 @@ void delete() {
         }
     }
 	changeScreen(currentScreen);
-}
+} */
 
-void removeBlock() {
+/* void removeBlock() {
 	if (currentScreen == 1) {
 		for (int i = 0; i < LETTER_WIDTH; i++) {
 			for (int j = HEIGHT/2 - LETTER_HEIGHT - LINE_WIDTH; j < HEIGHT/2 - LINE_WIDTH; j++) {
@@ -190,23 +215,15 @@ void removeBlock() {
 			}
 		}
 	}
-}
+} */
 
-void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final) {
-	for (int i = y_initial; i <= y_final; i++) {
-        for (int j = x_initial; j < x_final; j++) {
-            writePixel(j, i, 0, 0, 0);
-        }
-    }
-} 
-
-void print(char * str) {
+/* void print(char * str) {
 	for (int i = 0; str[i] != '\0'; i++) {
 		writeLetter(str[i]);
 	}
-}
+} */
 
-void newLine() {
+/* void newLine() {
 	removeBlock();
     int max_pos = 0;
     if (getCurrentScreen() == 2) {
@@ -231,9 +248,9 @@ void newLine() {
 
     setSegmentBlank(0, WIDTH, SCREEN_HEIGHT + max_pos - LETTER_HEIGHT, SCREEN_HEIGHT + max_pos);
     changeScreen(getCurrentScreen());
-}
+} */
 
-void writeLetter(char key) {
+/* void writeLetter(char key) {
 	if (key == '\n') {
 		newLine();
 	} else {
@@ -279,4 +296,4 @@ void writeLetter(char key) {
 		}
 		changeScreen(currentScreen);
 	}
-}
+} */

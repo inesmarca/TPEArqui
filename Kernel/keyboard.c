@@ -55,9 +55,8 @@ void keyboard_handler() {
             specialChars[2] = 1;
             break;
         case ENTER:
-            // enterInput();
+            gotEnter();
             newLine();
-            receiveEnter();
             break;
         case B_SPACE:
             delete();

@@ -18,7 +18,7 @@ GLOBAL _exception0Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
-EXTERN checkInput
+EXTERN checkEnter
 EXTERN read
 EXTERN write
 
@@ -123,7 +123,7 @@ SECTION .text
 	jmp .fin
 
 .getEntered:
-	call checkInput
+	call checkEnter
 	mov rbx, rax
 	jmp .fin
 

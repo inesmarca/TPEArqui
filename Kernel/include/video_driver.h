@@ -1,40 +1,22 @@
 #define WIDTH 1024
 #define HEIGHT 768
-#define LINE_WIDTH 3
 #define LETTER_WIDTH 8
 #define LETTER_HEIGHT 16
-#define SCREEN_HEIGHT (HEIGHT - LINE_WIDTH) / 2
 
-void writePixel(int x, int y, int red, int green, int blue);
-
-void setYPosition(int screen, int value);
-
-void setXPosition(int screen, int value);
-
-void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final);
-
-void middleLine();
-
-void newLine();
-
-void changeScreen(int screen);
-
-int getCurrentScreen();
-
-void drawLine(int pos);
-
-void writeLetter(char key);
-
-void delete();
+char * getDataPosition(int x, int y);
 
 char positionEmpty(int x, int y);
 
 char getPositionRed(int x, int y);
 
-char getPositionBlue(int x, int y);
-
 char getPositionGreen(int x, int y);
 
-void removeBlock();
+char getPositionBlue(int x, int y);
 
-void print(char * str);
+void writePixel(int x, int y, int red, int green, int blue);
+
+void drawLine(int y);
+
+void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final);
+
+void writeLetter(char key, int posX, int posY);

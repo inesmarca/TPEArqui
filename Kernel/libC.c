@@ -1,3 +1,5 @@
+// Va en UserLand
+
 #include <libC.h>
 #include <stdarg.h>
 #include <math.h>
@@ -25,13 +27,13 @@ int strcmp(char * s1, char * s2) {
 }
 
 void putChar(char str) {
-	write(1, &str, 1);
+	write(0, &str, 1);
 }
 
 char getChar() {
 	char res;
-	while (!checkInput()) {}
-	read(1, &res, 1);
+	while (!checkEnter()) {}
+	read(0, &res, 1);
 	return res;
 }
 
@@ -118,7 +120,7 @@ void printf(const char * format,...){
 	}
 	va_end(valist);
     output[output_pos]=0;
-	write(1, output, output_pos);
+	write(0, output, output_pos);
 
     
     

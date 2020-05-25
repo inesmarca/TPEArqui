@@ -1,13 +1,25 @@
-void updateScreen();
 
-void updateBuffer(char key);
 
-void receiveEnter();
+int checkEnter();
+
+void changeScreen(char screen);
 
 char * getInput();
 
-int checkInput();
+void gotEnter();
 
 void buffDelete();
 
-void runInupt(char * str, int dim);
+void print(int screen, char * string);
+
+void middleLine();
+
+void removeBlock();
+
+void drawBlock();
+
+void updateBuffer(char key);
+
+void newLine();
+
+void delete();

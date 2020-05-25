@@ -15,12 +15,13 @@ test:
     jne .loop
 
     mov rax, 0
-    mov rdi, 1
+    mov rdi, 0
     mov rsi, str
     mov rdx, 15
     int 80h
 
     mov rax, 1
+    mov rdi, 1
     int 80h
 
 	mov rsp,rbp
