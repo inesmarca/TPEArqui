@@ -4,6 +4,7 @@
 // si el rdi es 0 entoces hace print en currentScreen, si es 1 hace print en screen1, si es 2 hace print en screen2
 size_t write(int screen, const char *buf, size_t count) {
     print(screen, buf);
+    newLine();
 }
 
 size_t read(int screen, char *buf, size_t count) {

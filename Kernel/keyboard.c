@@ -60,7 +60,6 @@ void keyboard_handler() {
             break;
         case B_SPACE:
             delete();
-            buffDelete();
             break;
         case SPACE:
             updateBuffer(' ');
