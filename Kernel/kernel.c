@@ -88,7 +88,5 @@ int main() {
 	middleLine();
 	changeScreen(1);
 	((EntryPoint)sampleCodeModuleAddress)();
-	
-	while(1) {}
 	return 0;
 }

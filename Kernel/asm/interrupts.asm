@@ -18,9 +18,11 @@ GLOBAL _exception0Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
-EXTERN checkEnter
+EXTERN getExitFlag
+EXTERN getCurrentScreen
 EXTERN read
 EXTERN write
+EXTERN printPixel
 
 SECTION .text
 
@@ -116,14 +118,28 @@ SECTION .text
 	cmp rax, 1
 	je .runWrite
 	cmp rax, 2
-	je .getEntered
+	je .getExit
+	cmp rax, 3
+	je .getScreen
+	cmp rax, 4
+	je .pixel
+
 
 .runRead:
 	call read
 	jmp .fin
 
-.getEntered:
-	call checkEnter
+.pixel:
+	call printPixel
+	jmp .fin
+
+.getExit:
+	call getExitFlag
+	mov rbx, rax
+	jmp .fin
+
+.getScreen:
+	call getCurrentScreen
 	mov rbx, rax
 	jmp .fin
 

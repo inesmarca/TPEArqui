@@ -12,17 +12,45 @@ extern uint8_t getKey();
 
 #define L_SHFT 0x2A
 #define R_SHFT 0x36
+#define CAPS_LCK 0x3A
+#define CONTROL 0x1D
 #define B_SPACE 0x0E
 #define SPACE 0x39
-#define CAPS_LCK 0x3A
 #define ENTER 0x1C
-#define CONTROL 0x1D
 
 #define IS_LETTER(c) (c >= 'a' && c <= 'z' ? 1 : 0)
 
 #define ABS(num) (num >= 0 ? num : num * -1)
 
 static uint8_t action(uint8_t scanCode);
+
+char buffer1[1024];
+int pos1 = 0;
+char buffer2[1024];
+int pos2 = 0;
+
+char * getBuffer(int screen) {
+    if (screen == 1 || (screen == 0 && getCurrentScreen() == 1)) {
+        return buffer1;
+    } else {
+        return buffer2;
+    }
+}
+
+void deleteBuff() {
+    if (getCurrentScreen() == 1) {
+        buffer1[0] = 0;
+        pos1 = 0;
+    } else {
+        buffer2[0] = 0;
+        pos2 = 0;
+    }
+}
+
+char exitFlag = 0;
+int getExitFlag() {
+    return exitFlag;
+}
 
 // https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html pagina con los scancodes
 static const char pressCodes[KEYS][2] =
@@ -40,6 +68,16 @@ static const char pressCodes[KEYS][2] =
 
 static uint8_t scanCode, currentAction, specialChars[] = {0, 0, 0}, capsLock = 0;
 
+void bufferAdd(char key) {
+    if (getCurrentScreen() == 1) {
+        buffer1[pos1++] = key;
+        buffer1[pos1] = 0;
+    } else {
+        buffer2[pos2++] = key;
+        buffer2[pos2] = 0;
+    }
+}
+
 void keyboard_handler() {
     uint8_t key = getKey();
     currentAction = action(key);
@@ -54,15 +92,14 @@ void keyboard_handler() {
         case CONTROL:
             specialChars[2] = 1;
             break;
+        case SPACE:
+            bufferAdd(' ');
+            break;
         case ENTER:
-            gotEnter();
-            newLine();
+            bufferAdd('\n');
             break;
         case B_SPACE:
-            delete();
-            break;
-        case SPACE:
-            updateBuffer(' ');
+            bufferAdd(B_SPACE);
             break;
         
         default: // agregar un delete de toda la linea
@@ -70,11 +107,13 @@ void keyboard_handler() {
                 changeScreen(2);
             } else if (specialChars[2] == 1 && key == 0x04) { // uso el 3 porque necesito testear y no me lee el 1 de la compu Control 3
                 changeScreen(1);
+            } else if (specialChars[2] == 1 && key == 0x2E) {
+                exitFlag = 1;
             } else {
                 if (specialChars[0] == 1 || specialChars[0] == 1) {
-                    updateBuffer(pressCodes[key][1]);
+                    bufferAdd(pressCodes[key][1]);
                 } else {
-                    updateBuffer(pressCodes[key][0]);
+                    bufferAdd(pressCodes[key][0]);
                 }
             }
             break;

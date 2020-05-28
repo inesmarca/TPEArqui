@@ -11,10 +11,10 @@
 #define LINE_START_POS SCREEN_HEIGHT + LETTER_HEIGHT/2 - LINE_HEIGHT/2
 
 // Variables de input
-char buffer1[WIDTH];
+/* char buffer1[WIDTH];
 int pos_buffer1 = 0;
 char buffer2[WIDTH];
-int pos_buffer2 = 0;
+int pos_buffer2 = 0; */
 
 // Variables de pantalla
 int pos1X = 0;
@@ -33,20 +33,26 @@ void gotEnter() {
     pressEnter = 1;
 }
 
-void changeScreen(char screen) {
-    removeBlock();
-    currentScreen = screen;
-    drawBlock();
+int getCurrentScreen() {
+    return currentScreen;
 }
 
+void changeScreen(char screen) {
+    //removeBlock();
+    currentScreen = screen;
+    //drawBlock();
+}
+
+/*
 char * getInput(int screen) {
     if (screen == 1 || (screen == 0 && currentScreen == 1)) {
         return buffer1;
     } else {
         return buffer2;
     }
-}
+} */
 
+/*
 void buffDelete() {
     if (currentScreen == 1) {
         pos_buffer1--;
@@ -55,10 +61,10 @@ void buffDelete() {
         pos_buffer2--;
         buffer2[pos_buffer2] = 0;
     }
-}
+} */
 
 void print(int screen, char * string) {
-    removeBlock();
+    // removeBlock();
     int posX, posY;
     if (screen == 1 || (screen == 0 && currentScreen == 1)) {
         posX = pos1X;
@@ -77,7 +83,7 @@ void print(int screen, char * string) {
     } else {
         pos2X = posX;
     }
-    drawBlock();
+    // drawBlock();
 }
 
 void middleLine() {
@@ -116,6 +122,7 @@ void drawBlock() {
 	}
 }
 
+/*
 void updateBuffer(char key) {
     if (currentScreen == 1) {
         if (pressEnter) {
@@ -139,10 +146,10 @@ void updateBuffer(char key) {
 
     pressEnter = 0;
     print(currentScreen, &key);
-}
+} */
 
 void newLine() { // anda mal en el tope de la pantalla
-    removeBlock();
+    //removeBlock();
     int max_pos = 0;
     if (currentScreen == 2) {
         max_pos = 400;  // es HEIGHT - SCREEN_HEIGHT pero nose porque no me lo lee 
@@ -163,18 +170,18 @@ void newLine() { // anda mal en el tope de la pantalla
             }
         }
     }
-    drawBlock();
+    //drawBlock();
 }
 
 void delete() {
-    buffDelete();
+    // buffDelete();
     int * posX;
     if (currentScreen == 1) {
         posX = &pos1X;
     } else {
         posX = &pos2X;
     }
-	removeBlock();
+	//removeBlock();
     *posX -= LETTER_WIDTH;
-    drawBlock();
+    //drawBlock();
 }

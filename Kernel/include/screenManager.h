@@ -1,4 +1,5 @@
 
+int getCurrentScreen();
 
 int checkEnter();
 
