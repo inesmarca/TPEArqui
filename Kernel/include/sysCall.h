@@ -1,8 +1,12 @@
-#include <stdlib.h>
-#include <video_driver.h>
+#ifndef __SYSCALL_H_
+#define __SYSCALL_H_
 
-size_t read(int fd, char *buf, size_t count);
+void readKey(char * buf);
 
-size_t write(int fd, const char *buf, size_t count);
+void writeString(const char * string);
 
-void printPixel(int x, int y,  int red, int green, int blue);
+void getPixelData(char * rgb, int x, int y);
+
+void printPixel(int x, int y, int red, int green, int blue);
+
+#endif

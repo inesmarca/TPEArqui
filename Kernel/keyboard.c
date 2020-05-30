@@ -1,7 +1,5 @@
 #include <keyboard.h>
-#include <video_driver.h>
 #include <stdint.h>
-#include <screenManager.h>
 
 extern uint8_t getKey();
 
@@ -20,31 +18,18 @@ extern uint8_t getKey();
 
 #define IS_LETTER(c) (c >= 'a' && c <= 'z' ? 1 : 0)
 
-#define ABS(num) (num >= 0 ? num : num * -1)
-
 static uint8_t action(uint8_t scanCode);
 
-char buffer1[1024];
-int pos1 = 0;
-char buffer2[1024];
-int pos2 = 0;
+char buffer[1024];
+int pos = 0;
 
 char * getBuffer(int screen) {
-    if (screen == 1 || (screen == 0 && getCurrentScreen() == 1)) {
-        return buffer1;
-    } else {
-        return buffer2;
-    }
+    return buffer;
 }
 
 void deleteBuff() {
-    if (getCurrentScreen() == 1) {
-        buffer1[0] = 0;
-        pos1 = 0;
-    } else {
-        buffer2[0] = 0;
-        pos2 = 0;
-    }
+    buffer[0] = 0;
+    pos = 0;
 }
 
 char exitFlag = 0;
@@ -69,13 +54,8 @@ static const char pressCodes[KEYS][2] =
 static uint8_t scanCode, currentAction, specialChars[] = {0, 0, 0}, capsLock = 0;
 
 void bufferAdd(char key) {
-    if (getCurrentScreen() == 1) {
-        buffer1[pos1++] = key;
-        buffer1[pos1] = 0;
-    } else {
-        buffer2[pos2++] = key;
-        buffer2[pos2] = 0;
-    }
+    buffer[pos++] = key;
+    buffer[pos] = 0;
 }
 
 void keyboard_handler() {

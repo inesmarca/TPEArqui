@@ -1,55 +1,12 @@
-// Va en UserLand
-
 #include <libC.h>
 #include <stdarg.h>
 #include <math.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <font8x16.h>
-#include <screenManager.h>
-
-extern size_t write(int screen, const char * string, int dim);
+#include <sysLib.h>
 
 #define MAX_DIGITOS_EN_UN_NUMERO 20
 #define DECIMALPLACES 4
 #define MAX_PRINTABLE_CHARACTERS 1024
 #define MAX_READABLE_CHARACTERS 1024
-#define LETTER_WIDTH 8
-#define LETTER_HEIGHT 16
-
-void writeLetter(char key, int posX, int posY) {
-	char * bitmap = font8x16[key];
-	int x,y;
-	int set1, set2;
-	for (y=0; y < LETTER_WIDTH; y++) {
-		for (x=0; x < LETTER_WIDTH; x++) {
-			set1 = bitmap[x] & 1 << y;
-			set2 = bitmap[x + LETTER_WIDTH] & 1 << y;
-			if (set1) {
-				writePixel(posX + x, posY + y, 255, 255, 255);
-			}
-			if (set2) {
-				writePixel(posX + x, posY + y + LETTER_WIDTH, 255, 255, 255);
-			}
-		}
-	}
-}
-
-void drawBlock(int posX, int posY) {
-    for (int i = posX; i < posX + LETTER_WIDTH; i++) {
-		for (int j = posY; j < posY + LETTER_HEIGHT; j++) {
-			writePixel(i, j, 184, 184, 186);
-		}
-	}
-}
-
-void blankBlock(int posX, int posY) {
-    for (int i = posX; i < posX + LETTER_WIDTH; i++) {
-		for (int j = posY; j < posY + LETTER_HEIGHT; j++) {
-			writePixel(i, j, 0, 0, 0);
-		}
-	}
-}
 
 int strcmp(char * s1, char * s2) {
     int cmp = 1;
@@ -67,17 +24,16 @@ int strcmp(char * s1, char * s2) {
 }
 
 void putChar(char str) {
-	write(0, &str, 1);
+	writeScreen(&str);
 }
 
-/*
 char getChar() {
 	char res = 0;
-	while (res == 0) {
-		read(0, &res, 1);
-	}
+    while (res == 0) {
+	    readKeyBuff(&res);
+    }
 	return res;
-} */
+}
 
 void printf(const char * format,...){
 	//tiene que tener el formato correcto para funcionar bien. si hay % faltantes o sobrantes no va afuncionar.
@@ -162,10 +118,11 @@ void printf(const char * format,...){
 	}
 	va_end(valist);
     output[output_pos]=0;
-	write(0, output, output_pos);
- 
-}
+	writeScreen(output);
 
+    
+    
+}
 int scanf(const char *format, ...){
     //tiene que tener el formato correcto para funcionar bien. si hay % faltantes o sobrantes no va afuncionar.
 	//tiene soporte para %c %d %s

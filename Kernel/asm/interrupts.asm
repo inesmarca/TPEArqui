@@ -18,34 +18,18 @@ GLOBAL _exception0Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
+EXTERN readKey
+EXTERN writeString
+EXTERN getPixelData
+EXTERN printPixel
 EXTERN getExitFlag
 EXTERN getCurrentScreen
-EXTERN read
-EXTERN write
-EXTERN printPixel
 
 SECTION .text
 
 %macro pushState 0
 	push rax
 	push rbx
-	push rcx
-	push rdx
-	push rbp
-	push rdi
-	push rsi
-	push r8
-	push r9
-	push r10
-	push r11
-	push r12
-	push r13
-	push r14
-	push r15
-%endmacro
-
-%macro pushReg 0
-	push rax
 	push rcx
 	push rdx
 	push rbp
@@ -79,6 +63,23 @@ SECTION .text
 	pop rax
 %endmacro
 
+%macro pushReg 0
+	push rax
+	push rcx
+	push rdx
+	push rbp
+	push rdi
+	push rsi
+	push r8
+	push r9
+	push r10
+	push r11
+	push r12
+	push r13
+	push r14
+	push r15
+%endmacro
+
 %macro popReg 0
 	pop r15
 	pop r14
@@ -110,26 +111,36 @@ SECTION .text
 	iretq
 %endmacro
 
-%macro syscallHandler 0
+%macro sysCallHandler 0
 	pushReg
 
 	cmp rax, 0
-	je .runRead
+	je .runRead		; read del keyboard
 	cmp rax, 1
-	je .runWrite
+	je .runWrite   	; write de letra
 	cmp rax, 2
-	je .getExit
+	je .getPixel	; read de pixel de pantalla
 	cmp rax, 3
-	je .getScreen
+	je .pixelWrite		; write de pixel
 	cmp rax, 4
-	je .pixel
-
-
-.runRead:
-	call read
+	je .getExit
+	cmp rax, 5
+	je .getScreen
 	jmp .fin
 
-.pixel:
+.runRead:
+	call readKey
+	jmp .fin
+
+.runWrite:
+	call writeString
+	jmp .fin
+
+.getPixel:
+	call getPixelData
+	jmp .fin
+
+.pixelWrite:
 	call printPixel
 	jmp .fin
 
@@ -142,9 +153,6 @@ SECTION .text
 	call getCurrentScreen
 	mov rbx, rax
 	jmp .fin
-
-.runWrite:
-	call write
 
 .fin:
 	; signal pic EOI (End of Interrupt)
@@ -222,11 +230,9 @@ _irq04Handler:
 _irq05Handler:
 	irqHandlerMaster 5
 
-; INT 80h
-_irq80Handler:
-	syscallHandler
-
-
+;INT 80h
+_irq80Handler
+	sysCallHandler
 
 ;Zero Division Exception
 _exception0Handler:

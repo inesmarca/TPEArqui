@@ -1,3 +1,6 @@
+#ifndef __VIDEO_DRIVER_H_
+#define __VIDEO_DRIVER_H_
+
 #define WIDTH 1024
 #define HEIGHT 768
 #define LETTER_WIDTH 8
@@ -20,3 +23,5 @@ void drawLine(int y);
 void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final);
 
 void writeLetter(char key, int posX, int posY);
+
+#endif

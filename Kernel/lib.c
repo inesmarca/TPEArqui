@@ -1,8 +1,5 @@
 #include <stdint.h>
 
-
-
-
 void * memset(void * destination, int32_t c, uint64_t length)
 {
 	uint8_t chr = (uint8_t)c;
@@ -51,7 +48,3 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 
 	return destination;
 }
-
-
-
-

@@ -1,17 +1,9 @@
-#include <sysCall.h>
-#include <screenManager.h>
 #include <keyboard.h>
+#include <consoleManager.h>
+#include <videoDriver.h>
 
-#define SCREEN_HEIGHT 368
-
-// si el rdi es 0 entoces hace print en currentScreen, si es 1 hace print en screen1, si es 2 hace print en screen2
-size_t write(int screen, const char *buf, size_t count) {
-    print(screen, buf);
-    newLine();
-}
-
-size_t read(int screen, char *buf, size_t count) {
-    char * input = getBuffer(screen);
+void readKey(char * buf) {
+    char * input = getBuffer();
     int i;
     for (i = 0; input[i] != 0; i++) {
         buf[i] = input[i];
@@ -20,10 +12,19 @@ size_t read(int screen, char *buf, size_t count) {
     deleteBuff();
 }
 
-void printPixel(int x, int y,  int red, int green, int blue) {
-    int plusY = 0;
-    if (getCurrentScreen() == 2) {
-        plusY = HEIGHT - 368;
+void writeString(const char * string) {
+    print(string);
+}
+
+void getPixelData(char * rgb, int x, int y) {
+    int screen = getCurrentScreen();
+    if ((screen == 1 && y < SCREEN_HEIGHT) || (screen == 2 && y > HEIGHT - SCREEN_HEIGHT)) {
+        rgb[0] = getPositionRed(x, y);
+        rgb[1] = getPositionGreen(x, y);
+        rgb[2] = getPositionBlue(x, y);
     }
-    writePixel(x, y + plusY, red, green, blue);
+}
+
+void printPixel(int x, int y, int red, int green, int blue) {
+    writePixel(x, y, red, green, blue);
 }
