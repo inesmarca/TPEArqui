@@ -8,3 +8,5 @@ void putChar(char str);
 char getChar();
 
 void printf(const char * format,...);
+
+void printTime();

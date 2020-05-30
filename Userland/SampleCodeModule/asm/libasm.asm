@@ -4,6 +4,9 @@ GLOBAL readPixel
 GLOBAL writePixel
 GLOBAL getExitFlag
 GLOBAL getActiveScreen
+GLOBAL cpuVendor
+GLOBAL cpuModel
+GLOBAL getRTC
 
 ; void readKeyBuff(char * buf)
 readKeyBuff:
@@ -46,3 +49,57 @@ getActiveScreen:
     mov rax, rbx
     pop rbx
     ret
+	
+cpuVendor:
+	push rbp
+	mov rbp, rsp
+
+	push rbx
+
+	mov rax, 0
+	cpuid
+
+
+	mov [rdi], ebx
+	mov [rdi + 4], edx
+	mov [rdi + 8], ecx
+
+	mov byte [rdi+13], 0
+
+	mov rax, rdi
+
+	pop rbx
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+cpuModel:       ; Me parece que esta mal
+    push rbp
+	mov rbp, rsp
+
+    mov rax, 1
+    cpuid
+
+    mov [rdi], rax
+    mov byte [rdi+8], 0
+    mov rax, 0
+    mov rax, rdi
+
+    mov rsp, rbp
+	pop rbp
+	ret
+
+getRTC:
+    push rbp
+    mov rbp, rsp
+
+    mov rax, 0
+    mov rax, rdi
+    out 70h, al
+    in al, 71h
+
+    mov rsp, rbp
+    pop rbp
+    ret
+
