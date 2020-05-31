@@ -22,6 +22,7 @@ static uint8_t action(uint8_t scanCode);
 
 char buffer[1024];
 int pos = 0;
+char exitFlag = 0;
 
 char * getBuffer(int screen) {
     return buffer;
@@ -32,7 +33,6 @@ void deleteBuff() {
     pos = 0;
 }
 
-char exitFlag = 0;
 int getExitFlag() {
     return exitFlag;
 }
@@ -87,7 +87,7 @@ void keyboard_handler() {
                 changeScreen(2);
             } else if (specialChars[2] == 1 && key == 0x04) { // uso el 3 porque necesito testear y no me lee el 1 de la compu Control 3
                 changeScreen(1);
-            } else if (specialChars[2] == 1 && key == 0x2E) {
+            } else if (specialChars[2] == 1 && key == 0x2E) { // Control C para terminar el programa
                 exitFlag = 1;
             } else {
                 if (specialChars[0] == 1 || specialChars[0] == 1) {
