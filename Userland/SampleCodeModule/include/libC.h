@@ -10,3 +10,5 @@ char getChar();
 void printf(const char * format,...);
 
 void printTime();
+
+void printTemperature();

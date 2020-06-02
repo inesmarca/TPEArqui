@@ -252,3 +252,7 @@ int fix_retarded_format(int time) {
 void printTime() {
     printf("%d:%d:%d\n", fix_retarded_format_hours(getRTC(4)), fix_retarded_format(getRTC(2)), fix_retarded_format(getRTC(0)));
 }
+
+void printTemperature() {
+	printf("%d\n", getTemperature());
+}

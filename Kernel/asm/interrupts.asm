@@ -24,7 +24,7 @@ EXTERN getPixelData
 EXTERN printPixel
 EXTERN getExitFlag
 EXTERN getCurrentScreen
-EXTERN CPUTemperature
+EXTERN getTemperature
 
 
 SECTION .text
@@ -158,7 +158,7 @@ SECTION .text
 	mov rbx, rax
 	jmp .fin
 .cputemp:
-	call CPUTemperature
+	call getTemperature
 	mov rbx, rax
 	jmp .fin
 

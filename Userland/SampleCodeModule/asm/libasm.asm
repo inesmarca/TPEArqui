@@ -7,9 +7,9 @@ GLOBAL getActiveScreen
 GLOBAL cpuVendor
 GLOBAL cpuModel
 GLOBAL getRTC
-GLOBAL getTemprerature
+GLOBAL getTemperature
 
-
+EXTERN printf
 
 
 
@@ -56,8 +56,8 @@ getActiveScreen:
     pop rbx
     ret
 
-;int getTemprerature()
-getTemprerature:
+;int getTemperature()
+getTemperature:
     push rbx
     mov rax,6
     int 80h
@@ -118,5 +118,3 @@ getRTC:
     mov rsp, rbp
     pop rbp
     ret
-    
-

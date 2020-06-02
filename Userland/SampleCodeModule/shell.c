@@ -1,7 +1,7 @@
 #include <shell.h>
 #include <sysLib.h>
 #include <libC.h>
-// #include <calculator.h>
+#include <calculator.h>
 
 #define B_SPACE 0x0E
 #define CURSOR 127
@@ -16,9 +16,10 @@ int pos2 = 0;
 
 void printTime();
 void cpuInfo();
+void printTemperature();
 
-char functions[1][20] = {"printTime"};
-void (*func_ptr[1])() = {printTime};
+char functions[2][20] = {"printTime", "printTemperature"};
+void (*func_ptr[2])() = {printTime, printTemperature};
 
 void shell() {
     while (!getExitFlag()) {
@@ -29,7 +30,9 @@ void shell() {
             if (inputBuffer != 0) {
                 if (inputBuffer == '=') {
                     input1[pos1++] = inputBuffer;
-                    runCalc(input1);
+                    printf("%s %s\n", &inputBuffer, runCalc(input1));
+                    input1[0] = 0;
+                    pos1 = 0;
                 } else if (inputBuffer == B_SPACE) {
                     printf(&inputBuffer);
                     inputBuffer = 0;
