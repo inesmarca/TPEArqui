@@ -1,11 +1,86 @@
+
 #include <calculator.h>
 
-#define NULL 0
 
-void runCalc(const char * str, int dim) {
-    // char vec[dim];
-    // infijaToPosfija(str, vec, dim);
+
+char * eval( char * first,int first_dim,char * second,int second_dim,char operation);
+
+long stringtoLong(char * number);
+
+char * evaluatePosfija(char * input);
+
+int findDim(const char * num);
+
+int precedence(char token1, char token2);
+
+int isToken(char token);
+
+void infijaToPosfija(char * input, char * output);
+
+char * longtoString(long number,int dim,char * output);
+
+char * malloc2();
+
+char * ajustardecimales(char * input);
+
+
+#define NULL 0
+#define MAX_NUM_IN_EXPRESION 20
+#define MAX_NUMBER_LENGTH 20
+#define MAX_INPUT_LENGTH 100
+#define CANT_DECIMALES_INTER_OPERACIONES 6 
+#define CANT_DECIMALES_OUTPUT 4 //siempre tiene que ser menos que cant_decimales_inter_operaciones
+
+
+
+char * runCalc(char * str) {
+    char aux[MAX_INPUT_LENGTH];
+    infijaToPosfija(str, aux);
+    char * result =evaluatePosfija(aux);
+    return ajustardecimales(result);
+    
+
 }
+
+
+char * ajustardecimales(char * input){
+    int index=0;
+    while (input[index]!='.')
+    {
+        index++;
+    }
+    index+=CANT_DECIMALES_OUTPUT+1;
+    if (input[index] - '0' >= 5)
+    {
+      input[index] = 0;
+      long aux = stringtoLong (input);
+      aux++;
+      input = longtoString (aux, CANT_DECIMALES_OUTPUT, input);
+    }
+  else
+    {
+      input[index] = 0;
+    }
+
+  //termina y deja CANT_DECIMALES _OUTPUT
+  return input;
+}
+
+
+char * malloc2(){
+    //esto es privado, no se deberia usar afuera del scope de la calculadora
+    
+    //  muy mala pseudo implementacion para poder conseguir memoria(necesito malloc. porque es tan dificil de implementar bien, me quiero matarrrrr)
+    
+    static char  freemem [MAX_NUM_IN_EXPRESION] [MAX_NUMBER_LENGTH];
+    static int index=-1;
+    index+=1;
+    return freemem[index];
+}
+
+
+
+
 
 char * eval( char * first,int first_dim,char * second,int second_dim,char operation){
     
@@ -15,12 +90,12 @@ char * eval( char * first,int first_dim,char * second,int second_dim,char operat
     int result_dim=-1;//nunca puede ser un valor negativo, si sigue negativo al final hay un error
     
     
-    while (second_dim>first_dim) //igualo las dimensiones para poder operar bien
+    while (first_dim<CANT_DECIMALES_INTER_OPERACIONES) //fijo  las dimensiones al minimo accurate decimales para poder operar bien
     {
         firstnum*=10;
         first_dim++;
     }
-     while (second_dim<first_dim) //igualo las dimensiones para poder operar bien
+     while (second_dim<CANT_DECIMALES_INTER_OPERACIONES) //fijo  las dimensiones al minimo accurate decimales para poder operar bien
     {
         secondnum*=10;
         second_dim++;
@@ -28,35 +103,72 @@ char * eval( char * first,int first_dim,char * second,int second_dim,char operat
     switch (operation)
     {
     case '+':
-        result+=firstnum;
-        result+=secondnum;
-        result_dim=first_dim;
-
-        break;
+        while (first_dim<second_dim) //igualo las dimensiones para poder operar bien
+        {
+        firstnum*=10;
+        first_dim++;
+        }
+        while (second_dim<first_dim) //igualo las dimensiones para poder operar bien
+        {
+            secondnum*=10;
+            second_dim++;
+        }
+            result+=firstnum;
+            result+=secondnum;
+            result_dim=first_dim;
+            break;
      case '-':
-        result=firstnum;
-        result-=secondnum;
+        while (first_dim<second_dim) //igualo las dimensiones para poder operar bien
+        {
+        firstnum*=10;
+        first_dim++;
+        }
+        while (second_dim<first_dim) //igualo las dimensiones para poder operar bien
+        {
+            secondnum*=10;
+            second_dim++;
+        }
+        result=secondnum;
+        result-=firstnum;
         result_dim=first_dim;
         break;
+
      case '*':
         result=firstnum;
         result*=secondnum;
         result_dim=first_dim+second_dim;
+        while (result_dim>CANT_DECIMALES_INTER_OPERACIONES) //corrijo para que me queden solo Cant_decimal_inter_operaciones
+        {
+            result/=10;
+            result_dim--;
+        }
         break;
      case '/':
-        result=firstnum;
-        result/=secondnum;
-        result_dim=first_dim-second_dim;
-        break;
-    default:
-    //unsupported operation
+     while (second_dim<2*CANT_DECIMALES_INTER_OPERACIONES) //fijo  las dimensiones al minimo accurate decimales para poder operar bien
+    {
+        secondnum*=10;
+        second_dim++;
+    }
+        result=secondnum;
+        result/=firstnum;
+        result_dim=second_dim-first_dim;
+
         break;
     }
-    return longtoString(result,result_dim,first); //uso el first porque si se pasa de largo pisa el second. no se pueden instanciar arrays adentro del scope de la funcion porque van a fallar
+   
+
+ while (result_dim>CANT_DECIMALES_INTER_OPERACIONES) //corrijo para que me queden solo Cant_decimal_inter_operaciones
+        {
+            result/=10;
+            result_dim--;
+        }
+
+    return longtoString(result,result_dim,malloc2()); //uso el first porque si se pasa de largo pisa el second. no se pueden instanciar arrays adentro del scope de la funcion porque van a fallar
 }
 
 
-char * longtoString(long number,int dim,char * output){
+char * longtoString(long number,int dim,char * output)
+{ 
     char aux [20];
     int index=0;
     int index2=0;
@@ -68,14 +180,26 @@ char * longtoString(long number,int dim,char * output){
     
     while (number!=0)
     {
-        if(dim==0){
+        if(dim==0)
+        {
           aux[index++]='.';
         }
-      
-        aux[index++]=number%10+'0';
-        number/=10;
+        int auxiliar=number % 10;
+        if(auxiliar<0){
+            number*=-1; 
+        }
+        aux[index++] = auxiliar + '0';
+        number /= 10;
         dim--;
+        //resto negativo quickfix
+        
     }
+    
+    if(dim==0){
+          aux[index++]='.';
+          aux[index++]='0';
+    }
+
     if (negative)
     {
         aux[index++]='-';
@@ -83,11 +207,13 @@ char * longtoString(long number,int dim,char * output){
     
     while (index!=0)
     {
-    
         output[index2++]=aux[--index];
     }
     output[index2]=0;
+   
     return output;
+    int auxiliar=number % 10;
+    
 }
 
 long stringtoLong (char *number)
@@ -159,18 +285,20 @@ char * evaluatePosfija(char * input)
         }
         else if ((current>='0'&&current<='9')||(current=='-'&&input[input_pos]>='0'&&input[input_pos]<='9')) //number
         {
-            int start=input_pos-1; //es la primer posicion del numero,(el comienzo de mi string)
-            while (input[input_pos]!=' ')
+            char * auxiliar=malloc2();
+            int index=0; 
+            while (input[input_pos-1]!=' ')
             {
-                input_pos++; //busco el final del numero
+                auxiliar[index++]=input[input_pos++-1]; //copio el numero
             }
-            input[input_pos++]=0;//pongo el 0 para terminate el string.
-            stack[stack_pos++]=input+sizeof(char)*start;//meto el string formado al stack.
+            auxiliar[index]=0;//pongo el 0 para terminate el string.
+            stack[stack_pos++]=auxiliar;//meto el string formado al stack.
         }
     }
     if (stack_pos-1==0)
     {
-         return stack[0];//si se hizo bien, el stack solo tiene 1 elemento
+
+        return stack[0];//si se hizo bien, el stack solo tiene 1 elemento
     }
     //lanzar exception
    
@@ -223,8 +351,8 @@ int isToken(char token) {
 }
 
 
-// la dimencion no fue usada en ningun lugar, podriamos hacer algo con eso o lo sacamos.
-void infijaToPosfija(char * input, char * output, int dim){
+//toma la expresion infija y la trafsorma en posfija
+void infijaToPosfija(char * input, char * output){
     int pos_output=0;
     int pos_input=0;
     int stack_pos=0;
@@ -291,5 +419,6 @@ void infijaToPosfija(char * input, char * output, int dim){
        }
         
     }
+    output[pos_output++]=' ';
     output[pos_output-1]=0;
 }
