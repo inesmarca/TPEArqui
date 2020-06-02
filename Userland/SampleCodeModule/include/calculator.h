@@ -1,0 +1,2 @@
+
+char * runCalc( char * str);

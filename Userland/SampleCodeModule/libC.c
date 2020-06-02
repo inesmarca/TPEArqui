@@ -52,7 +52,7 @@ void printf(const char * format,...){
 			switch (format[i])
 			{
 			case 'c':
-				output[output_pos++]=(va_arg( valist, char ));
+				output[output_pos++]=(va_arg( valist, int ));
 				break;
 			
 			// case 'f':

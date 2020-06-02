@@ -1,8 +1,10 @@
 #include <shell.h>
 #include <sysLib.h>
 #include <libC.h>
+// #include <calculator.h>
 
 #define B_SPACE 0x0E
+#define CURSOR 127
 
 extern char * cpuVendor();
 extern char * cpuModel();
@@ -25,10 +27,13 @@ void (*func_ptr[1])() = {printTime};
 void shell() {
     while (!getExitFlag()) {
         while (getActiveScreen() == 1) {
+            // putChar(CURSOR);
             readKeyBuff(&inputBuffer);
+            // putChar(B_SPACE);
             if (inputBuffer != 0) {
-                if (inputBuffer == '\n') {
-                    // runCalc();
+                if (inputBuffer == '=') {
+                    input1[pos1++] = inputBuffer;
+                    runCalc(input1);
                 } else if (inputBuffer == B_SPACE) {
                     printf(&inputBuffer);
                     inputBuffer = 0;
@@ -46,10 +51,12 @@ void shell() {
                     input1[pos1] = 0;
                     inputBuffer = 0;
                 }
-            }
+            } 
         }
         while (getActiveScreen() == 2) {
+            // putChar(CURSOR);
             readKeyBuff(&inputBuffer);
+            // putChar(B_SPACE);
             if (inputBuffer != 0) {
                 if (inputBuffer == '\n') {
                     int j = pos2;

@@ -156,7 +156,7 @@ SECTION .text
 
 .fin:
 	; signal pic EOI (End of Interrupt)
-	mov al, 21h
+	mov al, 20h
 	out 20h, al
 
 	popReg
@@ -231,7 +231,7 @@ _irq05Handler:
 	irqHandlerMaster 5
 
 ;INT 80h
-_irq80Handler
+_irq80Handler:
 	sysCallHandler
 
 ;Zero Division Exception

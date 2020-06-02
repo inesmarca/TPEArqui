@@ -1,4 +1,4 @@
-
+#include <consoleManager.h>
 #define ZERO_EXCEPTION_ID 0
 
 static void zero_division();
@@ -9,5 +9,4 @@ void exceptionDispatcher(int exception) {
 }
 
 static void zero_division() {
-	// Handler para manejar excepcíon
 }
