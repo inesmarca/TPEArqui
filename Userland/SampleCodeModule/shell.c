@@ -15,6 +15,7 @@ char input2[128] = {0};
 int pos2 = 0;
 
 void printTime();
+void cpuInfo();
 
 char functions[1][20] = {"printTime"};
 void (*func_ptr[1])() = {printTime};

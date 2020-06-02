@@ -7,6 +7,12 @@ GLOBAL getActiveScreen
 GLOBAL cpuVendor
 GLOBAL cpuModel
 GLOBAL getRTC
+GLOBAL getTemprerature
+
+
+
+
+
 
 ; void readKeyBuff(char * buf)
 readKeyBuff:
@@ -47,6 +53,15 @@ getActiveScreen:
     mov rax, 5
     int 80h
     mov rax, rbx
+    pop rbx
+    ret
+
+;int getTemprerature()
+getTemprerature:
+    push rbx
+    mov rax,6
+    int 80h
+    mov rax,rbx
     pop rbx
     ret
 	
@@ -90,6 +105,7 @@ cpuModel:       ; Me parece que esta mal
 	pop rbp
 	ret
 
+;int getRTC(int x) 
 getRTC:
     push rbp
     mov rbp, rsp
@@ -102,4 +118,5 @@ getRTC:
     mov rsp, rbp
     pop rbp
     ret
+    
 

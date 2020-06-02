@@ -1,6 +1,8 @@
 #include <keyboard.h>
 #include <consoleManager.h>
 #include <videoDriver.h>
+#include <temperature.h>
+
 
 void readKey(char * buf) {
     char * input = getBuffer();
@@ -27,4 +29,8 @@ void getPixelData(char * rgb, int x, int y) {
 
 void printPixel(int x, int y, int red, int green, int blue) {
     writePixel(x, y, red, green, blue);
+}
+
+int getTemperature(){
+    return getTemp();
 }

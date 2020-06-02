@@ -10,3 +10,7 @@ extern void writePixel(int x, int y, int red, int green, int blue);
 extern int getExitFlag();
 
 extern int getActiveScreen();
+
+extern int getRTC(int x);
+
+extern int getTemperature();
