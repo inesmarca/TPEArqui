@@ -32,6 +32,7 @@ char getChar() {
     while (res == 0) {
 	    readKeyBuff(&res);
     }
+	putChar(res);
 	return res;
 }
 
