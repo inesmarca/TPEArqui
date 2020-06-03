@@ -22,7 +22,7 @@ char * malloc2();
 char * ajustardecimales(char * input);
 
 
-#define NULL (void *)0
+
 #define MAX_NUM_IN_EXPRESION 20
 #define MAX_NUMBER_LENGTH 20
 #define MAX_INPUT_LENGTH 100
@@ -33,12 +33,18 @@ char * ajustardecimales(char * input);
 
 char * runCalc(char * str) {
     char aux[MAX_INPUT_LENGTH];
-    if (infijaToPosfija(str, aux)==0)
+    if (infijaToPosfija(str, aux)!=0)
     {
         return NULL;
     }
     
     char * result =evaluatePosfija(aux);
+
+    if (result==NULL)
+    {
+        return NULL;
+    }
+    
     return ajustardecimales(result);
 }
 
@@ -149,6 +155,13 @@ char * eval( char * first,int first_dim,char * second,int second_dim,char operat
         }
         break;
      case '/':
+    if (firstnum==0)
+    {
+       printf("%s","cant divide by 0, invalid input");
+        return NULL;
+    }
+    
+
      while (second_dim<2*CANT_DECIMALES_INTER_OPERACIONES) //fijo  las dimensiones al minimo accurate decimales para poder operar bien
     {
         secondnum*=10;
@@ -191,7 +204,7 @@ char * longtoString(long number,int dim,char * output)
         }
         int auxiliar=number % 10;
         if(auxiliar<0){
-            number*=-1; 
+            auxiliar*=-1; 
         }
         aux[index++] = auxiliar + '0';
         number /= 10;
@@ -280,6 +293,10 @@ char * evaluatePosfija(char * input)
         char current=input[input_pos++];
         if (isToken(current)&&input[input_pos]==' ')//se fija que sea token y chequea el caso de que sea un numero negativo
         {
+            if(stack_pos<2){
+                printf("%s","cant evaluate, stack not filled enough, invalid input");
+                return NULL;
+            }
             
             char * first=stack[--stack_pos];
             int first_dim=findDim(first);
@@ -300,12 +317,38 @@ char * evaluatePosfija(char * input)
             stack[stack_pos++]=auxiliar;//meto el string formado al stack.
         }
     }
-    if (stack_pos-1==0)
+    if (stack_pos-1==0) //si se hizo bien, el stack solo tiene 1 elemento
     {
+        char * answer=malloc2();
+        answer=strcpy(answer,stack[0]);
 
-        return stack[0];//si se hizo bien, el stack solo tiene 1 elemento
+        int answer_index=0;
+        char has_point=0;               //resuelve el problema de que la expresion tenga un numero que nunca fue evaluado y le pone los decimales
+        while (answer[answer_index++]!=0)
+        {
+            if (answer[answer_index]=='.')
+            {
+                has_point=1;
+            }
+            
+        }
+        if (!has_point)
+        {
+            answer[answer_index-1]='.';
+            for (int i = 0; i <= CANT_DECIMALES_OUTPUT; i++)
+            {
+                answer[answer_index+i]='0';
+            }
+            answer[answer_index+CANT_DECIMALES_OUTPUT]=0;
+            
+        }
+        
+        
+        
+        return answer;
     }
-    //lanzar exception
+    printf("%s","stack not empty, invalid input");
+    return NULL;
    
 
 }
@@ -413,8 +456,16 @@ int infijaToPosfija(char * input, char * output){
             output[pos_output++]=' '; //insertar el espacio para poder marcar por terminado
             
             }
-        printf("%s","error in format conversion, invalid input");
-        return 1;    
+        else if (current==' '){
+            //armar el caso de space, no hace nada
+        }
+        else{
+            //si no encontro algo que tiene sentido
+            printf("%s","error in format conversion, invalid input");
+            return 1;
+        }
+        
+            
     }
     while (stack_pos!=0) //popear el resto del stack
     {

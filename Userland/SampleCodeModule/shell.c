@@ -31,7 +31,15 @@ void shell() {
             for (int i = 0; inputBuffer[i] != 0; i++) {
                 if (inputBuffer[i] == '=') {
                     input1[pos1++] = inputBuffer[i];
-                    printf("%s %s\n", inputBuffer[i], runCalc(input1));
+                    char * result=runCalc(input1);
+                    if (result!=NULL)
+                    {
+                       printf("%s %s\n", inputBuffer[i],result);
+                    }
+                    else
+                    {
+                        printf("%s\n", inputBuffer[i]);
+                    }                  
                     input1[0] = 0;
                     pos1 = 0;
                 } else if (inputBuffer[i] == B_SPACE) {

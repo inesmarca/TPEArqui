@@ -8,6 +8,21 @@
 #define MAX_PRINTABLE_CHARACTERS 1024
 #define MAX_READABLE_CHARACTERS 1024
 
+
+//https://www.techiedelight.com/implement-strcpy-function-c/ era muy sencilla asi que la tomamos de internet.
+char * strcpy(char * destination,const char * source){
+	char * ptr=destination;
+	while (*source != 0)
+	{
+		*destination=*source;
+		destination++;
+		source++;
+	}
+	*destination=0;
+	return ptr;
+	
+}
+
 int strcmp(char * s1, char * s2) {
     int cmp = 1;
     int i;
