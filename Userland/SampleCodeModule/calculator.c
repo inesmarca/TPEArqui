@@ -230,7 +230,7 @@ char * longtoString(long number,int dim,char * output)
     output[index2]=0;
    
     return output;
-    int auxiliar=number % 10;
+    
     
 }
 
