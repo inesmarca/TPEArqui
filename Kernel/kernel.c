@@ -52,7 +52,7 @@ int main()
 {	
 	load_idt();
 	middleLine();
-	changeScreen(1);
+	changeScreen(2);
 	((EntryPoint)sampleCodeModuleAddress)();
 	return 0;
 }
