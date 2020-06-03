@@ -1,4 +1,5 @@
 #include <calculator.h>
+#include <libC.h>
 
 char * eval( char * first,int first_dim,char * second,int second_dim,char operation);
 
@@ -12,7 +13,7 @@ int precedence(char token1, char token2);
 
 int isToken(char token);
 
-void infijaToPosfija(char * input, char * output);
+int infijaToPosfija(char * input, char * output);
 
 char * longtoString(long number,int dim,char * output);
 
@@ -21,7 +22,7 @@ char * malloc2();
 char * ajustardecimales(char * input);
 
 
-#define NULL 0
+#define NULL (void *)0
 #define MAX_NUM_IN_EXPRESION 20
 #define MAX_NUMBER_LENGTH 20
 #define MAX_INPUT_LENGTH 100
@@ -32,7 +33,11 @@ char * ajustardecimales(char * input);
 
 char * runCalc(char * str) {
     char aux[MAX_INPUT_LENGTH];
-    infijaToPosfija(str, aux);
+    if (infijaToPosfija(str, aux)==0)
+    {
+        return NULL;
+    }
+    
     char * result =evaluatePosfija(aux);
     return ajustardecimales(result);
 }
@@ -70,6 +75,11 @@ char * malloc2(){
     static char  freemem [MAX_NUM_IN_EXPRESION] [MAX_NUMBER_LENGTH];
     static int index=-1;
     index+=1;
+    if (index>=MAX_NUM_IN_EXPRESION )
+    {
+        index=0;
+    }
+    
     return freemem[index];
 }
 
@@ -347,7 +357,7 @@ int isToken(char token) {
 
 
 //toma la expresion infija y la trafsorma en posfija
-void infijaToPosfija(char * input, char * output){
+int infijaToPosfija(char * input, char * output){
     int pos_output=0;
     int pos_input=0;
     int stack_pos=0;
@@ -402,7 +412,9 @@ void infijaToPosfija(char * input, char * output){
             }
             output[pos_output++]=' '; //insertar el espacio para poder marcar por terminado
             
-            }    
+            }
+        printf("%s","error in format conversion, invalid input");
+        return 1;    
     }
     while (stack_pos!=0) //popear el resto del stack
     {
@@ -416,4 +428,5 @@ void infijaToPosfija(char * input, char * output){
     }
     output[pos_output++]=' ';
     output[pos_output-1]=0;
+    return 0;
 }
