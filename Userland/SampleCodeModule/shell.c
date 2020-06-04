@@ -30,6 +30,7 @@ void shell() {
             readKeyBuff(inputBuffer);
             for (int i = 0; inputBuffer[i] != 0; i++) {
                 if (inputBuffer[i] == '=') {
+                    putChar(inputBuffer[i]);
                     input1[pos1++] = inputBuffer[i];
                     char * result=runCalc(input1);
                     if (result!=NULL)
@@ -53,14 +54,17 @@ void shell() {
                         pos1--;
                     }
                     input1[pos1] = 0;
-                } else {
+                } else if (inputBuffer[i] != '\n') {
                     putChar(inputBuffer[i]);
                     input1[pos1++] = inputBuffer[i];
                     input1[pos1] = 0;
                     inputBuffer[i] = 0;
+                } else {
+                    inputBuffer[i] = 0;
                 }
             } 
         }
+
         while (getActiveScreen() == 2) {
             readKeyBuff(inputBuffer);
             for (int i = 0; inputBuffer[i] != 0; i++) {
