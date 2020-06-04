@@ -172,6 +172,10 @@ char * eval( char * first,int first_dim,char * second,int second_dim,char operat
         result_dim=second_dim-first_dim;
 
         break;
+    default:
+        printf("%s","invalid symbol, invalid input");
+        return NULL;
+
     }
    
 
@@ -180,6 +184,9 @@ char * eval( char * first,int first_dim,char * second,int second_dim,char operat
             result/=10;
             result_dim--;
         }
+    if(result==0){// si es 0 no se ve afectado por esto porque la dimension real cambio
+        result_dim=0;
+    }
 
     return longtoString(result,result_dim,malloc2()); //uso el first porque si se pasa de largo pisa el second. no se pueden instanciar arrays adentro del scope de la funcion porque van a fallar
 }
@@ -191,6 +198,20 @@ char * longtoString(long number,int dim,char * output)
     int index=0;
     int index2=0;
     int negative=0;
+    
+    if(number==0){ //caso especial del 0 porque si lo multiplico por 10 no cambia su dimension entonces no es afectado
+        int i=2;
+        output[0]='0';
+        output[1]='.';
+        while(i<CANT_DECIMALES_INTER_OPERACIONES){
+            output[i]='0';
+            i++;
+        }
+        output[i]=0;
+        return output;
+    }
+    
+    
     if (number<0)
     {
         negative=1;
@@ -302,7 +323,14 @@ char * evaluatePosfija(char * input)
             int first_dim=findDim(first);
             char * second=stack[--stack_pos];
             int second_dim=findDim(second);
-            stack[stack_pos++]=eval(first,first_dim,second,second_dim,current);
+            char * nulltest=eval(first,first_dim,second,second_dim,current);
+            if (nulltest==NULL)
+            {
+                //testea que la evaluacion halla sido valida y no se cruzo co un operando que no reconoce
+                return NULL;
+            }
+            
+            stack[stack_pos++]=nulltest;
            
         }
         else if ((current>='0'&&current<='9')||(current=='-'&&input[input_pos]>='0'&&input[input_pos]<='9')) //number
@@ -446,8 +474,16 @@ int infijaToPosfija(char * input, char * output){
         else if ((current>='0'&&current<='9')||(current=='-'&&input[pos_input]>='0'&&input[pos_input]<='9'))
             //si es un numero o si arranca con un - pero continua con un numero
             {
-            while ((current>='0'&&current<='9')||current=='.'||current=='-')//mientras que sea numero o punto decimal o el menos de un negativo
+                int firstchar=1;
+                int decimalpoints=0;
+            while ((current>='0'&&current<='9')||(current=='.'&&decimalpoints==0)||(current=='-'&&firstchar))//mientras que sea numero o punto decimal o el menos de un negativo
             {
+                if (current == '.')
+                {
+                    decimalpoints++;
+                }
+                
+                firstchar=0;
                 output[pos_output++]=current;
                 current=input[pos_input++]; //sigue imprimiendo hasta llegar al espacio
                  
