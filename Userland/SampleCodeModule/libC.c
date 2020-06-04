@@ -248,7 +248,7 @@ int intToString(int value, char * buffer)
 	
 // }
 
-int fix_retarded_format_hours(int time) {
+int fix_format_hours(int time) {
     int aux = time/16;
     aux *= 10;
     aux = aux + (time % 16) - 3;
@@ -258,7 +258,7 @@ int fix_retarded_format_hours(int time) {
     return aux % 24;
 }
 
-int fix_retarded_format(int time) {
+int fix_format(int time) {
     int aux = time / 16;
     aux *= 10;
     aux = aux + (time % 16);
@@ -266,7 +266,7 @@ int fix_retarded_format(int time) {
 } 
 
 void printTime() {
-    printf("%d:%d:%d\n", fix_retarded_format_hours(getRTC(4)), fix_retarded_format(getRTC(2)), fix_retarded_format(getRTC(0)));
+    printf("%d:%d:%d\n", fix_format_hours(getRTC(4)), fix_format(getRTC(2)), fix_format(getRTC(0)));
 }
 
 void printTemperature() {
