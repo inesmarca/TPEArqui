@@ -4,21 +4,28 @@
 extern int cpuModel();
 extern char * cpuVendor();
 
+
+
+int CPUFamily(int chipvalue);
+int CPUModel(int chipvalue);
+
 //https://software.intel.com/content/www/us/en/develop/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4.html
+
+//la doc para descifrar que significan los numeros, el codigo es mio.
+
+    
+
+    
+
+
+int CPUModel(int chipvalue){
 
     //The actual processor model is derived from the Model, Extended Model ID and Family ID fields. 
     //If the Family ID field is either 6 or 15, the model is equal to the sum of the Extended Model ID field shifted left by 4 bits and the Model field.
      //Otherwise, the model is equal to the value of the Model field.
-
-    //The actual processor family is derived from the Family ID and Extended Family ID fields.
-    // If the Family ID field is equal to 15, the family is equal to the sum of the Extended Family ID and the Family ID fields.
-    // Otherwise, the family is equal to value of the Family ID field.
-
-
-int CPUModel(){
    
 
-    int chipvalue=cpuModel();//consigo el numero compuesto 
+    //consigo el numero compuesto 
 
     int FamilyID=chipvalue  & 0x00000F00;       //mask y corrimiento para conseguir los valores separados en distintas variables
     FamilyID=FamilyID>>8;
@@ -38,8 +45,13 @@ int CPUModel(){
 
 
 }
-int CPUFamily(){
-     int chipvalue=cpuModel();//consigo el numero compuesto 
+int CPUFamily(int chipvalue){
+
+//The actual processor family is derived from the Family ID and Extended Family ID fields.
+    // If the Family ID field is equal to 15, the family is equal to the sum of the Extended Family ID and the Family ID fields.
+    // Otherwise, the family is equal to value of the Family ID field.
+
+    //consigo el numero compuesto 
 
     int FamilyID=chipvalue  & 0x00000F00;       //mask y corrimiento para conseguir los valores separados en distintas variables
     FamilyID=FamilyID>>8;
@@ -55,6 +67,10 @@ int CPUFamily(){
 }
 
 void printCPUInfo(){
-    printf("CPU Vendor is: %s ,the procesor family ID is %d and the model ID is %d",cpuVendor(),CPUFamily(),CPUModel());
+    int cpuval=cpuModel();
+    int Family=CPUFamily(cpuval);
+    int Model=CPUModel(cpuval);
+
+    printf("CPU Vendor is: %s ,the procesor family ID is %d and the model ID is %d",cpuVendor(),Family,Model);
 }
 
