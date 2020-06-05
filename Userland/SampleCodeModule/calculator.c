@@ -1,6 +1,8 @@
 #include <calculator.h>
 #include <libC.h>
 
+
+
 char * eval( char * first,int first_dim,char * second,int second_dim,char operation);
 
 long stringtoLong(char * number);
@@ -31,6 +33,8 @@ char * ajustardecimales(char * input);
 
 
 
+
+
 char * runCalc(char * str) {
     char aux[MAX_INPUT_LENGTH];
     if (infijaToPosfija(str, aux)!=0)
@@ -56,18 +60,22 @@ char * ajustardecimales(char * input){
         index++;
     }
     index+=CANT_DECIMALES_OUTPUT+1;
-    if (input[index] - '0' >= 5)
+    if (input[index] - '0' >= 5)    //si tiene que hacer el redondeo
     {
       input[index] = 0;
       long aux = stringtoLong (input);
-      aux++;
+      if (aux >=0)
+      {
+          aux++;
+      }
+      else
+      {
+          aux--;
+      }
       input = longtoString (aux, CANT_DECIMALES_OUTPUT, input);
+     
     }
-  else
-    {
-      input[index] = 0;
-    }
-
+    input[index] = 0;
   //termina y deja CANT_DECIMALES _OUTPUT
   return input;
 }
@@ -85,6 +93,11 @@ char * malloc2(){
     {
         index=0;
     }
+    for (int i = 0; i < MAX_NUMBER_LENGTH; i++)
+    {
+        freemem[index][i]=0;
+    }
+    //me aseguro que no venga basura porque puede molestar
     
     return freemem[index];
 }
@@ -194,32 +207,21 @@ char * eval( char * first,int first_dim,char * second,int second_dim,char operat
 
 char * longtoString(long number,int dim,char * output)
 { 
-    char aux [20];
+    //necesito un output limpio, no me pases vectores que tengan numeros antes porque no los detecta.
+    //llamar a malloc 2 que asegura vectores de size correcto y limpios
+    char aux [MAX_NUMBER_LENGTH];
     int index=0;
     int index2=0;
     int negative=0;
-    
-    if(number==0){ //caso especial del 0 porque si lo multiplico por 10 no cambia su dimension entonces no es afectado
-        int i=2;
-        output[0]='0';
-        output[1]='.';
-        while(i<CANT_DECIMALES_INTER_OPERACIONES){
-            output[i]='0';
-            i++;
-        }
-        output[i]=0;
-        return output;
-    }
-    
-    
+
     if (number<0)
     {
         negative=1;
     }
     
-    while (number!=0)
+    while (dim>=0||number!=0)
     {
-        if(dim==0)
+         if(dim==0)
         {
           aux[index++]='.';
         }
@@ -230,10 +232,7 @@ char * longtoString(long number,int dim,char * output)
         aux[index++] = auxiliar + '0';
         number /= 10;
         dim--;
-        //resto negativo quickfix
-        
     }
-    
     if(dim==0){
           aux[index++]='.';
           aux[index++]='0';
@@ -248,12 +247,88 @@ char * longtoString(long number,int dim,char * output)
     {
         output[index2++]=aux[--index];
     }
-    output[index2]=0;
-   
+
+    index2=0;
+    while (output[index2]!='.')
+    {
+        index2++;
+    }
+    index2++;
+    for (int i = 0; i < CANT_DECIMALES_INTER_OPERACIONES; i++)
+    {
+        if (!(output[index2+i] >= '0' && output[index2 +i] <= '9'))
+        {
+            output[index2+i]='0';
+        }
+        
+    }
+    output[index2+CANT_DECIMALES_INTER_OPERACIONES]=0;
     return output;
-    
-    
+        
 }
+
+// char * longtoString(long number,int dim,char * output)
+// { 
+//     char aux [20];
+//     int index=0;
+//     int index2=0;
+//     int negative=0;
+    
+//     if(number==0){ //caso especial del 0 porque si lo multiplico por 10 no cambia su dimension entonces no es afectado
+//         int i=2;
+//         output[0]='0';
+//         output[1]='.';
+//         while(i<CANT_DECIMALES_INTER_OPERACIONES){
+//             output[i]='0';
+//             i++;
+//         }
+//         output[i]=0;
+//         return output;
+//     }
+    
+    
+//     if (number<0)
+//     {
+//         negative=1;
+//     }
+    
+//     while (number!=0)
+//     {
+//         if(dim==0)
+//         {
+//           aux[index++]='.';
+//         }
+//         int auxiliar=number % 10;
+//         if(auxiliar<0){
+//             auxiliar*=-1; 
+//         }
+//         aux[index++] = auxiliar + '0';
+//         number /= 10;
+//         dim--;
+//         //resto negativo quickfix
+        
+//     }
+    
+//     if(dim==0){
+//           aux[index++]='.';
+//           aux[index++]='0';
+//     }
+
+//     if (negative)
+//     {
+//         aux[index++]='-';
+//     }
+    
+//     while (index!=0)
+//     {
+//         output[index2++]=aux[--index];
+//     }
+//     output[index2]=0;
+   
+//     return output;
+    
+    
+// }
 
 long stringtoLong (char *number)
 {
