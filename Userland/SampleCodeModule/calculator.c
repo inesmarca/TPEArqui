@@ -383,7 +383,7 @@ char * evaluatePosfija(char * input)
 {
     int input_pos=0;//posicion en el array del input.
     int stack_pos=0;
-    char * stack [20];//stack de strings o matriz de chars, depende de como lo pienses
+    char * stack [MAX_NUM_IN_EXPRESION];//stack de strings o matriz de chars, depende de como lo pienses
     while (input[input_pos]!=0)
     {
         char current=input[input_pos++];
@@ -507,7 +507,7 @@ int infijaToPosfija(char * input, char * output){
     int pos_output=0;
     int pos_input=0;
     int stack_pos=0;
-    char stack [100];
+    char stack [MAX_INPUT_LENGTH];
     while (input[pos_input]!= '=')
     {   
 
