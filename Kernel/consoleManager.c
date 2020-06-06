@@ -53,9 +53,10 @@ void delete() {
         posX = &pos2X;
         posY = &pos2Y;
     }
-
-    *posX -= LETTER_WIDTH;
-    setSegmentBlank(*posX, *posX + LETTER_WIDTH, *posY, *posY + LETTER_HEIGHT);
+    if (*posX != 0) {
+        *posX -= LETTER_WIDTH;
+        setSegmentBlank(*posX, *posX + LETTER_WIDTH, *posY, *posY + LETTER_HEIGHT);
+    }
 }
 
 void newLine() {
