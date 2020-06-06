@@ -16,7 +16,11 @@ static int pos2Y = HEIGHT - LETTER_HEIGHT;
 
 static int currentScreen = 1;
 
-void changeScreen(int screen) { currentScreen = screen; }
+void changeScreen(int screen) { 
+    if (screen == 1 || screen == 2) {
+        currentScreen = screen; 
+    }
+}
 
 int getCurrentScreen() { return currentScreen; }
 

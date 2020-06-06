@@ -2,7 +2,7 @@
 #define __SYSCALL_H_
 #include <stdint.h>
 
-void readKey(char * buf);
+void readKey(char * buf, int cant);
 
 void writeString(const char * string, int letter_color, int background_color);
 

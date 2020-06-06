@@ -23,7 +23,7 @@ EXTERN writeString
 EXTERN getPixelData
 EXTERN printPixel
 EXTERN getExitFlag
-EXTERN getCurrentScreen
+EXTERN changeScreen
 EXTERN getTemperature
 EXTERN getRegVec
 
@@ -129,7 +129,7 @@ SECTION .text
 	cmp rax, 4
 	je .getExit
 	cmp rax, 5
-	je .getScreen	;cual screen esta
+	je .switchScreen	; cambia el string
 	cmp rax, 6
 	je .cputemp	; devuelve la temp del cpu
 	cmp rax, 7
@@ -157,9 +157,8 @@ SECTION .text
 	mov rbx, rax
 	jmp .fin
 
-.getScreen:
-	call getCurrentScreen
-	mov rbx, rax
+.switchScreen:
+	call changeScreen
 	jmp .fin
 .cputemp:
 	call getTemperature

@@ -7,6 +7,8 @@
 
 int getCurrentScreen();
 
+void changeScreen(int screen);
+
 void print(const char * string, int letter_color, int background_color);
 
 void delete(int background_color);

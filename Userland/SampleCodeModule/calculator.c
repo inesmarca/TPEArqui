@@ -1,7 +1,7 @@
 #include <calculator.h>
+#include <programHandler.h>
+#include <programs.h>
 #include <libC.h>
-
-
 
 char * eval( char * first,int first_dim,char * second,int second_dim,char operation);
 
@@ -33,7 +33,47 @@ char * ajustardecimales(char * input);
 
 
 
-
+void calculator() {
+    static char input[WIDTH/8] = {0};
+    static int pos = 0;
+    static char inputBuffer[128] = {0};
+    int retFlag = 0;
+    while (!retFlag) {
+        readKeyBuff(inputBuffer, DIM_BUFFER);
+        for (int i = 0; inputBuffer[i] != 0 && !retFlag; i++) {
+            if (inputBuffer[i] == TAB) {
+                inputBuffer[i];
+                retFlag = 1;
+            } else if (inputBuffer[i] == '=') {
+                putChar(inputBuffer[i]);
+                input[pos++] = inputBuffer[i];
+                char * result = runCalc(input);
+                if (result != NULL) {
+                    printf("%s %s\n", inputBuffer[i], result);
+                } else {
+                    printf("%s\n", inputBuffer[i]);
+                }                  
+                input[0] = 0;
+                pos = 0;
+            } else if (inputBuffer[i] == DELETE) {
+                putChar(inputBuffer[i]);
+                pos--;
+                input[pos] = 0;
+            } else if (inputBuffer[i] == 'D') {  // borra la linea entera
+                while (pos != 0) {
+                    putChar(DELETE);
+                    pos--;
+                }
+                input[pos] = 0;
+            } else if (inputBuffer[i] != '\n') {
+                putChar(inputBuffer[i]);
+                input[pos++] = inputBuffer[i];
+                input[pos] = 0;
+            }
+            inputBuffer[i] = 0;
+        }
+    }
+}
 
 char * runCalc(char * str) {
     char aux[MAX_INPUT_LENGTH];

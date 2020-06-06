@@ -4,10 +4,10 @@
 #include <temperature.h>
 #include <stdint.h>
 
-void readKey(char * buf) {
+void readKey(char * buf, int cant) {
     char * input = getBuffer();
     int i;
-    for (i = 0; input[i] != 0; i++) {
+    for (i = 0; input[i] != 0 && i != cant; i++) {
         buf[i] = input[i];
     }
     buf[i] = input[i];

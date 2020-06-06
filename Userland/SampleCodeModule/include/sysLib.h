@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-extern void readKeyBuff(char * buf);
+extern void readKeyBuff(char * buf, int cant);
 
 extern void writeScreen(const char * string, int letter_color, int background_color);
 
@@ -10,7 +10,7 @@ extern void writePixel(int x, int y, int color);
 
 extern int getExitFlag();
 
-extern int getActiveScreen();
+extern void sysChangeScreen(int screen);
 
 extern int getRTC(int x);
 

@@ -1,20 +1,7 @@
-#include <shell.h>
-#include <sysLib.h>
+#include <programs.h>
+#include <programHandler.h>
 #include <libC.h>
-#include <calculator.h>
-#include <cpuInfo.h>
-#include <stdint.h>
-
-#define B_SPACE 0x0E
-#define CURSOR 127
-
-extern char * cpuVendor();
-extern char * cpuModel();
-char inputBuffer[128] = {0};
-char input1[128] = {0};
-int pos1 = 0;
-char input2[128] = {0};
-int pos2 = 0;
+#define CANT_FUNC 7
 
 void printTime();
 void printCPUInfo();
@@ -23,80 +10,42 @@ void inforeg();
 void test0();
 void test();
 void testScanf();
-void testgetchar();
 
-char username[20] = {0};
-
-#define CANT_FUNC 7
 char functions[CANT_FUNC][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test", "testScanf"};
 void (*func_ptr[CANT_FUNC])() = {printTime, printTemperature, printCPUInfo, inforeg, test0, test, testScanf};
 
 void shell() {
-    while (!getExitFlag()) {
-        while (getActiveScreen() == 1) {
-            readKeyBuff(inputBuffer);
-            for (int i = 0; inputBuffer[i] != 0; i++) {
-                if (inputBuffer[i] == '=') {
-                    putChar(inputBuffer[i]);
-                    input1[pos1++] = inputBuffer[i];
-                    char * result=runCalc(input1);
-                    if (result!=NULL)
-                    {
-                       printf("%s %s\n", inputBuffer[i],result);
-                    }
-                    else
-                    {
-                        printf("%s\n", inputBuffer[i]);
-                    }                  
-                    input1[0] = 0;
-                    pos1 = 0;
-                } else if (inputBuffer[i] == B_SPACE) {
-                    putChar(inputBuffer[i]);
-                    inputBuffer[i] = 0;
-                    pos1--;
-                    input1[pos1] = 0;
-                } else if (inputBuffer[i] == 'D') {  // borra la linea entera
-                    while (pos1 != 0) {
-                        putChar(B_SPACE);
-                        pos1--;
-                    }
-                    input1[pos1] = 0;
-                } else if (inputBuffer[i] != '\n') {
-                    putChar(inputBuffer[i]);
-                    input1[pos1++] = inputBuffer[i];
-                    input1[pos1] = 0;
-                    inputBuffer[i] = 0;
+    static char input[WIDTH/8] = {0};
+    static int pos = 0;
+    static char inputBuffer[128] = {0};
+    int retFlag = 0;
+    while (!retFlag) {
+        readKeyBuff(inputBuffer, DIM_BUFFER);
+        for (int i = 0; inputBuffer[i] != 0; i++) {
+            if (inputBuffer[i] == TAB) {
+                inputBuffer[i];
+                retFlag = 1;
+            } else if (inputBuffer[i] == '\n') {
+                putChar('\n');
+                int j;
+                for (j = 0; j < CANT_FUNC && !strcmp(input, functions[j]); j++) {}
+                if (j != CANT_FUNC) {
+                    func_ptr[j]();
                 } else {
-                    inputBuffer[i] = 0;
+                    printf("Not a valid function\n");
                 }
-            } 
-        }
-
-        while (getActiveScreen() == 2) {
-            readKeyBuff(inputBuffer);
-            for (int i = 0; inputBuffer[i] != 0; i++) {
-                if (inputBuffer[i] == '\n') {
-                    putChar('\n');
-                    int j;
-                    for (j = 0; j < CANT_FUNC && !strcmp(input2, functions[j]); j++) {}
-                    if (j != CANT_FUNC) {
-                        func_ptr[j]();
-                    } else {
-                        printf("Not a valid function\n");
-                    }
-                    input2[0] = 0;
-                    pos2 = 0;
-                } else if (inputBuffer[i] == B_SPACE) {
-                    putChar(inputBuffer[i]);
-                    inputBuffer[i] = 0;
-                    pos2--;
-                    input2[pos2] = 0;
-                } else {
-                    putChar(inputBuffer[i]);
-                    input2[pos2++] = inputBuffer[i];
-                    input2[pos2] = 0;
-                    inputBuffer[i] = 0;
-                }
+                input[0] = 0;
+                pos = 0;
+            } else if (inputBuffer[i] == DELETE && pos != 0) {
+                putChar(inputBuffer[i]);
+                inputBuffer[i] = 0;
+                pos--;
+                input[pos] = 0;
+            } else {
+                putChar(inputBuffer[i]);
+                input[pos++] = inputBuffer[i];
+                input[pos] = 0;
+                inputBuffer[i] = 0;
             }
         }
     }
@@ -107,7 +56,7 @@ void test0() {
 }
 
 void testScanf() {
-    char string[10];
+    char string[10] = "chau";
     int x = 0;
     scanf("%d", &x);
     printf("%d\n", x);

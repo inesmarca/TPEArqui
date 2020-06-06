@@ -3,15 +3,30 @@ GLOBAL writeScreen
 GLOBAL readPixel
 GLOBAL writePixel
 GLOBAL getExitFlag
-GLOBAL getActiveScreen
+GLOBAL sysChangeScreen
 GLOBAL getRTC
 GLOBAL getTemperature
 GLOBAL getRegisters
 
 EXTERN printf
 
-
-
+%macro pushState 0
+	push rax
+	push rbx
+	push rcx
+	push rdx
+	push rbp
+	push rdi
+	push rsi
+	push r8
+	push r9
+	push r10
+	push r11
+	push r12
+	push r13
+	push r14
+	push r15
+%endmacro
 
 ; void readKeyBuff(char * buf)
 readKeyBuff:
@@ -46,13 +61,10 @@ getExitFlag:
     pop rbx
     ret
 
-; int getActiveScreen()
-getActiveScreen:
-    push rbx
+; void changeScreen(int screen)
+sysChangeScreen:
     mov rax, 5
     int 80h
-    mov rax, rbx
-    pop rbx
     ret
 
 ;int getTemperature()

@@ -60,7 +60,7 @@ void putChar(char str) {
 char getChar() {
 	char res = 0;
     while (res == 0) {
-	    readKeyBuff(&res);
+	    readKeyBuff(&res, 1);
     }
 	return res;
 }
@@ -160,6 +160,7 @@ int scanf(const char *format, ...){
 	//lee como maximo MAX_READABLE_CHARACTERS (1024 characters)
 	char input [MAX_READABLE_CHARACTERS];
 	int input_pos=0;
+	printf(format);
 	char in = getChar();
 	while (in != '\n')
 	{

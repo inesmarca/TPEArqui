@@ -1,6 +1,6 @@
 /* sampleCodeModule.c */
-#include <shell.h>
+#include <programHandler.h>
 
 int main() {
-	shell();
+	programHandler();
 }
