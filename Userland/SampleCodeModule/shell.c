@@ -99,15 +99,6 @@ void shell() {
     }
 }
 
-void inforeg() {
-    uint64_t memory[18];
-    getRegisters(memory);
-    for (int i = 0; i < 18; i++) {
-        printf("%d, ", memory[i]);
-    }
-    putChar('\n');
-}
-
 void test0() {
     int x = 5 / 0;
 }

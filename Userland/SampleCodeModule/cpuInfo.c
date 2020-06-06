@@ -71,6 +71,6 @@ void printCPUInfo(){
     int Family=CPUFamily(cpuval);
     int Model=CPUModel(cpuval);
 
-    printf("CPU Vendor is: %s ,the procesor family ID is %d and the model ID is %d",cpuVendor(),Family,Model);
+    printf("CPU Vendor is: %s ,the procesor family ID is %d and the model ID is %d/n",cpuVendor(),Family,Model);
 }
 
