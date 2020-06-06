@@ -25,6 +25,7 @@ EXTERN printPixel
 EXTERN getExitFlag
 EXTERN getCurrentScreen
 EXTERN getTemperature
+EXTERN getRegVec
 
 
 SECTION .text
@@ -103,12 +104,13 @@ SECTION .text
 	pushState
 
 	mov rdi, %1 ; pasaje de parametro
+	mov rsi, rsp ; pasaje del stack frame
 	call irqDispatcher
 
 	; signal pic EOI (End of Interrupt)
 	mov al, 20h
 	out 20h, al
-
+	
 	popState
 	iretq
 %endmacro
@@ -130,6 +132,8 @@ SECTION .text
 	je .getScreen	;cual screen esta
 	cmp rax, 6
 	je .cputemp	; devuelve la temp del cpu
+	cmp rax, 7
+	je .registers
 	jmp .fin
 
 .runRead:
@@ -162,6 +166,10 @@ SECTION .text
 	mov rbx, rax
 	jmp .fin
 
+.registers:
+	call getRegVec
+	jmp .fin
+
 .fin:
 	; signal pic EOI (End of Interrupt)
 	mov al, 20h
@@ -176,6 +184,7 @@ SECTION .text
 	pushState
 
 	mov rdi, %1 ; pasaje de parametro
+	mov rsi, rsp ; puntero del stack para poder retornar 
 	call exceptionDispatcher
 
 	popState

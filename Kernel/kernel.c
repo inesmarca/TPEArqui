@@ -18,9 +18,9 @@ static void * const sampleDataModuleAddress = (void*)0x500000;
 
 typedef int (*EntryPoint)();
 
+extern uint64_t getRSP();
 
-void clearBSS(void * bssAddress, uint64_t bssSize)
-{
+void clearBSS(void * bssAddress, uint64_t bssSize) {
 	memset(bssAddress, 0, bssSize);
 }
 
@@ -53,6 +53,7 @@ int main()
 	load_idt();
 	middleLine();
 	changeScreen(2);
+	setAddresses((uint64_t)sampleCodeModuleAddress, getRSP());
 	((EntryPoint)sampleCodeModuleAddress)();
 	return 0;
 }

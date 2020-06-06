@@ -6,6 +6,7 @@ GLOBAL getExitFlag
 GLOBAL getActiveScreen
 GLOBAL getRTC
 GLOBAL getTemperature
+GLOBAL getRegisters
 
 EXTERN printf
 
@@ -63,7 +64,11 @@ getTemperature:
     pop rbx
     ret
 	
-
+; void getRegisters(uint64_t * buff) 
+getRegisters:
+    mov rax, 7
+    int 80h
+    ret
 
 
 ;int getRTC(int x) 

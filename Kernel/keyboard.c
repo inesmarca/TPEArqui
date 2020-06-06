@@ -58,7 +58,7 @@ void bufferAdd(char key) {
     buffer[pos] = 0;
 }
 
-void keyboard_handler() {
+void keyboard_handler(uint64_t * stackFrame) {
     uint8_t key = getKey();
     currentAction = action(key);
     if (action(key) == PRESSED) {
@@ -85,10 +85,14 @@ void keyboard_handler() {
         default: // agregar un delete de toda la linea
             if (specialChars[2] == 1 && key == 0x03) { // Control 2
                 changeScreen(2);
+                setAddresses(stackFrame[15], stackFrame[18]);
             } else if (specialChars[2] == 1 && key == 0x04) { // uso el 3 porque necesito testear y no me lee el 1 de la compu Control 3
                 changeScreen(1);
+                setAddresses(stackFrame[15], stackFrame[18]);
             } else if (specialChars[2] == 1 && key == 0x2E) { // Control C para terminar el programa
                 exitFlag = 1;
+            } else if (specialChars[2] == 1 && key == 0x1F) { // Control S para guardar un backup de los registros
+                saveReg(stackFrame);
             } else {
                 if (specialChars[0] == 1 || specialChars[0] == 1) {
                     bufferAdd(pressCodes[key][1]);

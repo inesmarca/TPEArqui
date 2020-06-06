@@ -1,4 +1,5 @@
 GLOBAL cpuVendor
+GLOBAL getRSP
 
 section .text
 	
@@ -24,4 +25,8 @@ cpuVendor:
 
 	mov rsp, rbp
 	pop rbp
+	ret
+
+getRSP:
+	mov rax, rsp
 	ret
