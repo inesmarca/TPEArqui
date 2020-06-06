@@ -16,12 +16,12 @@ char getPositionGreen(int x, int y);
 
 char getPositionBlue(int x, int y);
 
-void writePixel(int x, int y, int red, int green, int blue);
+void writePixel(int x, int y, int rgb_hexa);
 
-void drawLine(int y);
+void drawLine(int y, int color);
 
-void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final);
+void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final, int background_color);
 
-void writeLetter(char key, int posX, int posY);
+void writeLetter(char key, int posX, int posY, int letter_color, int background_color);
 
 #endif

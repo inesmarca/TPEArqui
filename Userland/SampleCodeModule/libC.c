@@ -7,7 +7,19 @@
 #define DECIMALPLACES 4
 #define MAX_PRINTABLE_CHARACTERS 1024
 #define MAX_READABLE_CHARACTERS 1024
+#define DEFAULT_LETTER_COLOR 0xFFFFFF
+#define DEFAULT_BACKGROUND_COLOR 0x000000
 
+int letter_color = DEFAULT_LETTER_COLOR;
+int background_color = DEFAULT_BACKGROUND_COLOR;
+
+void changeLetterColor(int code) {
+	letter_color = code;
+} 
+
+void changeBackgroundColor(int code) {
+	background_color = code;
+}
 
 //https://www.techiedelight.com/implement-strcpy-function-c/ era muy sencilla asi que la tomamos de internet.
 char * strcpy(char * destination, const char * source){
@@ -39,7 +51,7 @@ int strcmp(char * s1, char * s2) {
 }
 
 void putChar(char str) {
-	writeScreen(&str);
+	writeScreen(&str, letter_color, background_color);
 }
 
 char getChar() {
@@ -134,11 +146,12 @@ void printf(const char * format,...){
 	}
 	va_end(valist);
     output[output_pos]=0;
-	writeScreen(output);
+	writeScreen(output, letter_color, background_color);
 
     
     
 }
+
 int scanf(const char *format, ...){
     //tiene que tener el formato correcto para funcionar bien. si hay % faltantes o sobrantes no va afuncionar.
 	//tiene soporte para %c %d %s

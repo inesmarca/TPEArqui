@@ -20,7 +20,7 @@ void changeScreen(int screen) { currentScreen = screen; }
 
 int getCurrentScreen() { return currentScreen; }
 
-void print(const char * string) {
+void print(const char * string, int letter_color, int background_color) {
     int * posX;
     int * posY;
     if (getCurrentScreen() == 1) {
@@ -33,17 +33,17 @@ void print(const char * string) {
 
     for (int i = 0; string[i] != 0; i++) {
         if (string[i] == '\n') {
-            newLine();
+            newLine(background_color);
         } else if (string[i] == B_SPACE) {
-            delete();
+            delete(background_color);
         } else {
-            writeLetter(string[i], *posX, *posY);
+            writeLetter(string[i], *posX, *posY, letter_color, background_color);
             *posX += LETTER_WIDTH;        
         }
     }
 }
 
-void delete() {
+void delete(int background_color) {
     int * posX;
     int * posY;
     if (getCurrentScreen() == 1) {
@@ -55,11 +55,11 @@ void delete() {
     }
     if (*posX != 0) {
         *posX -= LETTER_WIDTH;
-        setSegmentBlank(*posX, *posX + LETTER_WIDTH, *posY, *posY + LETTER_HEIGHT);
+        setSegmentBlank(*posX, *posX + LETTER_WIDTH, *posY, *posY + LETTER_HEIGHT, background_color);
     }
 }
 
-void newLine() {
+void newLine(int background_color) {
     int * posX;
     int max_pos = 0;
     if (getCurrentScreen() == 1) {
@@ -76,9 +76,10 @@ void newLine() {
                 int redAux = getPositionRed(x,y);
                 int greenAux = getPositionGreen(x,y);
                 int blueAux = getPositionBlue(x,y);
-                setSegmentBlank(x, WIDTH, y, y);
-                writePixel(x, y, getPositionRed(x, y+LETTER_HEIGHT), getPositionGreen(x, y + LETTER_HEIGHT), getPositionBlue(x, y+LETTER_HEIGHT));
-                writePixel(x, y + LETTER_HEIGHT, redAux, greenAux, blueAux);
+                int color = (redAux << 16) + (greenAux << 8) + blueAux;
+                setSegmentBlank(x, WIDTH, y, y, background_color);
+                writePixel(x, y, (getPositionRed(x, y+LETTER_HEIGHT) << 16) + (getPositionGreen(x, y + LETTER_HEIGHT) << 8) + getPositionBlue(x, y+LETTER_HEIGHT));
+                writePixel(x, y + LETTER_HEIGHT, color);
             }
         }
     }
@@ -86,6 +87,6 @@ void newLine() {
 
 void middleLine() {
     for (int i = 0; i < LINE_HEIGHT; i++) {
-        drawLine(LINE_START_POS + i);
+        drawLine(LINE_START_POS + i, 0x32A871);
     }
 }

@@ -2,11 +2,11 @@
 
 extern void readKeyBuff(char * buf);
 
-extern void writeScreen(const char * string);
+extern void writeScreen(const char * string, int letter_color, int background_color);
 
 extern void readPixel(char * rgb, int x, int y);
 
-extern void writePixel(int x, int y, int red, int green, int blue);
+extern void writePixel(int x, int y, int color);
 
 extern int getExitFlag();
 

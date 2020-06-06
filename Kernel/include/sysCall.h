@@ -4,11 +4,11 @@
 
 void readKey(char * buf);
 
-void writeString(const char * string);
+void writeString(const char * string, int letter_color, int background_color);
 
 void getPixelData(char * rgb, int x, int y);
 
-void printPixel(int x, int y, int red, int green, int blue);
+void printPixel(int x, int y, int color);
 
 int getTemperature();
 

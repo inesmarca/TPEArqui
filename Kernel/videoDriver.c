@@ -66,14 +66,14 @@ char getPositionBlue(int x, int y) {
 	return pos[0];
 }
 
-void writePixel(int x, int y,  int red, int green, int blue) {
+void writePixel(int x, int y,  int rgb_hexa) {
     char * pos = getDataPosition(x,y);
-	pos[0] = red;
-	pos[1] = green;
-	pos[2] = blue;
+	pos[0] = rgb_hexa & 0xFF; // Blue
+	pos[1] = (rgb_hexa >> 8) & 0xFF; // Green
+	pos[2] = (rgb_hexa >> 16) & 0xFF; // Red
 }
 
-void writeLetter(char key, int posX, int posY) {
+void writeLetter(char key, int posX, int posY, int letter_color, int background_color) {
 	char * bitmap = font8x16[key];
 	int x,y;
 	int set1, set2;
@@ -82,25 +82,29 @@ void writeLetter(char key, int posX, int posY) {
 			set1 = bitmap[x] & 1 << y;
 			set2 = bitmap[x + LETTER_WIDTH] & 1 << y;
 			if (set1) {
-				writePixel(posX + x, posY + y, 255, 255, 255);
+				writePixel(posX + x, posY + y, letter_color);
+			} else {
+				writePixel(posX + x, posY + y, background_color);
 			}
 			if (set2) {
-				writePixel(posX + x, posY + y + LETTER_WIDTH, 255, 255, 255);
+				writePixel(posX + x, posY + y + LETTER_WIDTH, letter_color);
+			} else {
+				writePixel(posX + x, posY + y + LETTER_WIDTH, background_color);
 			}
 		}
 	}
 }
 
-void drawLine(int y) {
+void drawLine(int y, int color) {
 	for (int i = 0; i < WIDTH; i++) {
-		writePixel(i,y, 255, 255, 255);
+		writePixel(i,y, color);
 	}
 }
 
-void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final) {
+void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final, int background_color) {
 	for (int i = y_initial; i <= y_final; i++) {
         for (int j = x_initial; j < x_final; j++) {
-            writePixel(j, i, 0, 0, 0);
+            writePixel(j, i, background_color);
         }
     }
 } 
