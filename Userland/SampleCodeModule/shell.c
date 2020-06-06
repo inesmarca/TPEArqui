@@ -3,6 +3,7 @@
 #include <libC.h>
 #include <calculator.h>
 #include <cpuInfo.h>
+#include <stdint.h>
 
 #define B_SPACE 0x0E
 #define CURSOR 127
@@ -18,11 +19,14 @@ int pos2 = 0;
 void printTime();
 void printCPUInfo();
 void printTemperature();
+void inforeg();
+void test0();
+void test();
 
 char username[20] = {0};
 
-char functions[3][20] = {"printTime", "printTemperature","printCPUInfo"};
-void (*func_ptr[3])() = {printTime, printTemperature,printCPUInfo};
+char functions[6][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test"};
+void (*func_ptr[6])() = {printTime, printTemperature, printCPUInfo, inforeg, test0, test};
 
 void shell() {
     while (!getExitFlag()) {
@@ -93,4 +97,8 @@ void shell() {
             }
         }
     }
+}
+
+void test0() {
+    int x = 5 / 0;
 }

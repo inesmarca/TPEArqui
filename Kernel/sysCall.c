@@ -2,7 +2,7 @@
 #include <consoleManager.h>
 #include <videoDriver.h>
 #include <temperature.h>
-
+#include <stdint.h>
 
 void readKey(char * buf) {
     char * input = getBuffer();
@@ -14,8 +14,8 @@ void readKey(char * buf) {
     deleteBuff();
 }
 
-void writeString(const char * string) {
-    print(string);
+void writeString(const char * string, int letter_color, int background_color) {
+    print(string, letter_color, background_color);
 }
 
 void getPixelData(char * rgb, int x, int y) {
@@ -27,10 +27,17 @@ void getPixelData(char * rgb, int x, int y) {
     }
 }
 
-void printPixel(int x, int y, int red, int green, int blue) {
-    writePixel(x, y, red, green, blue);
+void printPixel(int x, int y, int color) {
+    writePixel(x, y, color);
 }
 
 int getTemperature(){
     return getTemp();
+}
+
+void getRegVec(uint64_t * buff) {
+    uint64_t * memory = getVec();
+    for (int i = 0; i != 18; i++) {
+        buff[i] = memory[i];
+    }
 }

@@ -6,6 +6,7 @@ GLOBAL getExitFlag
 GLOBAL getActiveScreen
 GLOBAL getRTC
 GLOBAL getTemperature
+GLOBAL getRegisters
 
 EXTERN printf
 
@@ -18,7 +19,7 @@ readKeyBuff:
     int 80h
     ret
 
-; void writeScreen(const char * string)
+; void writeScreen(const char * string, int letter_color, int background_color)
 writeScreen:
     mov rax, 1
     int 80h
@@ -30,7 +31,7 @@ readPixel:
     int 80h
     ret
 
-; void writePixel(int x, int y, int red, int green, int blue)
+; void writePixel(int x, int y, int color)
 writePixel:
     mov rax, 3
     int 80h
@@ -63,7 +64,11 @@ getTemperature:
     pop rbx
     ret
 	
-
+; void getRegisters(uint64_t * buff) 
+getRegisters:
+    mov rax, 7
+    int 80h
+    ret
 
 
 ;int getRTC(int x) 

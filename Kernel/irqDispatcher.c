@@ -3,15 +3,15 @@
 
 static void int_21();
 
-void irqDispatcher(uint64_t irq) {
+void irqDispatcher(uint64_t irq, uint64_t * stackFrame) {
 	switch (irq) {
 		case 1:
-			int_21();
+			int_21(stackFrame);
 			break;
 	}
 	return;
 }
 
-void int_21() {
-	keyboard_handler();
+void int_21(uint64_t * stackFrame) {
+	keyboard_handler(stackFrame);
 }

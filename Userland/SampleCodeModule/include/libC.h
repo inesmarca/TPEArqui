@@ -1,3 +1,4 @@
+#include <stdint.h>
 
 char * strcpy(char * destination,const char * source);
 
@@ -12,6 +13,12 @@ char getChar();
 
 void printf(const char * format,...);
 
+uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base);
+
 void printTime();
 
 void printTemperature();
+
+void changeLetterColor(int code);
+
+void changeBackgroundColor(int code);
