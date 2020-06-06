@@ -7,6 +7,7 @@
 #define DECIMALPLACES 4
 #define MAX_PRINTABLE_CHARACTERS 1024
 #define MAX_READABLE_CHARACTERS 1024
+#define NULL (void*)0
 
 
 //https://www.techiedelight.com/implement-strcpy-function-c/ era muy sencilla asi que la tomamos de internet.
@@ -143,11 +144,20 @@ int scanf(const char *format, ...){
     //tiene que tener el formato correcto para funcionar bien. si hay % faltantes o sobrantes no va afuncionar.
 	//tiene soporte para %c %d %s
 	//lee como maximo MAX_READABLE_CHARACTERS (1024 characters)
-	char output [MAX_READABLE_CHARACTERS];
-  
+	char input [MAX_READABLE_CHARACTERS];
+	int input_pos=0;
+	char in=getChar();
+	while (in!='\n')
+	{
+		input[input_pos++]=in;
+		in=getChar();
+	}
+	input[input_pos]=0;
+	input_pos=0;
+	//  
 	va_list valist;
     va_start( valist, format );
-    int output_pos=0;
+    int format_pos=0;
     int number_of_vars=0;
 	for (int i = 0; format[i] != 0; i++)
 	{
@@ -158,18 +168,39 @@ int scanf(const char *format, ...){
 			switch (format[i])
 			{
 			case 'c':
+			;//asignaciones en switch no pueden ser primera operacion o algo asi legacy c
+			*(char *)va_arg( valist, char* ) = input[input_pos++];
 				break;
 			
 			case 'd':
                 ;//algo que ver con c y switch que son raros
+				char aux [MAX_DIGITOS_EN_UN_NUMERO];
+				int aux_counter=0;
+				while (input[input_pos]!=' '||input[input_pos]!=0)
+				{
+				aux[aux_counter++]=input[input_pos++];
+				}
+				aux[aux_counter++]=0;
+
+				*(int *)va_arg( valist, int* )=stringtoInt(aux);
 				break;
 			case 's': 
             ;//algo que ver con c y switch que son raros
+
+			char * output=*(char *)va_arg( valist, char* );
+			int output_pos=0;
+			while (input[input_pos]!=' '||input[input_pos]!=0)
+			{
+				output[output_pos++]=input[input_pos++];
+			}
+			output[output_pos]=0;
 				break;
 			
 			default:
 			/* should throw exception*/
+			printf("Expresion %s is unsupported",format[i]);
 			//expression not suported
+			return -1;
 				break;
 			}
 		}
@@ -209,6 +240,38 @@ int intToString(int value, char * buffer)
 	}
 
 	return digits;
+}
+
+int stringtoInt (char * string){
+	//pasale strings bien, no valida. si los pasas mal, hay comportamiento inesperado
+	int answer=0;
+	int index=0;
+	int negative=0;
+	if (string[0]=='-')
+	{
+		negative=1;
+	}
+	
+	while (string[index]!=0)
+	{
+		if (!(string[index]>='0'&&string[index]<='9'))
+		{
+			printf("invalid string for stringtoint conversion");
+			return NULL;
+		}
+		if (index>0)
+		{
+			answer*=10;
+		}
+		answer+=string[index++]-'0';
+		
+		
+	}
+	if (negative)
+	{
+		answer*=-1;
+	}
+	return answer;
 }
 
 // int doubleToString(double value, char * buffer){
