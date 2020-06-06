@@ -22,11 +22,14 @@ void printTemperature();
 void inforeg();
 void test0();
 void test();
+void testScanf();
+void testgetchar();
 
 char username[20] = {0};
 
-char functions[6][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test"};
-void (*func_ptr[6])() = {printTime, printTemperature, printCPUInfo, inforeg, test0, test};
+#define CANT_FUNC 7
+char functions[CANT_FUNC][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test", "testScanf"};
+void (*func_ptr[CANT_FUNC])() = {printTime, printTemperature, printCPUInfo, inforeg, test0, test, testScanf};
 
 void shell() {
     while (!getExitFlag()) {
@@ -75,8 +78,8 @@ void shell() {
                 if (inputBuffer[i] == '\n') {
                     putChar('\n');
                     int j;
-                    for (j = 0; j < 6 && !strcmp(input2, functions[j]); j++) {}
-                    if (j != 6) {
+                    for (j = 0; j < CANT_FUNC && !strcmp(input2, functions[j]); j++) {}
+                    if (j != CANT_FUNC) {
                         func_ptr[j]();
                     } else {
                         printf("Not a valid function\n");
@@ -101,4 +104,11 @@ void shell() {
 
 void test0() {
     int x = 5 / 0;
+}
+
+void testScanf() {
+    char string[10];
+    int x = 0;
+    scanf("%d", &x);
+    printf("%d\n", x);
 }

@@ -11,6 +11,8 @@
 #define DEFAULT_LETTER_COLOR 0xFFFFFF
 #define DEFAULT_BACKGROUND_COLOR 0x000000
 
+// http://www.color-hex.com
+// pagina para buscar los colores hexa correspondientes
 int letter_color = DEFAULT_LETTER_COLOR;
 int background_color = DEFAULT_BACKGROUND_COLOR;
 
@@ -60,7 +62,6 @@ char getChar() {
     while (res == 0) {
 	    readKeyBuff(&res);
     }
-	putChar(res);
 	return res;
 }
 
@@ -159,10 +160,11 @@ int scanf(const char *format, ...){
 	//lee como maximo MAX_READABLE_CHARACTERS (1024 characters)
 	char input [MAX_READABLE_CHARACTERS];
 	int input_pos=0;
-	char in=getChar();
-	while (in!='\n')
+	char in = getChar();
+	while (in != '\n')
 	{
 		input[input_pos++]=in;
+		putChar(in);
 		in=getChar();
 	}
 	input[input_pos]=0;
@@ -189,7 +191,7 @@ int scanf(const char *format, ...){
                 ;//algo que ver con c y switch que son raros
 				char aux [MAX_DIGITOS_EN_UN_NUMERO];
 				int aux_counter=0;
-				while (input[input_pos]!=' '||input[input_pos]!=0)
+				while (input[input_pos]!=0 || input[input_pos]!=' ')
 				{
 				aux[aux_counter++]=input[input_pos++];
 				}
