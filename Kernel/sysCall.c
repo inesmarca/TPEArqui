@@ -7,10 +7,9 @@
 void readKey(char * buf, int cant) {
     char * input = getBuffer();
     int i;
-    for (i = 0; input[i] != 0 && i != cant; i++) {
+    for (i = 0; input[i] != 0 && i < cant; i++) {
         buf[i] = input[i];
     }
-    buf[i] = input[i];
     deleteBuff();
 }
 

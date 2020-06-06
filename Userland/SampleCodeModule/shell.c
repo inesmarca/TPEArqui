@@ -47,6 +47,7 @@ void shell() {
                 input[pos] = 0;
                 inputBuffer[i] = 0;
             }
+            inputBuffer[i]=0;
         }
     }
 }
@@ -56,8 +57,9 @@ void test0() {
 }
 
 void testScanf() {
-    char string[10] = "chau";
+    char string[10];
     int x = 0;
-    scanf("%d", &x);
-    printf("%d\n", x);
+    char * aux="%s";
+    scanf(aux, &string);
+    printf("%s\n", &string);
 }

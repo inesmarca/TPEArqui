@@ -159,24 +159,36 @@ int scanf(const char *format, ...){
 	//tiene soporte para %c %d %s
 	//lee como maximo MAX_READABLE_CHARACTERS (1024 characters)
 	char input [MAX_READABLE_CHARACTERS];
+	
+	
+	
 	int input_pos=0;
-	printf(format);
+	
 	char in = getChar();
+	
 	while (in != '\n')
 	{
+		
 		input[input_pos++]=in;
 		putChar(in);
 		in=getChar();
+		
+		
 	}
+	putChar('\n');
+	
 	input[input_pos]=0;
 	input_pos=0;
-	//  
+	
 	va_list valist;
     va_start( valist, format );
     int format_pos=0;
     int number_of_vars=0;
+
+	
 	for (int i = 0; format[i] != 0; i++)
-	{
+	{	
+		
 		if (format[i]=='%')
 		{
 			i++;
@@ -189,32 +201,35 @@ int scanf(const char *format, ...){
 				break;
 			
 			case 'd':
+			
                 ;//algo que ver con c y switch que son raros
 				char aux [MAX_DIGITOS_EN_UN_NUMERO];
 				int aux_counter=0;
-				while (input[input_pos]!=0 || input[input_pos]!=' ')
+				while (input[input_pos]!=0 && input[input_pos]!=' ')
 				{
 				aux[aux_counter++]=input[input_pos++];
 				}
 				aux[aux_counter++]=0;
 
 				*(int *)va_arg( valist, int* )=stringtoInt(aux);
+				
 				break;
 			case 's': 
             ;//algo que ver con c y switch que son raros
 
-			char * output=*(char *)va_arg( valist, char* );
+			char * output=(char *)va_arg( valist, char* );
 			int output_pos=0;
-			while (input[input_pos]!=' '||input[input_pos]!=0)
+			while (input[input_pos]!=' '&&input[input_pos]!=0)
 			{
 				output[output_pos++]=input[input_pos++];
 			}
 			output[output_pos]=0;
+			
 				break;
 			
 			default:
 			/* should throw exception*/
-			printf("Expresion %s is unsupported",format[i]);
+			printf("Expresion %s is unsupported \n",format[i]);
 			//expression not suported
 			return -1;
 				break;

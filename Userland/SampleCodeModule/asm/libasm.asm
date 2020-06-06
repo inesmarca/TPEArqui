@@ -28,6 +28,24 @@ EXTERN printf
 	push r15
 %endmacro
 
+%macro popState 0
+	pop r15
+	pop r14
+	pop r13
+	pop r12
+	pop r11
+	pop r10
+	pop r9
+	pop r8
+	pop rsi
+	pop rdi
+	pop rbp
+	pop rdx
+	pop rcx
+	pop rbx
+	pop rax
+%endmacro
+
 ; void readKeyBuff(char * buf)
 readKeyBuff:
     mov rax, 0

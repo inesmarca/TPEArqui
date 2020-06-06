@@ -25,7 +25,7 @@ char buffer[1024];
 int pos = 0;
 char exitFlag = 0;
 
-char * getBuffer(int screen) {
+char * getBuffer() {
     return buffer;
 }
 
