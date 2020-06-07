@@ -6,14 +6,16 @@
 
 void printmem(char * parameters){
 
-    long direc = 0;
+    long direc = -1;
 
     int error = sscanf(parameters,"%ld",&direc);
     
-    if (error != 1) {
+    if (error != 1||direc<0) {
         printError("Error en parseo de parametros \n");
         return;
     }
+   
+    
     unsigned char * mem=(unsigned char *)direc;
 
     printf("Direccion inicial : %ld",direc);
