@@ -13,8 +13,8 @@ void test0();
 void test6();
 
 char functions[CANT_FUNC][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test6","printmem"};
-void (*func_ptr[CANT_FUNC])() = { printTime,   printTemperature,  printCPUInfo,   inforeg,   test0,   test6,  printmem};
-char parameters[CANT_FUNC]    = { 0,           0,                 0,              0,         0,       0,      1         };
+void (*func_ptr[CANT_FUNC])() = { printTime,   printTemperature,  printCPUInfo,   inforeg,   test0,   test6,  printmem };
+char parameters[CANT_FUNC]    = { 0,           0,                 0,              0,         0,       0,      1        };
 
 static char input[DIM_BUFFER] = {0};
 static int pos = 0;

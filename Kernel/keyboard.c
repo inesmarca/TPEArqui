@@ -48,7 +48,7 @@ static const char pressCodes[KEYS][2] =
 static int currentkeyState = 0;
 static int left_shift = 0;
 static int right_shift = 0;
-static int capsLock = 0;
+// static int capsLock = 0;
 static int control = 0;
 
 void bufferAdd(char key) {

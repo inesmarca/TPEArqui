@@ -40,7 +40,7 @@ struct infoStructure {
 	uint8_t reserved1[206];
 } __attribute__ ((packed));
 
-struct infoStructure * screenInfo = 0x5C00;
+struct infoStructure * screenInfo =(struct infoStructure *) 0x5C00;
 
 char * getDataPosition(int x, int y) {
 	return screenInfo->framebuffer + (x + WIDTH * y) * 3;

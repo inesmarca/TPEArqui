@@ -1,4 +1,6 @@
 #include <libC.h>
+extern void getRegisters(uint64_t * buff) ;
+
 
 static char * regs[] = {
 	"R15:   ", "R14:   ", "R13:   ", "R12:   ", "R11:   ", 

@@ -13,6 +13,8 @@ void print(const char * string, int letter_color, int background_color);
 
 void delete(int background_color);
 
+void middleLine();
+
 void newLine(int background_color);
 
 #endif
