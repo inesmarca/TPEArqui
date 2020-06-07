@@ -288,10 +288,14 @@ int scanf(const char *format, ...){
 	va_end(valist);
     return number_of_vars;
 }
+
 int sscanf(const char *str,const char *format, ...){
     //tiene que tener el formato correcto para funcionar bien. si hay % faltantes o sobrantes no va afuncionar.
 	//tiene soporte para %c %d %s
-	
+	if (*str == 0) {
+		return 0;
+	}
+
 	int string_pos=0;
 	va_list valist;
     va_start( valist, format );

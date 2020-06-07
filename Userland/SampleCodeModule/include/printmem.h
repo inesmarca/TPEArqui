@@ -1,2 +1,2 @@
 
-int printmem(char * parameters);
+void printmem(char * parameters);

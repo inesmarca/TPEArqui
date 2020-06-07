@@ -1,18 +1,18 @@
 #include <libC.h>
+#include <printmem.h>
 
 #define MAX_DIGITS 20
 
 
-int printmem(char * parameters){
+void printmem(char * parameters){
 
-    long direc=0;
+    long direc = 0;
 
-    int error=sscanf(parameters,"%ld",&direc);
+    int error = sscanf(parameters,"%ld",&direc);
     
-    if (error!=1)
-    {
-        printf("Error en parseo de parametros \n");
-        return -1;
+    if (error != 1) {
+        printError("Error en parseo de parametros \n");
+        return;
     }
     unsigned char * mem=(unsigned char *)direc;
 
@@ -20,27 +20,31 @@ int printmem(char * parameters){
     
     printf("\n");
     printf("siguientes 32 bytes en direcciones relativas");
-    
-    
-    
-    
-    
-    
-    
-    for (int i = 0; i < 32; i++)
-    {   
-         if (i%8==0)
-        {
-            printf("\n");
+    char buff[5] = {0};
+    for (int i = 0; i < 32; i++) {
+        int dim = uintToBase(mem[i], buff, 16);
+        hexa(buff, dim); 
+        if (i % 8 == 0) {
+            putChar('\n');
         }
-        char aux [MAX_DIGITS];
-        int digits=uintToBase(mem[i], aux, 16);
-        aux [digits+1]=0;
-        printf("%d : 0x%s  ",i,aux);
-        
+        changeLetterColor(0xFEAB8A);
+        printf("%d ", i);
+        if (i < 10) {
+            putChar(' ');
+        }
+        changeLetterColor(DEFAULT_LETTER_COLOR);
+        printf(": %s   ", buff);
     }
     printf("\n");
-    
- 
-    return 0;
+}
+
+void hexa(char * buff, int dim) {
+	char auxStr[5] = "0x00";
+	for (int j = 3; j >= 0 && dim != 0; j--) {
+		auxStr[j] = buff[dim - 1];
+		dim--;
+	} 
+	for (int k = 0; k < 4; k++) {
+		buff[k] = auxStr[k];
+	}
 }
