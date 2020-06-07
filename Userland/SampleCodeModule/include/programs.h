@@ -1,4 +1,4 @@
-#define DELETE '\b'
+#define DELETE 0x0E
 #define TAB '\t'
 #define CURSOR 127
 #define HEIGHT 368

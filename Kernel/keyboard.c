@@ -25,7 +25,7 @@ char buffer[1024];
 int pos = 0;
 char exitFlag = 0;
 
-char * getBuffer() {
+char * getBuffer(int screen) {
     return buffer;
 }
 
@@ -42,7 +42,7 @@ int getExitFlag() {
 static const char pressCodes[KEYS][2] =
     {{0, 0}, {0, 0}, {'1', '!'}, {'2', '@'}, {'3', '#'}, {'4', '$'},
     {'5', '%'}, {'6', '^'}, {'7', '&'}, {'8', '*'}, {'9', '('},
-    {'0', ')'}, {'-', '_'}, {'=', '+'}, {'\b', '\b'}, {'\t','\t'}, {'q', 'Q'}, 
+    {'0', ')'}, {'-', '_'}, {'=', '+'}, {0, 0}, {'\t','\t'}, {'q', 'Q'}, 
     {'w', 'W'}, {'e', 'E'}, {'r', 'R'}, {'t', 'T'}, {'y', 'Y'}, 
     {'u', 'U'}, {'i', 'I'}, {'o', 'O'}, {'p', 'P'}, {'[', '{'}, 
     {']', '}'}, {0, 0}, {0, 0}, {'a', 'A'}, {'s', 'S'}, 
@@ -83,19 +83,11 @@ void keyboard_handler(uint64_t * stackFrame) {
             bufferAdd(B_SPACE);
             break;
         
-        default: // agregar un delete de toda la linea
-            if (specialChars[2] == 1 && key == 0x03) { // Control 2
-                changeScreen(2);
-                setAddresses(stackFrame[15], stackFrame[18]);
-            } else if (specialChars[2] == 1 && key == 0x04) { // uso el 3 porque necesito testear y no me lee el 1 de la compu Control 3
-                changeScreen(1);
-                setAddresses(stackFrame[15], stackFrame[18]);
-            } else if (specialChars[2] == 1 && key == 0x2E) { // Control C para terminar el programa
-                exitFlag = 1;
-            } else if (specialChars[2] == 1 && key == 0x1F) { // Control S para guardar un backup de los registros
+        default: 
+            if (specialChars[2] == 1 && key == 0x1F) { // Control S para guardar un backup de los registros
                 saveReg(stackFrame);
             } else {
-                if (specialChars[0] == 1 || specialChars[0] == 1) {
+                if (specialChars[0] == 1 || specialChars[1] == 1) {
                     bufferAdd(pressCodes[key][1]);
                 } else {
                     bufferAdd(pressCodes[key][0]);

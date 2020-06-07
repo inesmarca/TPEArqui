@@ -1,16 +1,21 @@
 #include <libC.h>
 
 static char * regs[] = {
-	"r15: ", "r14: ", "r13: ", "r12: ", "r11: ", 
-	"r10: ", "r9: ", "r8: ", "rsi: ", "rdi: ", 
-	"rbp: ", "rdx: ", "rcx: ", "rbx: ", "rax: ", 
-	"rip: ", "cs: ", "rsp: "
+	"R15:   ", "R14:   ", "R13:   ", "R12:   ", "R11:   ", 
+	"R10:   ", "R9:    ", "R8:    ", "RSI:   ", "RDI:   ", 
+	"RBP:   ", "RDX:   ", "RCX:   ", "RBX:   ", "RAX:   ", 
+	"RIP:   ", "CS:    ", "FLAGS: ", "RSP:   "
 	};
 
 void inforeg() {
-    uint64_t memory[18];
+    uint64_t memory[19];
     getRegisters(memory);
-    for (int i = 0; i < 18; i++) {
-        printf("%s: %d\n", regs[i], memory[i]);
+    for (int i = 0; i < 19; i++) {
+        printf("%s %d", regs[i], memory[i]);
+        if (i % 2 == 0) {
+            putChar('\n');
+        } else {
+            printf("            ");
+        }
     }
 }

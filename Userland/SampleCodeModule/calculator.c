@@ -55,7 +55,7 @@ void calculator() {
                 }                  
                 input[0] = 0;
                 pos = 0;
-            } else if (inputBuffer[i] == DELETE) {
+            } else if (inputBuffer[i] == DELETE && pos != 0) {
                 putChar(inputBuffer[i]);
                 pos--;
                 input[pos] = 0;

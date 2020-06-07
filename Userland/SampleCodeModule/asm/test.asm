@@ -1,4 +1,5 @@
 GLOBAL test
+GLOBAL test6
 
 %macro pushState 0
 	push rax
@@ -37,12 +38,11 @@ GLOBAL test
 %endmacro
 
 test:
-    pushState
-    mov rax, 18
+    mov rax, 10
     mov rbx, 2
     mov rcx, 3
     mov rdx, 4
-    mov rbp, 5
+
     mov rdi, 6
     mov rsi, 7
     mov r8, 8
@@ -53,5 +53,10 @@ test:
     mov r13, 13
     mov r14, 14
     mov r15, 15
-    popState
     ret
+
+; https://mudongliang.github.io/x86/html/file_module_x86_id_318.html
+test6:
+	call test
+	UD2
+	ret

@@ -36,7 +36,7 @@ int getTemperature(){
 
 void getRegVec(uint64_t * buff) {
     uint64_t * memory = getVec();
-    for (int i = 0; i != 18; i++) {
+    for (int i = 0; i != 19; i++) {
         buff[i] = memory[i];
     }
 }

@@ -1,7 +1,7 @@
 #include <programs.h>
 #include <programHandler.h>
 #include <libC.h>
-#define CANT_FUNC 7
+#define CANT_FUNC 9
 
 void printTime();
 void printCPUInfo();
@@ -10,9 +10,10 @@ void inforeg();
 void test0();
 void test();
 void testScanf();
+void test6();
 
-char functions[CANT_FUNC][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test", "testScanf"};
-void (*func_ptr[CANT_FUNC])() = {printTime, printTemperature, printCPUInfo, inforeg, test0, test, testScanf};
+char functions[CANT_FUNC][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test", "testScanf", "test6"};
+void (*func_ptr[CANT_FUNC])() = {printTime, printTemperature, printCPUInfo, inforeg, test0, test, testScanf, test6};
 
 void shell() {
     static char input[WIDTH/8] = {0};
@@ -29,23 +30,21 @@ void shell() {
                 putChar('\n');
                 int j;
                 for (j = 0; j < CANT_FUNC && !strcmp(input, functions[j]); j++) {}
-                if (j != CANT_FUNC) {
+                if (j < CANT_FUNC) {
                     func_ptr[j]();
                 } else {
-                    printf("Not a valid function\n");
+                    printf("Not a valid function, %s\n", input);
                 }
                 input[0] = 0;
                 pos = 0;
             } else if (inputBuffer[i] == DELETE && pos != 0) {
                 putChar(inputBuffer[i]);
-                inputBuffer[i] = 0;
                 pos--;
                 input[pos] = 0;
             } else {
                 putChar(inputBuffer[i]);
                 input[pos++] = inputBuffer[i];
                 input[pos] = 0;
-                inputBuffer[i] = 0;
             }
             inputBuffer[i]=0;
         }

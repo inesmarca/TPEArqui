@@ -375,6 +375,22 @@ uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 	return digits;
 }
 
+void baseToHexa(char * buff) {
+	char auxStr[9] = "0x000000";
+	int dim = 0;
+	for (int i = 0; buff[i] != 0; i++) {
+		dim++;
+	}
+	int aux = 7 - dim;
+	for (int j = 7; j >= 0 && dim != 0; j--) {
+		auxStr[j] = buff[dim - 1];
+		dim--;
+	} 
+	for (int k = 0; k < 8; k++) {
+		buff[k] = auxStr[k];
+	}
+}
+
 int fix_format_hours(int time) {
     int aux = time/16;
     aux *= 10;
