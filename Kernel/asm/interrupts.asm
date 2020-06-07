@@ -23,7 +23,6 @@ EXTERN readKey
 EXTERN writeString
 EXTERN getPixelData
 EXTERN printPixel
-EXTERN getExitFlag
 EXTERN changeScreen
 EXTERN getTemperature
 EXTERN getRegVec
@@ -127,8 +126,7 @@ SECTION .text
 	je .getPixel	; read de pixel de pantalla
 	cmp rax, 3
 	je .pixelWrite		; write de pixel
-	cmp rax, 4
-	je .getExit
+
 	cmp rax, 5
 	je .switchScreen	; cambia el string
 	cmp rax, 6
@@ -151,11 +149,6 @@ SECTION .text
 
 .pixelWrite:
 	call printPixel
-	jmp .fin
-
-.getExit:
-	call getExitFlag
-	mov rbx, rax
 	jmp .fin
 
 .switchScreen:

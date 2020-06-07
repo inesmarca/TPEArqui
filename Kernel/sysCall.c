@@ -3,6 +3,7 @@
 #include <videoDriver.h>
 #include <temperature.h>
 #include <stdint.h>
+#include <registers.h>
 
 void readKey(char * buf, int cant) {
     char * input = getBuffer();

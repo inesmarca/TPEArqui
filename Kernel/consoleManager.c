@@ -9,7 +9,6 @@
 #define LINE_HEIGHT 3
 #define B_SPACE 0x0E
 
-static char letter = 0;
 static int pos1X = 0;
 static int pos1Y = SCREEN1_END_POS - LETTER_HEIGHT + 1;
 static int pos2X = 0;
