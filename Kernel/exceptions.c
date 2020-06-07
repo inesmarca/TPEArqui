@@ -1,6 +1,7 @@
 #include <consoleManager.h>
 #include <stdint.h>
 #include <lib.h>
+#include <exception.h>
 #define ZERO_EXCEPTION_ID 0
 #define INVALID_OPCODE_EXCEPTION_ID 6
 
@@ -38,8 +39,8 @@ void setAddresses(uint64_t * ip, uint64_t * rsp) {
 }
 
 void resetScreen(uint64_t * stackFrame) {
-	stackFrame[15] = ipReturn;
-	stackFrame[18] = rspReturn;
+	stackFrame[15] = (uint64_t)ipReturn;
+	stackFrame[18] = (uint64_t)rspReturn;
 }
 
 void exceptionDispatcher(int exception, uint64_t * stackFrame) {

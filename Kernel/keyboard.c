@@ -1,5 +1,6 @@
 #include <keyboard.h>
 #include <stdint.h>
+#include <registers.h>
 
 extern uint8_t getKey();
 

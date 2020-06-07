@@ -77,4 +77,6 @@ void shell(char key) {
 
 void test0() {
     int x = 5 / 0;
+    x+=1;
+
 }
