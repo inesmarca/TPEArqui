@@ -12,10 +12,11 @@ void test0();
 void test();
 void testScanf();
 void test6();
+int printmem(char * parameters);
 
-char functions[CANT_FUNC][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test", "testScanf", "test6"};
-void (*func_ptr[CANT_FUNC])() = {printTime, printTemperature, printCPUInfo, inforeg, test0, test, testScanf, test6};
-
+char functions[CANT_FUNC][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test", "testScanf", "test6","printMem"};
+void (*func_ptr[CANT_FUNC])() = { printTime,   printTemperature,  printCPUInfo,   inforeg,   test0,   test,   testScanf,   test6,  printmem};
+char parameters[CANT_FUNC]    = { 0,           0,                 0,              0,         0,       0,      0,           0,      1         };
 
 static char input[WIDTH/8] = {0};
 static int pos = 0;
@@ -31,9 +32,31 @@ void shell(char key) {
         putChar('\n');
         if (pos != 0) {
             int j;
-            for (j = 0; j < CANT_FUNC && !strcmp(input, functions[j]); j++) {}
+            int k=0;
+            
+            char aux[WIDTH/8];
+            while (input[k]!=' '&&input[k]!=0)
+            {
+                aux[k]=input[k];
+                k++;
+            }
+            aux[k]=0;
+            
+            for (j = 0; j < CANT_FUNC && !strcmp(aux, functions[j]); j++) {}
             if (j < CANT_FUNC) {
-                func_ptr[j]();
+                if (parameters[j==0])
+                {
+                     func_ptr[j]();
+                }
+                int d=0;
+                k++;
+                while (input[k]!=0) //copio solo los parametros
+                {
+                    aux[d++]=input[k++];
+                }
+                aux[d]=0;
+                func_ptr[j](aux);
+               
             } else {
                 printError("Not a valid function\n");
             }
