@@ -25,7 +25,9 @@ void getPixelData(int * rgb, int x, int y) {
 }
 
 void printPixel(int x, int y, int color) {
-    writePixel(x, y, color);
+    if (x >= 0 && x < WIDTH && y < HEIGHT && y >= 0) {
+        writePixel(x, y, color);
+    }
 }
 
 int getTemperature(){

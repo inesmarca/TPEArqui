@@ -36,7 +36,7 @@ void print(const char * string, int letter_color, int background_color) {
         posY = &pos2Y;
     }
 
-    for (int i = 0; string[i] != 0; i++) {
+    for (int i = 0; string[i] != 0 && *posX < WIDTH; i++) {
         if (string[i] == '\n') {
             newLine(background_color);
         } else if (string[i] == B_SPACE) {
