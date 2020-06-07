@@ -23,7 +23,8 @@ char * malloc2();
 
 char * ajustardecimales(char * input);
 
-
+static char input[WIDTH/8] = {0};
+static int pos = 0;
 
 #define MAX_NUM_IN_EXPRESION 20
 #define MAX_NUMBER_LENGTH 20
@@ -31,47 +32,41 @@ char * ajustardecimales(char * input);
 #define CANT_DECIMALES_INTER_OPERACIONES 6 
 #define CANT_DECIMALES_OUTPUT 4 //siempre tiene que ser menos que cant_decimales_inter_operaciones
 
+void initCalculator() {
+    // prompt
+    printUser();
+}
 
-
-void calculator() {
-    static char input[WIDTH/8] = {0};
-    static int pos = 0;
-    static char inputBuffer[128] = {0};
-    int retFlag = 0;
-    while (!retFlag) {
-        readKeyBuff(inputBuffer, DIM_BUFFER);
-        for (int i = 0; inputBuffer[i] != 0 && !retFlag; i++) {
-            if (inputBuffer[i] == TAB) {
-                inputBuffer[i];
-                retFlag = 1;
-            } else if (inputBuffer[i] == '=') {
-                putChar(inputBuffer[i]);
-                input[pos++] = inputBuffer[i];
-                char * result = runCalc(input);
-                if (result != NULL) {
-                    printf("%s %s\n", inputBuffer[i], result);
-                } else {
-                    printf("%s\n", inputBuffer[i]);
-                }                  
-                input[0] = 0;
-                pos = 0;
-            } else if (inputBuffer[i] == DELETE && pos != 0) {
-                putChar(inputBuffer[i]);
-                pos--;
-                input[pos] = 0;
-            } else if (inputBuffer[i] == 'D') {  // borra la linea entera
-                while (pos != 0) {
-                    putChar(DELETE);
-                    pos--;
-                }
-                input[pos] = 0;
-            } else if (inputBuffer[i] != '\n') {
-                putChar(inputBuffer[i]);
-                input[pos++] = inputBuffer[i];
-                input[pos] = 0;
-            }
-            inputBuffer[i] = 0;
+void calculator(char key) {
+    if (key == '=') {
+        putChar(key);
+        putChar(' ');
+        input[pos++] = key;
+        char * result = runCalc(input);
+        if (result != NULL) {
+            printf("%s %s\n", key, result);
+        } else {
+            printf("%s\n", key);
+        }                  
+        input[0] = 0;
+        pos = 0;
+        printUser();
+    } else if (key == DELETE) {
+        if (pos != 0) {
+            putChar(key);
+            pos--;
+            input[pos] = 0;
         }
+    } else if (key == 'D') {  // borra la linea entera
+        while (pos != 0) {
+            putChar(DELETE);
+            pos--;
+        }
+        input[pos] = 0;
+    } else if (key != '\n') {
+        putChar(key);
+        input[pos++] = key;
+        input[pos] = 0;
     }
 }
 
@@ -210,7 +205,7 @@ char * eval( char * first,int first_dim,char * second,int second_dim,char operat
      case '/':
     if (firstnum==0)
     {
-       printf("%s","cant divide by 0, invalid input");
+        printError("Cant divide by 0, invalid input");
         return NULL;
     }
     
@@ -226,7 +221,7 @@ char * eval( char * first,int first_dim,char * second,int second_dim,char operat
 
         break;
     default:
-        printf("%s","invalid symbol, invalid input");
+        printError("Invalid symbol, invalid input");
         return NULL;
 
     }
@@ -430,7 +425,7 @@ char * evaluatePosfija(char * input)
         if (isToken(current)&&input[input_pos]==' ')//se fija que sea token y chequea el caso de que sea un numero negativo
         {
             if(stack_pos<2){
-                printf("%s","cant evaluate, stack not filled enough, invalid input");
+                printError("Cant evaluate, stack not filled enough, invalid input");
                 return NULL;
             }
             
@@ -490,7 +485,7 @@ char * evaluatePosfija(char * input)
         
         return answer;
     }
-    printf("%s","stack not empty, invalid input");
+    printError("Stack not empty, invalid input");
     return NULL;
    
 
@@ -612,7 +607,7 @@ int infijaToPosfija(char * input, char * output){
         }
         else{
             //si no encontro algo que tiene sentido
-            printf("%s","error in format conversion, invalid input");
+            printError("Error in format conversion, invalid input");
             return 1;
         }
         

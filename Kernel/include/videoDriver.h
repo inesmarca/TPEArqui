@@ -10,11 +10,7 @@ char * getDataPosition(int x, int y);
 
 char positionEmpty(int x, int y);
 
-char getPositionRed(int x, int y);
-
-char getPositionGreen(int x, int y);
-
-char getPositionBlue(int x, int y);
+int getPixelColor(int x, int y);
 
 void writePixel(int x, int y, int rgb_hexa);
 

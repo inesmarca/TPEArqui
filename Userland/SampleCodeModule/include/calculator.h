@@ -1,6 +1,8 @@
 
 #define NULL (void *)0
 
-void calculator();
+void initCalculator();
+
+void calculator(char key);
 
 char * runCalc( char * str);

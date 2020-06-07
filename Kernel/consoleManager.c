@@ -76,21 +76,15 @@ void newLine(int background_color) {
 
     for (int y = 0 + max_pos; y < max_pos + SCREEN_HEIGHT - LETTER_HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
-            if (!positionEmpty(x,y+LETTER_HEIGHT)) {
-                int redAux = getPositionRed(x,y);
-                int greenAux = getPositionGreen(x,y);
-                int blueAux = getPositionBlue(x,y);
-                int color = (redAux << 16) + (greenAux << 8) + blueAux;
-                setSegmentBlank(x, WIDTH, y, y, background_color);
-                writePixel(x, y, (getPositionRed(x, y+LETTER_HEIGHT) << 16) + (getPositionGreen(x, y + LETTER_HEIGHT) << 8) + getPositionBlue(x, y+LETTER_HEIGHT));
-                writePixel(x, y + LETTER_HEIGHT, color);
-            }
+            int color = getPixelColor(x, y);
+            writePixel(x, y, getPixelColor(x, y + LETTER_HEIGHT));
+            writePixel(x, y + LETTER_HEIGHT, color);
         }
     }
 }
 
 void middleLine() {
     for (int i = 0; i < LINE_HEIGHT; i++) {
-        drawLine(LINE_START_POS + i, 0x32A871);
+        drawLine(LINE_START_POS + i, 0x62FFCC);
     }
 }

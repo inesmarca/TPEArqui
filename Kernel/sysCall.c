@@ -17,12 +17,10 @@ void writeString(const char * string, int letter_color, int background_color) {
     print(string, letter_color, background_color);
 }
 
-void getPixelData(char * rgb, int x, int y) {
+void getPixelData(int * rgb, int x, int y) {
     int screen = getCurrentScreen();
     if ((screen == 1 && y < SCREEN_HEIGHT) || (screen == 2 && y > HEIGHT - SCREEN_HEIGHT)) {
-        rgb[0] = getPositionRed(x, y);
-        rgb[1] = getPositionGreen(x, y);
-        rgb[2] = getPositionBlue(x, y);
+        *rgb = getPixelColor(x, y);
     }
 }
 

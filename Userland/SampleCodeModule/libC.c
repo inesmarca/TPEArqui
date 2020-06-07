@@ -8,8 +8,6 @@
 #define MAX_PRINTABLE_CHARACTERS 1024
 #define MAX_READABLE_CHARACTERS 1024
 #define NULL (void*)0
-#define DEFAULT_LETTER_COLOR 0xFFFFFF
-#define DEFAULT_BACKGROUND_COLOR 0x000000
 
 // http://www.color-hex.com
 // pagina para buscar los colores hexa correspondientes
@@ -51,6 +49,12 @@ int strcmp(char * s1, char * s2) {
         cmp = 0;
     }
     return cmp;
+}
+
+void printError(char * str) {
+	changeLetterColor(0xFF0000);
+    printf(str);
+    changeLetterColor(DEFAULT_LETTER_COLOR);
 }
 
 void putChar(char str) {

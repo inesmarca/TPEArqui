@@ -51,19 +51,9 @@ char positionEmpty(int x, int y) {
 	return pos[0] == 0 && pos[1] == 0 && pos[2] == 0;
 }
 
-char getPositionRed(int x, int y) {
+int getPixelColor(int x, int y) {
 	char * pos = getDataPosition(x, y);
-	return pos[2];
-}
-
-char getPositionGreen(int x, int y) {
-	char * pos = getDataPosition(x, y);
-	return pos[1];
-}
-
-char getPositionBlue(int x, int y) {
-	char * pos = getDataPosition(x, y);
-	return pos[0];
+	return ((pos[2] & 0xff) << 16) + ((pos[1] & 0xff) << 8) + (pos[0] & 0xff);
 }
 
 void writePixel(int x, int y,  int rgb_hexa) {
