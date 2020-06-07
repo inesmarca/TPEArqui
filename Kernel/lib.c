@@ -88,7 +88,6 @@ void baseToHexa(char * buff) {
 	for (int i = 0; buff[i] != 0; i++) {
 		dim++;
 	}
-	int aux = 7 - dim;
 	for (int j = 7; j >= 0 && dim != 0; j--) {
 		auxStr[j] = buff[dim - 1];
 		dim--;

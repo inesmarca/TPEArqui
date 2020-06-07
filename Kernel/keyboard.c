@@ -8,22 +8,19 @@ extern uint8_t getKey();
 #define RELEASED 2
 #define ERRROR -1
 
-#define L_SHFT 0x2A
-#define R_SHFT 0x36
+#define L_SHIFT 0x2A
+#define R_SHIFT 0x36
 #define CAPS_LCK 0x3A
-#define CONTROL 0x1D
-#define B_SPACE 0x0E
+#define CTRL 0x1D
+#define DELETE 0x0E
 #define SPACE 0x39
 #define ENTER 0x1C
 #define ESC 27
 
-#define IS_LETTER(c) (c >= 'a' && c <= 'z' ? 1 : 0)
-
-static uint8_t action(uint8_t scanCode);
+static uint8_t keyState(uint8_t scanCode);
 
 char buffer[1024];
 int pos = 0;
-char exitFlag = 0;
 
 char * getBuffer(int screen) {
     return buffer;
@@ -32,10 +29,6 @@ char * getBuffer(int screen) {
 void deleteBuff() {
     buffer[0] = 0;
     pos = 0;
-}
-
-int getExitFlag() {
-    return exitFlag;
 }
 
 // https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html pagina con los scancodes
@@ -52,7 +45,11 @@ static const char pressCodes[KEYS][2] =
     {'v', 'V'}, {'b', 'B'}, {'n', 'N'}, {'m', 'M'}, {',', '<'}, 
     {'.', '>'}, {'/', '?'}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}};
 
-static uint8_t scanCode, currentAction, specialChars[] = {0, 0, 0}, capsLock = 0;
+static int currentkeyState = 0;
+static int left_shift = 0;
+static int right_shift = 0;
+static int capsLock = 0;
+static int control = 0;
 
 void bufferAdd(char key) {
     buffer[pos++] = key;
@@ -61,17 +58,17 @@ void bufferAdd(char key) {
 
 void keyboard_handler(uint64_t * stackFrame) {
     uint8_t key = getKey();
-    currentAction = action(key);
-    if (action(key) == PRESSED) {
+    currentkeyState = keyState(key);
+    if (currentkeyState == PRESSED) {
         switch (key) {
-        case L_SHFT:
-            specialChars[0] = 1;
+        case L_SHIFT:
+            left_shift = 1;
             break;
-        case R_SHFT:
-            specialChars[1] = 1;
+        case R_SHIFT:
+            right_shift = 1;
             break;
-        case CONTROL:
-            specialChars[2] = 1;
+        case CTRL:
+            control = 1;
             break;
         case SPACE:
             bufferAdd(' ');
@@ -79,15 +76,15 @@ void keyboard_handler(uint64_t * stackFrame) {
         case ENTER:
             bufferAdd('\n');
             break;
-        case B_SPACE:
-            bufferAdd(B_SPACE);
+        case DELETE:
+            bufferAdd(DELETE);
             break;
         
         default: 
-            if (specialChars[2] == 1 && key == 0x1F) { // Control S para guardar un backup de los registros
+            if (control == 1 && key == 0x1F) { // Control S para guardar un backup de los registros
                 saveReg(stackFrame);
             } else {
-                if (specialChars[0] == 1 || specialChars[1] == 1) {
+                if (left_shift == 1 || right_shift == 1) {
                     bufferAdd(pressCodes[key][1]);
                 } else {
                     bufferAdd(pressCodes[key][0]);
@@ -95,16 +92,16 @@ void keyboard_handler(uint64_t * stackFrame) {
             }
             break;
         }
-    } else if (action(key) == RELEASED) {
+    } else if (keyState(key) == RELEASED) {
         switch (key) { // el scancode de una tecla released es el scancode la tecla mas 0x80
-            case L_SHFT + 0x80:
-                specialChars[0] = 0;
+            case L_SHIFT + 0x80:
+                left_shift = 0;
                 break;
-            case R_SHFT + 0x80:
-                specialChars[1] = 0;
+            case R_SHIFT + 0x80:
+                right_shift = 0;
                 break;
-            case CONTROL + 0x80:
-                specialChars[2] = 0;
+            case CTRL + 0x80:
+                control = 0;
                 break;
             default:
                 break;
@@ -112,7 +109,7 @@ void keyboard_handler(uint64_t * stackFrame) {
     }
 }
 
-static uint8_t action(uint8_t scanCode) {
+static uint8_t keyState(uint8_t scanCode) {
     if (scanCode >= 0x01 && scanCode <= 0x3A)
         return PRESSED;
     else if (scanCode >= 0x81 && scanCode <= 0xBA)

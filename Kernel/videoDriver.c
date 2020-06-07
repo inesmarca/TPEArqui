@@ -64,7 +64,7 @@ void writePixel(int x, int y,  int rgb_hexa) {
 }
 
 void writeLetter(char key, int posX, int posY, int letter_color, int background_color) {
-	char * bitmap = font8x16[key];
+	unsigned char * bitmap = font8x16[key];
 	int x,y;
 	int set1, set2;
 	for (y=0; y < LETTER_WIDTH; y++) {
