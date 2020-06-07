@@ -3,4 +3,5 @@
 
 int main() {
 	programHandler();
+	return 0;
 }

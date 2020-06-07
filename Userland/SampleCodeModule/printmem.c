@@ -14,7 +14,7 @@ int printmem(char * parameters){
         printf("Error en parseo de parametros \n");
         return -1;
     }
-    unsigned char * mem=direc;
+    unsigned char * mem=(unsigned char *)direc;
 
     printf("Direccion inicial : %ld",direc);
     

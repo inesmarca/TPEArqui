@@ -528,8 +528,11 @@ int precedence(char token1, char token2) {
 
     
     default:
+        printError("unrecognized character");
         break;
+    
     }
+    return -1;
 }
 
 int isToken(char token) {

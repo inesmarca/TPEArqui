@@ -21,6 +21,8 @@ void printf(const char * format,...);
 
 uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base);
 
+void baseToHexa(char * buff);
+
 void printTime();
 
 void printTemperature();

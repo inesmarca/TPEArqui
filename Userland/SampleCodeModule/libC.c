@@ -10,7 +10,9 @@
 #define NULL (void*)0
 
 long stringtoLong_libc (char * string);
-int stringToLong_libc(long value, char * buffer);
+int longToString_libc(long value, char * buffer);
+int stringtoInt (char * string);
+int intToString(int value, char * buffer);
 
 // http://www.color-hex.com
 // pagina para buscar los colores hexa correspondientes
@@ -160,7 +162,12 @@ void printf(const char * format,...){
 			
 			default:
 			/* should throw exception*/
+			
+	
+    		
+			changeLetterColor(0xFF0000);
 			printf("Expresion %s is unsupported \n",format[i]);
+			changeLetterColor(DEFAULT_LETTER_COLOR);
 			//expression not suported
 				break;
 			}
@@ -208,7 +215,6 @@ int scanf(const char *format, ...){
 	
 	va_list valist;
     va_start( valist, format );
-    int format_pos=0;
     int number_of_vars=0;
 
 	
@@ -270,7 +276,9 @@ int scanf(const char *format, ...){
 			
 			default:
 			/* should throw exception*/
+			changeLetterColor(0xFF0000);
 			printf("Expresion %s is unsupported \n",format[i]);
+			changeLetterColor(DEFAULT_LETTER_COLOR);
 			//expression not suported
 			return -1;
 				break;
@@ -287,7 +295,6 @@ int sscanf(const char *str,const char *format, ...){
 	int string_pos=0;
 	va_list valist;
     va_start( valist, format );
-    int format_pos=0;
     int number_of_vars=0;
 
 	
@@ -349,7 +356,9 @@ int sscanf(const char *str,const char *format, ...){
 			
 			default:
 			/* should throw exception*/
+			changeLetterColor(0xFF0000);
 			printf("Expresion %s is unsupported \n",format[i]);
+			changeLetterColor(DEFAULT_LETTER_COLOR);
 			//expression not suported
 			return -1;
 				break;
@@ -407,9 +416,9 @@ int stringtoInt (char * string){
 	while (string[index]!=0)
 	{
 		if (!(string[index]>='0'&&string[index]<='9'))
-		{
-			printf("invalid string for stringtoint conversion");
-			return NULL;
+		{	
+			printError("invalid string for stringtoint conversion \n");
+			return 0;
 		}
 		if (index>0)
 		{
@@ -441,8 +450,8 @@ long stringtoLong_libc (char * string){
 	{
 		if (!(string[index]>='0'&&string[index]<='9'))
 		{
-			printf("invalid string for stringtoLong conversion \n");
-			return NULL;
+			printError("invalid string for stringtoLong conversion \n");
+			return 0;
 		}
 		answer*=10;
 		answer+=string[index++]-'0';
@@ -564,7 +573,7 @@ void baseToHexa(char * buff) {
 	for (int i = 0; buff[i] != 0; i++) {
 		dim++;
 	}
-	int aux = 6 - dim;
+	
 	for (int j = 7; j >= 0 && dim != 0; j--) {
 		auxStr[j] = buff[dim - 1];
 		dim--;
