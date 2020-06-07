@@ -1,18 +1,19 @@
 #include <consoleManager.h>
 #include <videoDriver.h>
 
-#define SCREEN_HEIGHT HEIGHT/2 - LETTER_HEIGHT
-#define SCREEN1_START_POS 0
-#define SCREEN2_START_POS SCREEN_HEIGHT + LETTER_HEIGHT
+#define SCREEN1_START_POS 4
+#define SCREEN1_END_POS 371
+#define SCREEN2_START_POS 382
+#define SCREEN2_END_POS 765
+#define LINE_START_POS 375
 #define LINE_HEIGHT 3
-#define LINE_START_POS SCREEN_HEIGHT + LETTER_HEIGHT/2 - LINE_HEIGHT/2
 #define B_SPACE 0x0E
 
 static char letter = 0;
 static int pos1X = 0;
-static int pos1Y = SCREEN_HEIGHT - LETTER_HEIGHT;
+static int pos1Y = SCREEN1_END_POS - LETTER_HEIGHT + 1;
 static int pos2X = 0;
-static int pos2Y = HEIGHT - LETTER_HEIGHT;
+static int pos2Y = SCREEN2_END_POS - LETTER_HEIGHT + 1;
 
 static int currentScreen = 1;
 
@@ -65,16 +66,20 @@ void delete(int background_color) {
 
 void newLine(int background_color) {
     int * posX;
-    int max_pos = 0;
+    int top_pos;
+    int bottom_pos;
     if (getCurrentScreen() == 1) {
         posX = &pos1X;
+        top_pos = SCREEN1_START_POS;
+        bottom_pos = SCREEN1_END_POS;
     } else {
-        max_pos = 400;
         posX = &pos2X;
+        top_pos = SCREEN2_START_POS;
+        bottom_pos = SCREEN2_END_POS;
     }
     *posX = 0;
-
-    for (int y = 0 + max_pos; y < max_pos + SCREEN_HEIGHT - LETTER_HEIGHT; y++) {
+    setSegmentBlank(0, WIDTH, top_pos, top_pos + LETTER_HEIGHT, background_color);
+    for (int y = top_pos; y < bottom_pos - LETTER_HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
             int color = getPixelColor(x, y);
             writePixel(x, y, getPixelColor(x, y + LETTER_HEIGHT));

@@ -14,11 +14,11 @@ void testScanf();
 void test6();
 int printmem(char * parameters);
 
-char functions[CANT_FUNC][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test", "testScanf", "test6","printMem"};
+char functions[CANT_FUNC][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test", "testScanf", "test6","printmem"};
 void (*func_ptr[CANT_FUNC])() = { printTime,   printTemperature,  printCPUInfo,   inforeg,   test0,   test,   testScanf,   test6,  printmem};
 char parameters[CANT_FUNC]    = { 0,           0,                 0,              0,         0,       0,      0,           0,      1         };
 
-static char input[WIDTH/8] = {0};
+static char input[DIM_BUFFER] = {0};
 static int pos = 0;
 static retFlag = 0;
 
@@ -34,15 +34,15 @@ void shell(char key) {
             int j;
             int k=0;
             
-            char aux[WIDTH/8];
-            while (input[k]!=' '&&input[k]!=0)
+            char aux[DIM_BUFFER];
+            while (input[k] != ' ' && input[k] != 0)
             {
                 aux[k]=input[k];
                 k++;
             }
             aux[k]=0;
             
-            for (j = 0; j < CANT_FUNC && !strcmp(aux, functions[j]); j++) {}
+            for (j = 0; j < CANT_FUNC && !strcmp(aux, functions[j]) ; j++) {}
             if (j < CANT_FUNC) {
                 if (parameters[j==0])
                 {

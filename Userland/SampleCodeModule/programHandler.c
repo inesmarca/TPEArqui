@@ -10,7 +10,7 @@
 
 char user[30];
 int exitFlag = 0;
-static char buffer[WIDTH/8] = {0};
+static char buffer[DIM_BUFFER] = {0};
 
 void exit() {
     exitFlag = 1;
