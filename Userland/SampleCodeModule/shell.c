@@ -3,7 +3,7 @@
 #include <libC.h>
 #include <shell.h>
 #include <printmem.h>
-#define CANT_FUNC 9
+#define CANT_FUNC 8
 
 void printTime();
 void printCPUInfo();
@@ -11,10 +11,11 @@ void printTemperature();
 void inforeg();
 void test0();
 void test6();
+void help();
 
-char functions[CANT_FUNC][20] = {"printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test6","printmem"};
-void (*func_ptr[CANT_FUNC])() = { printTime,   printTemperature,  printCPUInfo,   inforeg,   test0,   test6,  printmem };
-char parameters[CANT_FUNC]    = { 0,           0,                 0,              0,         0,       0,      1        };
+char functions[CANT_FUNC][20] = {"help","printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test6","printmem"};
+void (*func_ptr[CANT_FUNC])() = { help , printTime,   printTemperature,  printCPUInfo,   inforeg,   test0,   test6,  printmem };
+char parameters[CANT_FUNC]    = { 0,     0,           0,                 0,              0,         0,       0,      1        };
 
 static char input[DIM_BUFFER] = {0};
 static int pos = 0;
@@ -79,4 +80,33 @@ void test0() {
     int x = 5 / 0;
     x+=1;
 
+}
+
+void help(){
+    printf("La shell esta equipada con los siguientes Programas, para ejectutarlos ingrese el nombre del programa en la linea de comando \n");
+    for (int i = 0; i < CANT_FUNC; i++)
+    {
+        
+        if (i%4==0)
+        {
+            printf("\n");
+        }
+        printf("%s ",functions[i]);
+        if (parameters[i]!=0)
+        {
+            if (parameters[i]==1)
+            {
+                printf(" (espera %d parametro)",parameters[i]);
+            }else
+            {
+                printf(" (espera %d parametros)",parameters[i]);
+            }   
+        }
+        
+        
+    }
+    printf("\n");
+    printf("Para informacion adicional, consultar documentacion.\n");
+    
+       
 }
