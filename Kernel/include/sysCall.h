@@ -14,4 +14,6 @@ int getTemperature();
 
 void getRecVec(uint64_t * buff);
 
+void sysClear();
+
 #endif

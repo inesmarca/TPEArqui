@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <lib.h>
 #include <exception.h>
+#include <time.h>
 #define ZERO_EXCEPTION_ID 0
 #define INVALID_OPCODE_EXCEPTION_ID 6
 
@@ -31,6 +32,30 @@ void printRegs(uint64_t * stackFrame) {
 			print("           ", LETTER_COLOR, BACKGROUND_COLOR);
 		}
 	}
+
+	_sti();
+	print("La pantalla se reiniciara en ", LETTER_COLOR, BACKGROUND_COLOR);
+	char buff[3] = {0};
+	_hlt();
+	int init_time = seconds_elapsed();
+	int aux = 10;
+	int i = 10;
+	uintToBase(i, buff, 10);
+	print(buff, 0xFB781F, BACKGROUND_COLOR);
+	while (i >= 0) {
+		_hlt();
+		aux = 10 - (seconds_elapsed() - init_time);
+		if (i != aux) {
+			delete(BACKGROUND_COLOR);
+			if (i == 10) {
+				delete(BACKGROUND_COLOR);
+			}
+			i = aux;
+			uintToBase(i, buff, 10);
+			print(buff, 0xFB781F, BACKGROUND_COLOR);
+		}
+	}
+	newLine(BACKGROUND_COLOR);
 }
 
 void setAddresses(uint64_t * ip, uint64_t * rsp) {
@@ -41,6 +66,8 @@ void setAddresses(uint64_t * ip, uint64_t * rsp) {
 void resetScreen(uint64_t * stackFrame) {
 	stackFrame[15] = (uint64_t)ipReturn;
 	stackFrame[18] = (uint64_t)rspReturn;
+	clear(1);
+	clear(2);
 }
 
 void exceptionDispatcher(int exception, uint64_t * stackFrame) {
@@ -51,13 +78,13 @@ void exceptionDispatcher(int exception, uint64_t * stackFrame) {
 }
 
 static void zero_division(uint64_t * stackFrame) {
-	print("Exception 0: division by 0\n", LETTER_COLOR, BACKGROUND_COLOR);
+	print("Exception 0: division by 0\n", 0xFF0000, BACKGROUND_COLOR);
 	printRegs(stackFrame);
 	resetScreen(stackFrame);
 }
 
 static void invalid_opcode(uint64_t * stackFrame) {
-	print("Exception 6: invalid opcode\n", LETTER_COLOR, BACKGROUND_COLOR);
+	print("Exception 6: invalid opcode\n", 0xFF0000, BACKGROUND_COLOR);
 	printRegs(stackFrame);
 	resetScreen(stackFrame);
 }

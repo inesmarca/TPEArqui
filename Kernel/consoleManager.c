@@ -92,3 +92,21 @@ void middleLine() {
         drawLine(LINE_START_POS + i, 0x62FFCC);
     }
 }
+
+void clear(int screen) {
+    if (screen == 1) {
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = SCREEN1_START_POS; y < SCREEN1_END_POS; y++) {
+                writePixel(x, y, BACKGROUND_COLOR);
+            }
+        }
+        pos1X = 0;
+    } else {
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = SCREEN2_START_POS; y < SCREEN2_END_POS; y++) {
+                writePixel(x, y, BACKGROUND_COLOR);
+            }
+        }
+        pos2X = 0;
+    }
+}

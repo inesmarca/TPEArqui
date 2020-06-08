@@ -3,7 +3,7 @@
 #include <libC.h>
 #include <shell.h>
 #include <printmem.h>
-#define CANT_FUNC 8
+#define CANT_FUNC 10
 
 void printTime();
 void printCPUInfo();
@@ -12,10 +12,11 @@ void inforeg();
 void test0();
 void test6();
 void help();
+extern void clear();
 
-char functions[CANT_FUNC][20] = {"help","printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test6","printmem"};
-void (*func_ptr[CANT_FUNC])() = { help , printTime,   printTemperature,  printCPUInfo,   inforeg,   test0,   test6,  printmem };
-char parameters[CANT_FUNC]    = { 0,     0,           0,                 0,              0,         0,       0,      1        };
+char functions[CANT_FUNC][20] = {"help","printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test6","printmem", "clear"};
+void (*func_ptr[CANT_FUNC])() = { help , printTime,   printTemperature,  printCPUInfo,   inforeg,   test0,   test6,  printmem , clear};
+char parameters[CANT_FUNC]    = { 0,     0,           0,                 0,              0,         0,       0,      1        , 0       };
 
 static char input[DIM_BUFFER] = {0};
 static int pos = 0;

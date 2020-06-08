@@ -3,6 +3,16 @@
 
 #define MAX_DIGITS 20
 
+void hexa(char * buff, int dim) {
+	char auxStr[5] = "0x00";
+	for (int j = 3; j >= 0 && dim != 0; j--) {
+		auxStr[j] = buff[dim - 1];
+		dim--;
+	} 
+	for (int k = 0; k < 4; k++) {
+		buff[k] = auxStr[k];
+	}
+}
 
 void printmem(char * parameters){
 
@@ -38,15 +48,4 @@ void printmem(char * parameters){
         printf(": %s   ", buff);
     }
     printf("\n");
-}
-
-void hexa(char * buff, int dim) {
-	char auxStr[5] = "0x00";
-	for (int j = 3; j >= 0 && dim != 0; j--) {
-		auxStr[j] = buff[dim - 1];
-		dim--;
-	} 
-	for (int k = 0; k < 4; k++) {
-		buff[k] = auxStr[k];
-	}
 }

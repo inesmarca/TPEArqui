@@ -17,4 +17,6 @@ void middleLine();
 
 void newLine(int background_color);
 
+void clear();
+
 #endif

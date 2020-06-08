@@ -41,3 +41,7 @@ void getRegVec(uint64_t * buff) {
         buff[i] = memory[i];
     }
 }
+
+void sysClear() {
+    clear(getCurrentScreen());
+}

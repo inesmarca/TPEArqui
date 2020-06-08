@@ -26,6 +26,7 @@ EXTERN printPixel
 EXTERN changeScreen
 EXTERN getTemperature
 EXTERN getRegVec
+EXTERN sysClear
 
 
 SECTION .text
@@ -126,7 +127,8 @@ SECTION .text
 	je .getPixel	; read de pixel de pantalla
 	cmp rax, 3
 	je .pixelWrite		; write de pixel
-
+	cmp rax, 4
+	je .clearScreen		; limpia la pantalla
 	cmp rax, 5
 	je .switchScreen	; cambia el string
 	cmp rax, 6
@@ -154,6 +156,7 @@ SECTION .text
 .switchScreen:
 	call changeScreen
 	jmp .fin
+
 .cputemp:
 	call getTemperature
 	mov rbx, rax
@@ -161,6 +164,10 @@ SECTION .text
 
 .registers:
 	call getRegVec
+	jmp .fin
+
+.clearScreen:
+	call sysClear
 	jmp .fin
 
 .fin:
@@ -256,7 +263,6 @@ haltcpu:
 	cli
 	hlt
 	ret
-
 
 
 SECTION .bss

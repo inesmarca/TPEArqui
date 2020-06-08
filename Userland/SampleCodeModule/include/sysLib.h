@@ -16,4 +16,6 @@ extern int getRTC(int x);
 
 extern int getTemperature();
 
+extern void clear();
+
 extern void getRegisters(uint64_t * buff);
