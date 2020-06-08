@@ -23,6 +23,10 @@ static int pos = 0;
 
 void initShell() {
     // promt message
+    
+    printf("Bienvenido %s!\n",getUser());
+    printf("Para comenzar, ingrese un comando o presione la tecla TAB para cambiar de programa\n");
+    printf("Para una lista de los programas disponibles ingrese help\n");
     printUser();
 }
 
