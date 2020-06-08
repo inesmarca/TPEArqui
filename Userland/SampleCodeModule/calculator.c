@@ -522,11 +522,6 @@ int precedence(char token1, char token2) {
             return 1;
         else
             return 0;
-    case '^':
-        if (token2 == '+' || token2 == '-' || token2 == '*' || token2 == '/' || token2 == ')') 
-            return 1;
-        else
-            return 0;
     case '(':
         return 0;
 
@@ -540,7 +535,7 @@ int precedence(char token1, char token2) {
 }
 
 int isToken(char token) {
-    return (token == '+' || token == '-' || token == '*' || token == '/' || token == '^');
+    return (token == '+' || token == '-' || token == '*' || token == '/');
 }
 
 
@@ -559,12 +554,25 @@ int infijaToPosfija(char * input, char * output){
              stack[stack_pos++]=current;
         }
         else if(current==')')
-        {
+        {   
+            if (stack_pos==0)
+            {
+                printError("Error in format conversion, invalid input");
+                return -1;
+            }
+            
+            
+
             current=stack[--stack_pos];// tiro el ) y pusheo hasta encontrar el bracket correspondiente
             while (current!='(')
             {
                 output[pos_output++]=current;
                 output[pos_output++]=' ';
+                 if (stack_pos==0)
+                {
+                    printError("Error in format conversion, invalid input");
+                    return -1;
+                }
                 current=stack[--stack_pos];
             }
             
