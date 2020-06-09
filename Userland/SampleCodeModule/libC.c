@@ -91,21 +91,7 @@ void printf(const char * format,...){
 				output[output_pos++]=(va_arg( valist, int ));
 				break;
 			
-			// case 'f':
-			// 	;
-			// 	char auxdouble[MAX_DIGITOS_EN_UN_NUMERO];
-			// 	int counterdouble=doubleToString(va_arg(valist,double),auxdouble);
-			// 	output[output_pos++]=(va_arg( valist, char ));
-			// 	if (counterdouble>MAX_DIGITOS_EN_UN_NUMERO)
-			// 	{
-			// 		/* should throw exception*/
-			// 		//no acepta doubles con mas de MAX_DIGITOS_EN_UN_NUMERO digitos.
-			// 	}
-			// 	for (int j = 0; j < counterdouble; j++)
-			// 	{
-			// 		output[output_pos++]=auxdouble[j];//copio el double hecho string a mi output
-			// 	}
-			// 	break;
+			
 
 			case 'd':
                 ;//algo que ver con c y switch que son raros
@@ -499,42 +485,9 @@ int longToString_libc(long value, char * buffer)
 	return digits;
 }
 
-// int doubleToString(double value, char * buffer){
-	
-// 	int trunkated=(int)(value*1000);
-	
-	// int buf_pos=0;
-	// int j=positivedigits(value);
-	// double aux=1;
-	// for (int i = 0; i <= j; i++)
-	// {
-	// 	aux*=10;
-	// }
-	// //tiene restricciones con SSE y no le gusta las potencias, asi que lo hago internamente.
-	
-	// for(;j>-DECIMALPLACES;j--)
-	// {
-		
-	// 	buffer[buf_pos++]=(int)(value/aux)+'0';
-	// 	aux/=10;
-	// }
-	// return buf_pos;
+
 	
 
-//}
-// int positivedigits(double value){
-// 	//devuelve la cantidad de digitos positivos en un numero.
-// 	//34.7 retorna 2,2 retorna 1 y 0.04 retorna 0.
-// 	int i = 0;
-// 	double aux=1;
-// 	while ( aux >= value )
-// 	{
-// 		i++;
-// 		aux*=10;
-// 	}
-// 	return i-1;
-	
-// }
 
 uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 {

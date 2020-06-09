@@ -311,68 +311,7 @@ char * longtoString(long number,int dim,char * output)
         
 }
 
-// char * longtoString(long number,int dim,char * output)
-// { 
-//     char aux [20];
-//     int index=0;
-//     int index2=0;
-//     int negative=0;
-    
-//     if(number==0){ //caso especial del 0 porque si lo multiplico por 10 no cambia su dimension entonces no es afectado
-//         int i=2;
-//         output[0]='0';
-//         output[1]='.';
-//         while(i<CANT_DECIMALES_INTER_OPERACIONES){
-//             output[i]='0';
-//             i++;
-//         }
-//         output[i]=0;
-//         return output;
-//     }
-    
-    
-//     if (number<0)
-//     {
-//         negative=1;
-//     }
-    
-//     while (number!=0)
-//     {
-//         if(dim==0)
-//         {
-//           aux[index++]='.';
-//         }
-//         int auxiliar=number % 10;
-//         if(auxiliar<0){
-//             auxiliar*=-1; 
-//         }
-//         aux[index++] = auxiliar + '0';
-//         number /= 10;
-//         dim--;
-//         //resto negativo quickfix
-        
-//     }
-    
-//     if(dim==0){
-//           aux[index++]='.';
-//           aux[index++]='0';
-//     }
-
-//     if (negative)
-//     {
-//         aux[index++]='-';
-//     }
-    
-//     while (index!=0)
-//     {
-//         output[index2++]=aux[--index];
-//     }
-//     output[index2]=0;
-   
-//     return output;
-    
-    
-// }
+//
 
 long stringtoLong (char *number)
 {

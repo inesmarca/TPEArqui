@@ -9,8 +9,8 @@
 void help();
 
 char functions[CANT_FUNC][20] = {"help","printTime", "printTemperature","printCPUInfo", "inforeg", "triggerException0", "triggerException6","printmem", "clear"};
-void (*func_ptr[CANT_FUNC])() = { help , printTime,   printTemperature,  printCPUInfo,   inforeg,   triggerException0,   triggerException6,  printmem , clear};
-char parameters[CANT_FUNC]    = { 0,     0,           0,                 0,              0,         0,       0,      1        , 0       };
+void (*func_ptr[CANT_FUNC])() = { help , printTime,   printTemperature,  printCPUInfo,   inforeg,   triggerException0,   triggerException6,  printmem ,  clear};
+char parameters[CANT_FUNC]    = { 0,     0,           0,                 0,              0,         0,                   0,                  1,          0       };
 char descripcion[CANT_FUNC][101] = {
     "enumeracion de las funciones disponibles del sistema", 
     "imprime en pantalla la hora actual", 
