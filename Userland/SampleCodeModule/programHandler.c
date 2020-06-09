@@ -73,4 +73,11 @@ void programHandler() {
             buffer[i] = 0;
         }
     }
+    changeScreen(UP);
+    clear();
+    changeScreen(DOWN);
+    clear();
+    printf("Has finalizado el programa\n");
+    printf("Para volver a correrlo reiniciar el programa\n");
+    printf("Nos vemos luego %s", user);
 }

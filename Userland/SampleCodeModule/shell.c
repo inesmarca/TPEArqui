@@ -102,6 +102,10 @@ void help(){
         changeLetterColor(DEFAULT_LETTER_COLOR);
         printf("- %s\n", descripcion[i]);
     }
+    printf("Para finalizar el programa presione ");
+    changeLetterColor(0xE4D31B);
+    printf("ESC");
+    changeLetterColor(DEFAULT_LETTER_COLOR);
     putChar('\n');
     printf("Para informacion adicional, consultar documentacion.\n");
 }
