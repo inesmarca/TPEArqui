@@ -151,6 +151,7 @@ SECTION .text
 
 .getPixel:
 	call getPixelData
+	mov rbx, rax
 	jmp .fin
 
 .pixelWrite:

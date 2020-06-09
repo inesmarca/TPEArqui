@@ -24,10 +24,13 @@ writeScreen:
     int 80h
     ret
 
-; void readPixel(int * hexa, int x, int y)
+; int readPixel(int * hexa, int x, int y)
 readPixel:
+    push rbx
     mov rax, 2
     int 80h
+    mov rax, rbx
+    pop rbx
     ret
 
 ; void writePixel(int x, int y, int color)

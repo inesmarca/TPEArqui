@@ -6,7 +6,7 @@ void readKey(char * buf, int cant);
 
 void writeString(const char * string, int letter_color, int background_color);
 
-void getPixelData(int * rgb, int x, int y);
+int getPixelData(int x, int y);
 
 void printPixel(int x, int y, int color);
 

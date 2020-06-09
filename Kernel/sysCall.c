@@ -18,17 +18,17 @@ void writeString(const char * string, unsigned int letter_color, unsigned int ba
     print(string, letter_color, background_color);
 }
 
-void getPixelData(int * hexa, int x, int y) {
+int getPixelData(int x, int y) {
     int screen = getCurrentScreen();
     if (((screen == 1 && y >= 0 && y < SCREEN1_HEIGHT) || (screen == 2 && y >= 0 && y < SCREEN2_HEIGHT)) && x >= 0 && x < WIDTH) {
-        *hexa = getPixelColor(x, y);
+        return getPixelColor(x, y + SCREEN2_START_POS);
     }
 }
 
 void printPixel(int x, int y, int color) {
     int screen = getCurrentScreen();
     if (((screen == 1 && y >= 0 && y < SCREEN1_HEIGHT) || (screen == 2 && y >= 0 && y < SCREEN2_HEIGHT)) && x >= 0 && x < WIDTH) {
-        writePixel(x, y, color);
+        writePixel(x, y + SCREEN2_START_POS, color);
     }
 }
 
