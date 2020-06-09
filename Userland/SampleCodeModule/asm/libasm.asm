@@ -24,7 +24,7 @@ writeScreen:
     int 80h
     ret
 
-; void readPixel(char * rgb, int x, int y)
+; void readPixel(int * hexa, int x, int y)
 readPixel:
     mov rax, 2
     int 80h

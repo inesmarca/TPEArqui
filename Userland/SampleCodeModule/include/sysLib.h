@@ -7,7 +7,7 @@ extern void readKeyBuff(char * buf, int cant);
 
 extern void writeScreen(const char * string, int letter_color, int background_color);
 
-extern void readPixel(char * rgb, int x, int y);
+extern void readPixel(int * hexa, int x, int y);
 
 extern void writePixel(int x, int y, int color);
 
