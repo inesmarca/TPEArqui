@@ -28,6 +28,7 @@ EXTERN getTemperature
 EXTERN getRegVec
 EXTERN sysClear
 
+EXTERN test
 
 SECTION .text
 

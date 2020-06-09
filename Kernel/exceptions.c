@@ -42,7 +42,7 @@ void printRegs(uint64_t * stackFrame) {
 	int i = 10;
 	uintToBase(i, buff, 10);
 	print(buff, 0xFB781F, BACKGROUND_COLOR);
-	while (i >= 0) {
+	while (i > 0) {
 		_hlt();
 		aux = 10 - (seconds_elapsed() - init_time);
 		if (i != aux) {

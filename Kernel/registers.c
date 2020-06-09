@@ -1,5 +1,7 @@
 #include <stdint.h>
 #include <lib.h>
+#include <consoleManager.h>
+
 
 /*
 	"R15:   ", "R14:   ", "R13:   ", "R12:   ", "R11:   ", 
@@ -11,6 +13,7 @@
 uint64_t memory[19] = {0};
 
 void saveReg(uint64_t * stackFrame) {
+	char buffer[9];
     for (int i = 0; i < 19; i++) {
         memory[i] = stackFrame[i];
     }

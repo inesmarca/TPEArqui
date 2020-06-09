@@ -1,6 +1,8 @@
 #include <keyboard.h>
 #include <stdint.h>
 #include <registers.h>
+#include <consoleManager.h>
+#include <lib.h>
 
 extern uint8_t getKey();
 
@@ -61,6 +63,9 @@ void keyboard_handler(uint64_t * stackFrame) {
     uint8_t key = getKey();
     currentkeyState = keyState(key);
     if (currentkeyState == PRESSED) {
+        char buffer[4] = {0};
+        uintToBase(key, buffer, 10);
+        print(buffer, 0xFFFFFF, 0x000000);
         switch (key) {
         case L_SHIFT:
             left_shift = 1;
