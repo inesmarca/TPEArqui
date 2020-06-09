@@ -56,9 +56,9 @@ void printmem(char * parameters) {
 
     long direc = -1;
 
-    int error = sscanf(parameters,"%ld",&direc);
+    int error = sscanf(parameters,"%ld", &direc);
     
-    if (error != 1||direc<0) {
+    if (error != 1 || direc < 0) {
         printError("Error en parseo de parametros \n");
         return;
     }
