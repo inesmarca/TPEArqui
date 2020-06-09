@@ -57,18 +57,6 @@ int strcmp(char * s1, char * s2) {
     return cmp;
 }
 
-void printError(char * str) {
-	changeLetterColor(0xFF0000);
-    printf(str);
-    changeLetterColor(DEFAULT_LETTER_COLOR);
-}
-
-void printBlock() {
-    changeBackgroundColor(0x808080);
-    putChar(' ');
-    changeBackgroundColor(DEFAULT_BACKGROUND_COLOR);
-}
-
 void putChar(char str) {
 	char buff[2] = {0};
 	buff[0] = str;

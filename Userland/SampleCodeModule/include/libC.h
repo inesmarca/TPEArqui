@@ -25,16 +25,9 @@ uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base);
 
 void baseToHexa(char * buff);
 
-void printTime();
-
-void printTemperature();
-
 void changeLetterColor(int code);
 
 void changeBackgroundColor(int code);
 
-void printError(char * string);
-
-void printBlock();
 
 #endif

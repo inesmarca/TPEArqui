@@ -15,4 +15,8 @@ void printCPUInfo();
 
 extern void triggerException6();
 
+void printError(char * string);
+
+void printBlock();
+
 #endif

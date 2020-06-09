@@ -175,3 +175,15 @@ void printCPUInfo() {
     printf("CPU Vendor is: %s ,the procesor family ID is %d and the model ID is %d\n",cpuVendor(),Family,Model);
 }
 
+
+void printError(char * str) {
+	changeLetterColor(0xFF0000);
+    printf(str);
+    changeLetterColor(DEFAULT_LETTER_COLOR);
+}
+
+void printBlock() {
+    changeBackgroundColor(0x808080);
+    putChar(' ');
+    changeBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+}
