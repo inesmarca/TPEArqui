@@ -13,7 +13,6 @@
 uint64_t memory[19] = {0};
 
 void saveReg(uint64_t * stackFrame) {
-	char buffer[9];
     for (int i = 0; i < 19; i++) {
         memory[i] = stackFrame[i];
     }

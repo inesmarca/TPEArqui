@@ -1,16 +1,12 @@
 #include <consoleManager.h>
 #include <videoDriver.h>
 
-#define SCREEN1_START_POS 4
-#define SCREEN1_END_POS 372
-#define SCREEN2_START_POS 382
-#define SCREEN2_END_POS 766
 #define LINE_START_POS 375
 #define LINE_HEIGHT 3
 #define B_SPACE 0x0E
 
 static int pos1X = 0;
-static int pos1Y = SCREEN1_END_POS - LETTER_HEIGHT + 1;
+static int pos1Y = SCREEN1_START_POS;
 static int pos2X = 0;
 static int pos2Y = SCREEN2_END_POS - LETTER_HEIGHT + 1;
 
@@ -19,6 +15,16 @@ static int currentScreen = 1;
 void changeScreen(int screen) { 
     if (screen == 1 || screen == 2) {
         currentScreen = screen; 
+    }
+}
+
+void changeCursor(int screen, int x, int y) {
+    if (getCurrentScreen() == 1) {
+        pos1X = x;
+        pos1Y = y;
+    } else {
+        pos2X = x;
+        pos2Y = y;
     }
 }
 
@@ -100,13 +106,11 @@ void clear(int screen) {
                 writePixel(x, y, BACKGROUND_COLOR);
             }
         }
-        pos1X = 0;
     } else {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = SCREEN2_START_POS; y < SCREEN2_END_POS; y++) {
                 writePixel(x, y, BACKGROUND_COLOR);
             }
         }
-        pos2X = 0;
     }
 }

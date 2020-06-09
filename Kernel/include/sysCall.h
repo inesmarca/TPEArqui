@@ -16,4 +16,6 @@ void getRecVec(uint64_t * buff);
 
 void sysClear();
 
+void setCursor(int x, int y);
+
 #endif

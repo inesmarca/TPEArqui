@@ -19,7 +19,7 @@ char descripcion[CANT_FUNC][101] = {
     "imprime en pantalla los registros guardados al apretar CTRL S",
     "demostracion de la excepcion division por 0",
     "demostracion de la excepcion invalid opcode",
-    "recive una direccion de memoria y hace un volvado de memoria de 32 bytes a partir de dicho parametro",
+    "recibe una direccion de memoria y hace un volcado de memoria de 32 bytes a partir de dicho parametro",
     "limpia la pantalla"
     };  
 
@@ -29,6 +29,7 @@ static int pos = 0;
 
 
 void initShell() {
+    setCursor(0, SCREEN2_HEIGHT - LETTER_HEIGHT);
     changeLetterColor(0xFF00FF);
     printf("Bienvenido %s!\n",getUser());
     changeLetterColor(DEFAULT_LETTER_COLOR);

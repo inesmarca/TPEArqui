@@ -8,6 +8,7 @@ GLOBAL getRTC
 GLOBAL getTemperature
 GLOBAL getRegisters
 GLOBAL clear
+GLOBAL setCursor
 
 section .text
 
@@ -68,6 +69,12 @@ getRegisters:
 ; void clear()
 clear:
     mov rax, 4
+    int 80h
+    ret
+
+; void setCursor(int x, int y);
+setCursor:
+    mov rax, 8
     int 80h
     ret
 

@@ -2,6 +2,7 @@
 #include <programHandler.h>
 #include <programs.h>
 #include <libC.h>
+#include <sysLib.h>
 
 char * eval( char * first,int first_dim,char * second,int second_dim,char operation);
 
@@ -34,6 +35,7 @@ static int pos = 0;
 
 void initCalculator() {
     // prompt
+    setCursor(0, SCREEN1_HEIGHT - LETTER_HEIGHT);
     printf("Para el correcto funcionamiento del programa ingrese su expresion separada con espacios\n");
     printf("ej: ( 2 + 3 ) * 5 =\n");
     printf("las operaciones soportadas incluyen : + , - , * , / y el uso de parentesis\n");

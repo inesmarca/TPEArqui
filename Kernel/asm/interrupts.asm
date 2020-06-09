@@ -27,6 +27,7 @@ EXTERN changeScreen
 EXTERN getTemperature
 EXTERN getRegVec
 EXTERN sysClear
+EXTERN setCursor
 
 EXTERN test
 
@@ -131,11 +132,13 @@ SECTION .text
 	cmp rax, 4
 	je .clearScreen		; limpia la pantalla
 	cmp rax, 5
-	je .switchScreen	; cambia el string
+	je .switchScreen	; cambia la pantalla
 	cmp rax, 6
 	je .cputemp	; devuelve la temp del cpu
 	cmp rax, 7
 	je .registers
+	cmp rax, 8
+	je .cursor			; setea la posicion del cursor
 	jmp .fin
 
 .runRead:
@@ -169,6 +172,10 @@ SECTION .text
 
 .clearScreen:
 	call sysClear
+	jmp .fin
+
+.cursor:
+	call setCursor
 	jmp .fin
 
 .fin:

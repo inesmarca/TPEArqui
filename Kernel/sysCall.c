@@ -20,13 +20,14 @@ void writeString(const char * string, unsigned int letter_color, unsigned int ba
 
 void getPixelData(int * rgb, int x, int y) {
     int screen = getCurrentScreen();
-    if ((screen == 1 && y < SCREEN_HEIGHT) || (screen == 2 && y > HEIGHT - SCREEN_HEIGHT)) {
+    if (((screen == 1 && y >= 0 && y < SCREEN1_HEIGHT) || (screen == 2 && y >= 0 && y < SCREEN2_HEIGHT)) && x >= 0 && x < WIDTH) {
         *rgb = getPixelColor(x, y);
     }
 }
 
 void printPixel(int x, int y, int color) {
-    if (x >= 0 && x < WIDTH && y < HEIGHT && y >= 0) {
+    int screen = getCurrentScreen();
+    if (((screen == 1 && y >= 0 && y < SCREEN1_HEIGHT) || (screen == 2 && y >= 0 && y < SCREEN2_HEIGHT)) && x >= 0 && x < WIDTH) {
         writePixel(x, y, color);
     }
 }
@@ -44,4 +45,15 @@ void getRegVec(uint64_t * buff) {
 
 void sysClear() {
     clear(getCurrentScreen());
+}
+
+void setCursor(int x, int y) {
+    int screen = getCurrentScreen();
+    if (((screen == 1 && y >= LETTER_HEIGHT && y < SCREEN1_HEIGHT) || (screen == 2 && y >= LETTER_HEIGHT && y < SCREEN2_HEIGHT)) && x >= 0 && x < WIDTH - LETTER_WIDTH) {
+        if (screen == 1) {
+            changeCursor(screen, x, y + SCREEN1_START_POS);
+        } else {
+            changeCursor(screen, x, y + SCREEN2_START_POS);
+        }
+    }
 }

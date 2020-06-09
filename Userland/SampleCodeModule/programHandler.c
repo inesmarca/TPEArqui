@@ -28,6 +28,7 @@ char * getUser() {
 }
 
 void initialize() {
+    setCursor(0, SCREEN2_HEIGHT - LETTER_HEIGHT);
     printf("Enter your username: ");
     scanf("%s", user);
 }
