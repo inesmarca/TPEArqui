@@ -38,6 +38,11 @@ void printUser() {
     changeLetterColor(DEFAULT_LETTER_COLOR);
 }
 
+void printBlock() {
+    changeBackgroundColor(0x808080);
+    putChar(' ');
+    changeBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+}
 
 void programHandler() {
     changeScreen(DOWN);
@@ -46,7 +51,7 @@ void programHandler() {
     initCalculator();
     changeScreen(DOWN);
     initShell();
-    putChar(BLOCK);
+    printBlock();
     while (!exitFlag) {
         readKeyBuff(buffer, WIDTH/8);
         for (int i = 0; buffer[i] != 0; i++) {
@@ -54,11 +59,11 @@ void programHandler() {
                 if (activeScreen == UP) {
                     putChar(DELETE);
                     changeScreen(DOWN);
-                    putChar(BLOCK);
+                    printBlock();
                 } else {
                     putChar(DELETE);
                     changeScreen(UP);
-                    putChar(BLOCK);
+                    printBlock();
                 }
             } else {
                 putChar(DELETE);
@@ -67,7 +72,7 @@ void programHandler() {
                 } else {
                     shell(buffer[i]);
                 }
-                putChar(BLOCK);
+                printBlock();
             }
             buffer[i] = 0;
         }

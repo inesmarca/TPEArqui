@@ -64,7 +64,9 @@ void printError(char * str) {
 }
 
 void putChar(char str) {
-	writeScreen(&str, letter_color, background_color);
+	char buff[2] = {0};
+	buff[0] = str;
+	writeScreen(buff, letter_color, background_color);
 }
 
 char getChar() {
