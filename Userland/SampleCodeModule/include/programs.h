@@ -12,5 +12,6 @@
 #define LETTER_WIDTH 8
 #define WIDTH 1024
 #define DIM_BUFFER WIDTH/8
+#define ESC 0x1B
 
 #endif

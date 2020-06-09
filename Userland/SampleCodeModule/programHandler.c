@@ -59,6 +59,8 @@ void programHandler() {
                     changeScreen(UP);
                     printBlock();
                 }
+            } else if (buffer[i] == ESC) {
+                exitFlag = 1;
             } else {
                 putChar(DELETE);
                 if (activeScreen == UP) {

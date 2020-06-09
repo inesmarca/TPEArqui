@@ -6,8 +6,6 @@
 #include <sysLib.h>
 #define CANT_FUNC 9
 
-extern void test();
-
 void help();
 
 char functions[CANT_FUNC][20] = {"help","printTime", "printTemperature","printCPUInfo", "inforeg", "triggerException0", "triggerException6","printmem", "clear"};
@@ -84,7 +82,6 @@ void shell(char key) {
         }
         printUser();
     } else if (key == DELETE) {
-        test();
         if (pos != 0) {
             pos--;
             input[pos] = 0;
