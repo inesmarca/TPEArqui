@@ -2,20 +2,14 @@
 #include <programHandler.h>
 #include <libC.h>
 #include <shell.h>
-#include <printmem.h>
+#include <libFun.h>
+#include <sysLib.h>
 #define CANT_FUNC 10
 
-void printTime();
-void printCPUInfo();
-void printTemperature();
-void inforeg();
-void test0();
-void test6();
 void help();
-extern void clear();
 
-char functions[CANT_FUNC][20] = {"help","printTime", "printTemperature","printCPUInfo", "inforeg", "test0", "test6","printmem", "clear"};
-void (*func_ptr[CANT_FUNC])() = { help , printTime,   printTemperature,  printCPUInfo,   inforeg,   test0,   test6,  printmem , clear};
+char functions[CANT_FUNC][20] = {"help","printTime", "printTemperature","printCPUInfo", "inforeg", "triggerException0", "triggerException6","printmem", "clear"};
+void (*func_ptr[CANT_FUNC])() = { help , printTime,   printTemperature,  printCPUInfo,   inforeg,   triggerException0,   triggerException6,  printmem , clear};
 char parameters[CANT_FUNC]    = { 0,     0,           0,                 0,              0,         0,       0,      1        , 0       };
 
 static char input[DIM_BUFFER] = {0};
@@ -23,8 +17,6 @@ static int pos = 0;
 
 
 void initShell() {
-    // promt message
-    
     printf("Bienvenido %s!\n",getUser());
     printf("Para comenzar, ingrese un comando o presione la tecla TAB para cambiar de programa\n");
     printf("Para una lista de los programas disponibles ingrese help\n");
@@ -70,9 +62,9 @@ void shell(char key) {
         printUser();
     } else if (key == DELETE) {
         if (pos != 0) {
-            putChar(key);
             pos--;
             input[pos] = 0;
+            putChar(key);
         }
     } else {
         putChar(key);
@@ -81,37 +73,21 @@ void shell(char key) {
     }
 }
 
-void test0() {
-    int x = 5 / 0;
-    x+=1;
-
-}
-
 void help(){
     printf("La shell esta equipada con los siguientes Programas, para ejectutarlos ingrese el nombre del programa en la linea de comando \n");
-    for (int i = 0; i < CANT_FUNC; i++)
-    {
-        
-        if (i%4==0)
-        {
-            printf("\n");
+    for (int i = 0; i < CANT_FUNC; i++) {
+        if (i % 4 == 0) {
+            putChar('\n');
         }
         printf("%s ",functions[i]);
-        if (parameters[i]!=0)
-        {
-            if (parameters[i]==1)
-            {
-                printf(" (espera %d parametro)",parameters[i]);
-            }else
-            {
-                printf(" (espera %d parametros)",parameters[i]);
+        if (parameters[i] != 0) {
+            if (parameters[i] == 1) {
+                printf(" (espera %d parametro)", parameters[i]);
+            } else {
+                printf(" (espera %d parametros)", parameters[i]);
             }   
         }
-        
-        
     }
-    printf("\n");
+    putChar('\n');
     printf("Para informacion adicional, consultar documentacion.\n");
-    
-       
 }

@@ -1,7 +1,7 @@
-
 Global cpuModel
 GLOBAL cpuVendor
 
+section .text
 
 cpuModel:       
     push rbp

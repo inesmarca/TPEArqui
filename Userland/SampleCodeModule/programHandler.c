@@ -38,6 +38,7 @@ void printUser() {
     changeLetterColor(DEFAULT_LETTER_COLOR);
 }
 
+
 void programHandler() {
     changeScreen(DOWN);
     initialize();

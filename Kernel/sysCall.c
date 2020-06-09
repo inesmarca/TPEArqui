@@ -14,7 +14,7 @@ void readKey(char * buf, int cant) {
     deleteBuff();
 }
 
-void writeString(const char * string, int letter_color, int background_color) {
+void writeString(const char * string, unsigned int letter_color, unsigned int background_color) {
     print(string, letter_color, background_color);
 }
 

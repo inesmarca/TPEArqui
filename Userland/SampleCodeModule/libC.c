@@ -8,6 +8,7 @@
 #define MAX_PRINTABLE_CHARACTERS 1024
 #define MAX_READABLE_CHARACTERS 1024
 #define NULL (void*)0
+#define DELETE 0x0E
 
 long stringtoLong_libc (char * string);
 int longToString_libc(long value, char * buffer);
@@ -182,9 +183,6 @@ void printf(const char * format,...){
 	va_end(valist);
     output[output_pos]=0;
 	writeScreen(output, letter_color, background_color);
-
-    
-    
 }
 
 int scanf(const char *format, ...){
@@ -199,14 +197,18 @@ int scanf(const char *format, ...){
 	
 	char in = getChar();
 	
-	while (in != '\n')
-	{
-		
-		input[input_pos++]=in;
-		putChar(in);
-		in=getChar();
-		
-		
+	while (in != '\n') {
+		if (in == DELETE) {
+			if (input_pos != 0) {
+				input_pos--;
+				input[input_pos] = 0;
+				putChar(in);
+			}
+		} else {
+			input[input_pos++] = in;
+			putChar(in);
+		}
+		in = getChar();
 	}
 	putChar('\n');
 	
@@ -585,29 +587,4 @@ void baseToHexa(char * buff) {
 	for (int k = 0; k < 8; k++) {
 		buff[k] = auxStr[k];
 	}
-}
-
-int fix_format_hours(int time) {
-    int aux = time/16;
-    aux *= 10;
-    aux = aux + (time % 16) - 3;
-    if (aux < 0) {
-        aux += 24;
-    }
-    return aux % 24;
-}
-
-int fix_format(int time) {
-    int aux = time / 16;
-    aux *= 10;
-    aux = aux + (time % 16);
-    return aux;
-} 
-
-void printTime() {
-    printf("%d:%d:%d\n", fix_format_hours(getRTC(4)), fix_format(getRTC(2)), fix_format(getRTC(0)));
-}
-
-void printTemperature() {
-	printf("%d\n", getTemperature());
 }

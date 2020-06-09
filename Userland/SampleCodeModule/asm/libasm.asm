@@ -9,6 +9,8 @@ GLOBAL getTemperature
 GLOBAL getRegisters
 GLOBAL clear
 
+section .text
+
 ; void readKeyBuff(char * buf)
 readKeyBuff:
     mov rax, 0
