@@ -38,12 +38,6 @@ void printUser() {
     changeLetterColor(DEFAULT_LETTER_COLOR);
 }
 
-void printBlock() {
-    changeBackgroundColor(0x808080);
-    putChar(' ');
-    changeBackgroundColor(DEFAULT_BACKGROUND_COLOR);
-}
-
 void programHandler() {
     changeScreen(DOWN);
     initialize();

@@ -37,7 +37,10 @@ void initCalculator() {
     printf("Para el correcto funcionamiento del programa ingrese su expresion separada con espacios\n");
     printf("ej: ( 2 + 3 ) * 5 =\n");
     printf("las operaciones soportadas incluyen : + , - , * , / y el uso de parentesis\n");
-    printf("para ejecutar la operacion presione la tecla = (recuerde dejar un espacio)\n");
+    printf("para ejecutar la operacion presione la tecla = ");
+    changeLetterColor(0xFF0000);
+    printf("(recuerde dejar un espacio)\n");
+    changeLetterColor(DEFAULT_LETTER_COLOR);
     printUser();
 }
 

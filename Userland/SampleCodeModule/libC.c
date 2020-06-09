@@ -63,6 +63,12 @@ void printError(char * str) {
     changeLetterColor(DEFAULT_LETTER_COLOR);
 }
 
+void printBlock() {
+    changeBackgroundColor(0x808080);
+    putChar(' ');
+    changeBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+}
+
 void putChar(char str) {
 	char buff[2] = {0};
 	buff[0] = str;

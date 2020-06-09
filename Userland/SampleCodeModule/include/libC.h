@@ -1,3 +1,6 @@
+#ifndef __LIB_C_H_
+#define __LIB_C_H_
+
 #include <stdint.h>
 #define DEFAULT_LETTER_COLOR 0xFFFFFF
 #define DEFAULT_BACKGROUND_COLOR 0x000000
@@ -7,7 +10,6 @@
 char * strcpy(char * destination,const char * source);
 
 int strcmp(char * s1, char * s2);
-
 
 int scanf(const char * format, ...);
 
@@ -32,3 +34,7 @@ void changeLetterColor(int code);
 void changeBackgroundColor(int code);
 
 void printError(char * string);
+
+void printBlock();
+
+#endif

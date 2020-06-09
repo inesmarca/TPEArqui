@@ -1,3 +1,6 @@
+#ifndef __SYS_LIB_H_
+#define __SYS_LIB_H_
+
 #include <stdint.h>
 
 extern void readKeyBuff(char * buf, int cant);
@@ -19,3 +22,5 @@ extern int getTemperature();
 extern void clear();
 
 extern void getRegisters(uint64_t * buff);
+
+#endif

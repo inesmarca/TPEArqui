@@ -2,9 +2,9 @@
 #include <videoDriver.h>
 
 #define SCREEN1_START_POS 4
-#define SCREEN1_END_POS 371
+#define SCREEN1_END_POS 372
 #define SCREEN2_START_POS 382
-#define SCREEN2_END_POS 765
+#define SCREEN2_END_POS 766
 #define LINE_START_POS 375
 #define LINE_HEIGHT 3
 #define B_SPACE 0x0E
@@ -35,8 +35,8 @@ void print(const char * string, int letter_color, int background_color) {
         posY = &pos2Y;
     }
 
-    for (int i = 0; string[i] != 0 && *posX < WIDTH; i++) {
-        if (string[i] == '\n') {
+    for (int i = 0; string[i] != 0; i++) {
+        if (string[i] == '\n' || *posX == WIDTH) {
             newLine(background_color);
         } else if (string[i] == B_SPACE) {
             delete(background_color);

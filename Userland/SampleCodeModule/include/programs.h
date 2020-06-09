@@ -1,3 +1,8 @@
+#ifndef __PROGRAMS_H_
+#define __PROGRAMS_H_
+
+#define DEFAULT_LETTER_COLOR 0xFFFFFF
+#define DEFAULT_BACKGROUND_COLOR 0x000000
 #define DELETE 0x0E
 #define TAB '\t'
 #define CURSOR 127
@@ -7,3 +12,5 @@
 #define LETTER_WIDTH 8
 #define WIDTH 1024
 #define DIM_BUFFER WIDTH/8
+
+#endif

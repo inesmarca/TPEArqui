@@ -4,22 +4,43 @@
 #include <shell.h>
 #include <libFun.h>
 #include <sysLib.h>
-#define CANT_FUNC 10
+#define CANT_FUNC 9
 
 void help();
 
 char functions[CANT_FUNC][20] = {"help","printTime", "printTemperature","printCPUInfo", "inforeg", "triggerException0", "triggerException6","printmem", "clear"};
 void (*func_ptr[CANT_FUNC])() = { help , printTime,   printTemperature,  printCPUInfo,   inforeg,   triggerException0,   triggerException6,  printmem , clear};
 char parameters[CANT_FUNC]    = { 0,     0,           0,                 0,              0,         0,       0,      1        , 0       };
+char descripcion[CANT_FUNC][101] = {
+    "enumeracion de las funciones disponibles del sistema", 
+    "imprime en pantalla la hora actual", 
+    "imprime en pantalla la temperatura de la computadora",
+    "imprime en pantalla la inforamcion sobre el CPU",
+    "imprime en pantalla los registros guardados al apretar CTRL S",
+    "demostracion de la excepcion division por 0",
+    "demostracion de la excepcion invalid opcode",
+    "recive una direccion de memoria y hace un volvado de memoria de 32 bytes a partir de dicho parametro",
+    "limpia la pantalla"
+    };  
+
 
 static char input[DIM_BUFFER] = {0};
 static int pos = 0;
 
 
 void initShell() {
+    changeLetterColor(0xFF00FF);
     printf("Bienvenido %s!\n",getUser());
-    printf("Para comenzar, ingrese un comando o presione la tecla TAB para cambiar de programa\n");
-    printf("Para una lista de los programas disponibles ingrese help\n");
+    changeLetterColor(DEFAULT_LETTER_COLOR);
+    printf("Para comenzar, ingrese un comando o presione la tecla ");
+    changeLetterColor(0xE4D31B);
+    printf("TAB");
+    changeLetterColor(DEFAULT_LETTER_COLOR);
+    printf(" para cambiar de programa\n");
+    printf("Para una lista de los programas disponibles ingrese ");
+    changeLetterColor(0xE4D31B);
+    printf("help\n");
+    changeLetterColor(DEFAULT_LETTER_COLOR);
     printUser();
 }
 
@@ -76,17 +97,10 @@ void shell(char key) {
 void help(){
     printf("La shell esta equipada con los siguientes Programas, para ejectutarlos ingrese el nombre del programa en la linea de comando \n");
     for (int i = 0; i < CANT_FUNC; i++) {
-        if (i % 4 == 0) {
-            putChar('\n');
-        }
+        changeLetterColor(0x21DE7C);
         printf("%s ",functions[i]);
-        if (parameters[i] != 0) {
-            if (parameters[i] == 1) {
-                printf(" (espera %d parametro)", parameters[i]);
-            } else {
-                printf(" (espera %d parametros)", parameters[i]);
-            }   
-        }
+        changeLetterColor(DEFAULT_LETTER_COLOR);
+        printf("- %s\n", descripcion[i]);
     }
     putChar('\n');
     printf("Para informacion adicional, consultar documentacion.\n");
