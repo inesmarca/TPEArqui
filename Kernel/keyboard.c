@@ -18,20 +18,6 @@ extern uint8_t getKey();
 #define ENTER 0x1C
 #define ESC 0x1B
 
-static uint8_t keyState(uint8_t scanCode);
-
-char buffer[1024];
-int pos = 0;
-
-char * getBuffer(int screen) {
-    return buffer;
-}
-
-void deleteBuff() {
-    buffer[0] = 0;
-    pos = 0;
-}
-
 // https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html pagina con los scancodes
 static const char pressCodes[KEYS][2] = {
     {0  ,   0}, {ESC,   ESC}, {'1' , '!'}, {'2' , '@'}, {'3' , '#'}, {'4' , '$'},
@@ -45,6 +31,27 @@ static const char pressCodes[KEYS][2] = {
     {'b', 'B'}, {'n', 'N'}, {'m' , 'M'}, {',' , '<'}, {'.' , '>'}, {'/' , '?'}, 
     {0   ,  0}, {0   ,  0}, {0   ,   0}, {0   ,   0}, {0   ,   0}
 };
+
+char buffer[1024];
+int pos = 0;
+
+char * getBuffer(int screen) {
+    return buffer;
+}
+
+void deleteBuff() {
+    buffer[0] = 0;
+    pos = 0;
+}
+
+static uint8_t keyState(uint8_t scanCode) {
+    if (scanCode >= 0x01 && scanCode <= 0x3A)
+        return PRESSED;
+    else if (scanCode >= 0x81 && scanCode <= 0xBA)
+        return RELEASED;
+
+    return ERRROR;
+}
 
 static int currentkeyState = 0;
 static int left_shift = 0;
@@ -114,13 +121,4 @@ void keyboard_handler(uint64_t * stackFrame) {
                 break;
         }
     }
-}
-
-static uint8_t keyState(uint8_t scanCode) {
-    if (scanCode >= 0x01 && scanCode <= 0x3A)
-        return PRESSED;
-    else if (scanCode >= 0x81 && scanCode <= 0xBA)
-        return RELEASED;
-
-    return ERRROR;
 }
