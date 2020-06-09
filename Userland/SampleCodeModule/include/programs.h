@@ -6,8 +6,8 @@
 #define DELETE 0x0E
 #define TAB '\t'
 #define CURSOR 127
-#define SCREEN1_HEIGHT 368
-#define SCREEN2_HEIGHT 384
+#define SCREEN1_HEIGHT 382
+#define SCREEN2_HEIGHT 382
 #define LETTER_HEIGHT 16
 #define LETTER_WIDTH 8
 #define WIDTH 1024

@@ -4,6 +4,7 @@
 #include <shell.h>
 #include <programs.h>
 #include <libC.h>
+#include <libFun.h>
 
 #define UP 1
 #define DOWN 2
