@@ -35,7 +35,7 @@ static int pos = 0;
 
 void initCalculator() {
     // prompt
-    setCursor(0, SCREEN1_HEIGHT - LETTER_HEIGHT);
+    setCursor(0, SCREEN_HEIGHT - LETTER_HEIGHT);
     printf("Para el correcto funcionamiento del programa ingrese su expresion separada con espacios\n");
     printf("ej: ( 2 + 3 ) * 5 =\n");
     printf("las operaciones soportadas incluyen : + , - , * , / y el uso de parentesis\n");

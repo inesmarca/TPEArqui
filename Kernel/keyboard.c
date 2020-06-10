@@ -32,39 +32,45 @@ static const char pressCodes[KEYS][2] = {
     {0   ,  0}, {0   ,  0}, {0   ,   0}, {0   ,   0}, {0   ,   0}
 };
 
+// buffer de las keys recibidas
 char buffer[1024];
 int pos = 0;
 
+// retorna el buffer 
 char * getBuffer(int screen) {
     return buffer;
 }
 
+// borra el buffer
 void deleteBuff() {
     buffer[0] = 0;
     pos = 0;
 }
 
+// diferencia entre una tecla apretada y una tecla soltada
 static uint8_t keyState(uint8_t scanCode) {
     if (scanCode >= 0x01 && scanCode <= 0x3A)
         return PRESSED;
     else if (scanCode >= 0x81 && scanCode <= 0xBA)
         return RELEASED;
-
     return ERRROR;
 }
 
+// flags utilizados para saber si se apreto una tecla especial
 static int currentkeyState = 0;
 static int left_shift = 0;
 static int right_shift = 0;
 static int capsLock = 0;
 static int control = 0;
 
+// agrega una tecla al buffer
 void bufferAdd(char key) {
     buffer[pos++] = key;
     buffer[pos] = 0;
 }
 
 void keyboard_handler(uint64_t * stackFrame) {
+    // lee la tecla
     uint8_t key = getKey();
     currentkeyState = keyState(key);
     if (currentkeyState == PRESSED) {
@@ -95,7 +101,7 @@ void keyboard_handler(uint64_t * stackFrame) {
             if (control == 1 && key == 0x1F) { // Control S para guardar un backup de los registros
                 saveReg(stackFrame);
             } else {
-                if (left_shift == 1 || right_shift == 1 || capsLock == 1) {
+                if (left_shift == 1 || right_shift == 1 || capsLock == 1) { // agrega el segundo valor de la tecla apretada
                     bufferAdd(pressCodes[key][1]);
                 } else {
                     bufferAdd(pressCodes[key][0]);
@@ -103,7 +109,7 @@ void keyboard_handler(uint64_t * stackFrame) {
             }
             break;
         }
-    } else if (keyState(key) == RELEASED) {
+    } else if (keyState(key) == RELEASED) { // pone en 0 los flags de las teclas especiales una vez que se las suelta
         switch (key) { // el scancode de una tecla released es el scancode la tecla mas 0x80
             case L_SHIFT + 0x80:
                 left_shift = 0;

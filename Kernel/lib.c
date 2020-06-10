@@ -82,6 +82,7 @@ uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 	return digits;
 }
 
+// funcion utilizada por exception para imprimir en un buen formato
 void baseToHexa(char * buff) {
 	char auxStr[9] = "0x000000";
 	int dim = 0;

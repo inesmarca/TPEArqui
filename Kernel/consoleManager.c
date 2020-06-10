@@ -1,23 +1,27 @@
 #include <consoleManager.h>
 #include <videoDriver.h>
 
-#define LINE_START_POS SCREEN1_END_POS
+#define LINE_START_POS SCREEN1_END_POS + 1
 #define LINE_HEIGHT 4
 #define B_SPACE 0x0E
 
+// valores por default de los cursores
 static int pos1X = 0;
 static int pos1Y = SCREEN1_START_POS;
 static int pos2X = 0;
 static int pos2Y = SCREEN2_END_POS - LETTER_HEIGHT + 1;
 
+// variable para saber la pantalla activa
 static int currentScreen = 1;
 
+// cambia la pantalla activa (utilizado por el syscall)
 void changeScreen(int screen) { 
     if (screen == 1 || screen == 2) {
         currentScreen = screen; 
     }
 }
 
+// cambia la posicion del cursor de escrtitura en base a la pantalla activa
 void changeCursor(int screen, int x, int y) {
     if (getCurrentScreen() == 1) {
         pos1X = x;
@@ -28,8 +32,10 @@ void changeCursor(int screen, int x, int y) {
     }
 }
 
+// retorna la pantalla activa
 int getCurrentScreen() { return currentScreen; }
 
+// imprime un string desde la posicion del cursor en forma horizontal con los colores recividos
 void print(const char * string, int letter_color, int background_color) {
     int * posX;
     int * posY;
@@ -53,6 +59,7 @@ void print(const char * string, int letter_color, int background_color) {
     }
 }
 
+// borra el caracter en la poscion antes del cursor
 void delete(int background_color) {
     int * posX;
     int * posY;
@@ -69,6 +76,7 @@ void delete(int background_color) {
     }
 }
 
+// hace un scroll hacia arriba de la pantalla activa
 void newLine(int background_color) {
     int * posX;
     int top_pos;
@@ -93,12 +101,14 @@ void newLine(int background_color) {
     }
 }
 
+// dibuja la linea de division
 void middleLine() {
     for (int i = 0; i < LINE_HEIGHT; i++) {
         drawLine(LINE_START_POS + i, 0x62FFCC);
     }
 }
 
+// limpia la pantalla
 void clear(int screen) {
     if (screen == 1) {
         for (int x = 0; x < WIDTH; x++) {

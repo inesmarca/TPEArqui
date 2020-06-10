@@ -29,8 +29,6 @@ EXTERN getRegVec
 EXTERN sysClear
 EXTERN setCursor
 
-EXTERN test
-
 SECTION .text
 
 %macro pushState 0
@@ -122,11 +120,11 @@ SECTION .text
 	pushReg
 
 	cmp rax, 0
-	je .runRead		; read del keyboard
+	je .runRead			; read del keyboard
 	cmp rax, 1
-	je .runWrite   	; write de letra
+	je .runWrite   		; write de letra
 	cmp rax, 2
-	je .getPixel	; read de pixel de pantalla
+	je .getPixel		; read de pixel de pantalla
 	cmp rax, 3
 	je .pixelWrite		; write de pixel
 	cmp rax, 4
@@ -134,9 +132,9 @@ SECTION .text
 	cmp rax, 5
 	je .switchScreen	; cambia la pantalla
 	cmp rax, 6
-	je .cputemp	; devuelve la temp del cpu
+	je .cputemp			; devuelve la temp del cpu
 	cmp rax, 7
-	je .registers
+	je .registers		; devuelve los registros obtenidos al apretar CTRL S
 	cmp rax, 8
 	je .cursor			; setea la posicion del cursor
 	jmp .fin

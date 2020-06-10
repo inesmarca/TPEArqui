@@ -29,7 +29,7 @@ static int pos = 0;
 
 
 void initShell() {
-    setCursor(0, SCREEN2_HEIGHT - LETTER_HEIGHT);
+    setCursor(0, SCREEN_HEIGHT - LETTER_HEIGHT);
     changeLetterColor(0xFF00FF);
     printf("Bienvenido %s!\n",getUser());
     changeLetterColor(DEFAULT_LETTER_COLOR);

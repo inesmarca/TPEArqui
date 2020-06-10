@@ -9,6 +9,7 @@
 static void zero_division();
 static void invalid_opcode();
 
+// valores de retorno de la excepcion
 uint64_t * ipReturn;
 uint64_t * rspReturn;
 
@@ -19,6 +20,7 @@ static char * regs[] = {
 	"RIP:   ", "CS:    ", "FLAGS: ", "RSP:   "
 	};
 
+// imprime los registros y despliega un timer para el reinicio de la pantalla
 void printRegs(uint64_t * stackFrame) {
 	char buffer[9];
 	for (int i = 0; i < 19; i++) {
@@ -32,10 +34,11 @@ void printRegs(uint64_t * stackFrame) {
 			print("           ", LETTER_COLOR, BACKGROUND_COLOR);
 		}
 	}
-
+	// habilita de vuelta las interrupciones
 	_sti();
 	print("La pantalla se reiniciara en ", LETTER_COLOR, BACKGROUND_COLOR);
 	char buff[3] = {0};
+	// espera a una interrupcion
 	_hlt();
 	int init_time = seconds_elapsed();
 	int aux = 10;
@@ -58,11 +61,13 @@ void printRegs(uint64_t * stackFrame) {
 	newLine(BACKGROUND_COLOR);
 }
 
+// setea los registros de retorno
 void setAddresses(uint64_t * ip, uint64_t * rsp) {
 	ipReturn = ip;
 	rspReturn = rsp;
 }
 
+// resetea la pantalla
 void resetScreen(uint64_t * stackFrame) {
 	stackFrame[15] = (uint64_t)ipReturn;
 	stackFrame[18] = (uint64_t)rspReturn;
@@ -77,12 +82,14 @@ void exceptionDispatcher(int exception, uint64_t * stackFrame) {
 		invalid_opcode(stackFrame);
 }
 
+// handler de la excepcion 0
 static void zero_division(uint64_t * stackFrame) {
 	print("Exception 0: division by 0\n", 0xFF0000, BACKGROUND_COLOR);
 	printRegs(stackFrame);
 	resetScreen(stackFrame);
 }
 
+// handler de la excepcion 6
 static void invalid_opcode(uint64_t * stackFrame) {
 	print("Exception 6: invalid opcode\n", 0xFF0000, BACKGROUND_COLOR);
 	printRegs(stackFrame);

@@ -29,7 +29,7 @@ char * getUser() {
 }
 
 void initialize() {
-    setCursor(0, SCREEN2_HEIGHT - LETTER_HEIGHT);
+    setCursor(0, SCREEN_HEIGHT - LETTER_HEIGHT);
     printf("Enter your username: ");
     scanf("%s", user);
 }
@@ -44,9 +44,12 @@ void programHandler() {
     changeScreen(DOWN);
     initialize();
     changeScreen(UP);
+    // inicializa la calculadora
     initCalculator();
     changeScreen(DOWN);
+    // inicializa la shell
     initShell();
+    // imprime el cursor
     printBlock();
     while (!exitFlag) {
         readKeyBuff(buffer, WIDTH/8);
@@ -79,7 +82,13 @@ void programHandler() {
     clear();
     changeScreen(DOWN);
     clear();
+    changeLetterColor(0x0000FF);
+    setCursor(WIDTH/2 - 15*LETTER_WIDTH, SCREEN_HEIGHT/2 - 3*LETTER_HEIGHT);
     printf("Has finalizado el programa\n");
+    changeLetterColor(0xE4D31B);
+    setCursor(WIDTH/2 - 25*LETTER_WIDTH, SCREEN_HEIGHT/2 - 2*LETTER_HEIGHT);
     printf("Para volver a correrlo reiniciar el programa\n");
+    changeLetterColor(0x0000FF);
+    setCursor(WIDTH/2 - 15*LETTER_WIDTH, SCREEN_HEIGHT/2 - LETTER_HEIGHT);
     printf("Nos vemos luego %s", user);
 }

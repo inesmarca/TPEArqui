@@ -25,14 +25,12 @@ static void setup_IDT_entry (int index, uint64_t offset);
 void load_idt() {
   _cli();
   
-  setup_IDT_entry (0x20, (uint64_t)&_irq00Handler);
-  setup_IDT_entry (0x21, (uint64_t)&_irq01Handler);
-  setup_IDT_entry (0x80, (uint64_t)&_irq80Handler);
-  setup_IDT_entry (0x00, (uint64_t)&_exception0Handler);
-  setup_IDT_entry (0x06, (uint64_t)&_exception6Handler);
+  setup_IDT_entry (0x20, (uint64_t)&_irq00Handler);       // timer tick
+  setup_IDT_entry (0x21, (uint64_t)&_irq01Handler);       // keyboard
+  setup_IDT_entry (0x80, (uint64_t)&_irq80Handler);       // syscalls
+  setup_IDT_entry (0x00, (uint64_t)&_exception0Handler);  // exception 0
+  setup_IDT_entry (0x06, (uint64_t)&_exception6Handler);  // exception 6
 
-
-	//Solo interrupcion timer tick habilitadas
 	picMasterMask(0xFC); 
 	picSlaveMask(0xFF);
         

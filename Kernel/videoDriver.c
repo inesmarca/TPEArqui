@@ -42,20 +42,24 @@ struct infoStructure {
 
 struct infoStructure * screenInfo =(struct infoStructure *) 0x5C00;
 
+// retorna el puntero de posicion correspondiente de la pantalla
 char * getDataPosition(int x, int y) {
 	return screenInfo->framebuffer + (x + WIDTH * y) * 3;
 }
 
+// retorna si dicho pixel esta en negro
 char positionEmpty(int x, int y) {
 	char * pos = getDataPosition(x, y);
 	return pos[0] == 0 && pos[1] == 0 && pos[2] == 0;
 }
 
+// retorna el color en formato hexadecimal de dicho pixel 
 int getPixelColor(int x, int y) {
 	char * pos = getDataPosition(x, y);
 	return ((pos[2] & 0xff) << 16) + ((pos[1] & 0xff) << 8) + (pos[0] & 0xff);
 }
 
+// dibuja el pixel en la coordenada enviada con el hexadecimal recivido 
 void writePixel(int x, int y,  int rgb_hexa) {
     char * pos = getDataPosition(x,y);
 	pos[0] = rgb_hexa & 0xFF; // Blue
@@ -63,6 +67,7 @@ void writePixel(int x, int y,  int rgb_hexa) {
 	pos[2] = (rgb_hexa >> 16) & 0xFF; // Red
 }
 
+// dibuja un carcater de 8x16 desde la posiciones recibidas con el color de letra y fondo recividos
 void writeLetter(int key, int posX, int posY, int letter_color, int background_color) {
 	char * bitmap = font8x16[key];
 	int x,y;
@@ -85,12 +90,14 @@ void writeLetter(int key, int posX, int posY, int letter_color, int background_c
 	}
 }
 
+// dibuja una linea a lo largo del ancho del color recivido
 void drawLine(int y, int color) {
 	for (int i = 0; i < WIDTH; i++) {
 		writePixel(i,y, color);
 	}
 }
 
+// dibuja todo un segmento con el color recivido
 void setSegmentBlank(int x_initial, int x_final, int y_initial, int y_final, int background_color) {
 	for (int i = y_initial; i <= y_final; i++) {
         for (int j = x_initial; j < x_final; j++) {
