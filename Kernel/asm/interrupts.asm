@@ -19,6 +19,9 @@ GLOBAL _exception6Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
+
+EXTERN sysHandler
+
 EXTERN readKey
 EXTERN writeString
 EXTERN getPixelData
@@ -118,73 +121,16 @@ SECTION .text
 
 %macro sysCallHandler 0
 	pushReg
+	mov rcx, rax
+	call sysHandler
 
-	cmp rax, 0
-	je .runRead			; read del keyboard
-	cmp rax, 1
-	je .runWrite   		; write de letra
-	cmp rax, 2
-	je .getPixel		; read de pixel de pantalla
-	cmp rax, 3
-	je .pixelWrite		; write de pixel
-	cmp rax, 4
-	je .clearScreen		; limpia la pantalla
-	cmp rax, 5
-	je .switchScreen	; cambia la pantalla
-	cmp rax, 6
-	je .cputemp			; devuelve la temp del cpu
-	cmp rax, 7
-	je .registers		; devuelve los registros obtenidos al apretar CTRL S
-	cmp rax, 8
-	je .cursor			; setea la posicion del cursor
-	jmp .fin
-
-.runRead:
-	call readKey
-	jmp .fin
-
-.runWrite:
-	call writeString
-	jmp .fin
-
-.getPixel:
-	call getPixelData
-	mov rbx, rax
-	jmp .fin
-
-.pixelWrite:
-	call printPixel
-	jmp .fin
-
-.switchScreen:
-	call changeScreen
-	jmp .fin
-
-.cputemp:
-	call getTemperature
-	mov rbx, rax
-	jmp .fin
-
-.registers:
-	call getRegVec
-	jmp .fin
-
-.clearScreen:
-	call sysClear
-	jmp .fin
-
-.cursor:
-	call setCursor
-	jmp .fin
-
-.fin:
 	; signal pic EOI (End of Interrupt)
 	mov al, 20h
 	out 20h, al
 
 	popReg
 	iretq
-
+	
 %endmacro
 
 %macro exceptionHandler 1

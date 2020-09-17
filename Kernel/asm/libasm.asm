@@ -1,5 +1,6 @@
 GLOBAL cpuVendor
 GLOBAL getRSP
+GLOBAL getRTC
 
 section .text
 	
@@ -30,3 +31,17 @@ cpuVendor:
 getRSP:
 	mov rax, rsp
 	ret
+
+;int getRTC(int x) 
+getRTC:
+    push rbp
+    mov rbp, rsp
+
+    mov rax, 0
+    mov rax, rdi
+    out 70h, al
+    in al, 71h
+
+    mov rsp, rbp
+    pop rbp
+    ret

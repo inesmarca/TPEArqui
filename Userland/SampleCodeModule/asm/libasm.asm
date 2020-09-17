@@ -9,6 +9,7 @@ GLOBAL getTemperature
 GLOBAL getRegisters
 GLOBAL clear
 GLOBAL setCursor
+GLOBAL getTime
 
 section .text
 
@@ -81,16 +82,8 @@ setCursor:
     int 80h
     ret
 
-;int getRTC(int x) 
-getRTC:
-    push rbp
-    mov rbp, rsp
-
-    mov rax, 0
-    mov rax, rdi
-    out 70h, al
-    in al, 71h
-
-    mov rsp, rbp
-    pop rbp
+; void getTime(int * buff);
+getTime:
+    mov rax, 9
+    int 80h
     ret

@@ -2,6 +2,7 @@
 #define __LIB_C_H_
 
 #include <stdint.h>
+#include <libFun.h>
 #define DEFAULT_LETTER_COLOR 0xFFFFFF
 #define DEFAULT_BACKGROUND_COLOR 0x000000
 #define BLOCK 127

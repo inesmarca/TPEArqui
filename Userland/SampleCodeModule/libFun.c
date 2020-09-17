@@ -5,35 +5,20 @@
 extern int cpuModel();
 extern char * cpuVendor();
 extern void getRegisters(uint64_t * buff) ;
-extern int getRTC();
 extern int getTemperature();
+extern void getTime(int * buff);
 
 // Trigger Exception 0
 void triggerException0() {
     int x = 5 / 0;
 }
 
-// Print Time
-int fix_format_hours(int time) {
-    int aux = time/16;
-    aux *= 10;
-    aux = aux + (time % 16) - 3;
-    if (aux < 0) {
-        aux += 24;
-    }
-    return aux % 24;
+void printTime(){
+    int buff[3];
+    getTime(buff);
+    printf("%d:%d:%d/n", buff[0], buff[1], buff[2]);
 }
 
-int fix_format(int time) {
-    int aux = time / 16;
-    aux *= 10;
-    aux = aux + (time % 16);
-    return aux;
-} 
-
-void printTime() {
-    printf("%d:%d:%d\n", fix_format_hours(getRTC(4)), fix_format(getRTC(2)), fix_format(getRTC(0)));
-}
 
 // Print Temperature
 void printTemperature() {
@@ -146,7 +131,8 @@ int CPUModel(int chipvalue){
 
 
 }
-int CPUFamily(int chipvalue){
+
+int CPUFamily(int chipvalue) {
 
 //The actual processor family is derived from the Family ID and Extended Family ID fields.
     // If the Family ID field is equal to 15, the family is equal to the sum of the Extended Family ID and the Family ID fields.
